@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun ExpandableTextPreview() {
-    ExpandableText(description = "This is a long description that might exceed the maximum number of lines and get truncated. In this case, we want to show an ellipsis and a 'Show more' button to expand the text.")
+    ExpandableText(description = "This is a long description that might exceed the maximum number of lines and get truncated. In this case, we want to show an ellipsis and a 'Show more' button to expand the text. Long description that might exceed the maximum number of lines and get truncated")
 }
 
 @Preview

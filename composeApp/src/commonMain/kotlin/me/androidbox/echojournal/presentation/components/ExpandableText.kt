@@ -1,9 +1,8 @@
 package me.androidbox.echojournal.presentation.components
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,70 +11,91 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.LinkAnnotation.Clickable
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
-@Composable
-fun ExpandableText(description: String) {
-    var isExpanded by remember { mutableStateOf(false) }
-    var hasOverflow by remember { mutableStateOf(false) }
-    val maxLines = if (isExpanded) Int.MAX_VALUE else 3
 
-    // Use AnnotatedString to handle clickable parts
-    val annotatedString = buildAnnotatedString {
-        append(description)
-        if (hasOverflow && !isExpanded) {
-            append("... ")
-            pushStringAnnotation(tag = "SHOW_MORE", annotation = "show_more")
-            withStyle(SpanStyle(color = Color.Blue, fontWeight = FontWeight.Bold)) {
-                append("show more")
+@Composable
+fun ExpandableText(
+    modifier: Modifier = Modifier,
+    fontStyle: FontStyle? = null,
+    description: String,
+    collapsedMaxLine: Int = 3,
+    showMoreText: String = "... Show More",
+    showMoreStyle: SpanStyle = SpanStyle(fontWeight = FontWeight.SemiBold, color = Color.Blue),
+    showLessStyle: SpanStyle = showMoreStyle,
+    showLessText: String = " Show Less",
+    fontSize: TextUnit = 18.sp
+) {
+    // State variables to track the expanded state, clickable state, and last character index.
+    var isExpanded by remember { mutableStateOf(false) }
+    var isClickable by remember { mutableStateOf(false) }
+    var lastCharIndex by remember { mutableStateOf(0) }
+
+    val annotatedText = buildAnnotatedString {
+
+        if (isClickable) {
+            if(isExpanded) {
+                this.append(description)
+                this.withLink(
+                    link = Clickable(
+                        tag = "show less",
+                        linkInteractionListener = {
+                            isExpanded = !isExpanded
+                        }
+                    )
+                ) {
+                    this.withStyle(style = showLessStyle) {
+                        this.append(showLessText)
+                    }
+                }
             }
-            pop()
-        } else if (isExpanded) {
-            append(" ")
-            pushStringAnnotation(tag = "SHOW_LESS", annotation = "show_less")
-            withStyle(SpanStyle(color = Color.Blue, fontWeight = FontWeight.Bold)) {
-                append("show less")
+            else {
+                val adjustedText = description.substring(startIndex = 0, endIndex = lastCharIndex)
+                    .dropLast(showMoreText.length)
+                    .dropLastWhile { it.isWhitespace() || it == '.' }
+
+                this.append(adjustedText)
+
+                this.withLink(
+                    link = Clickable(
+                        tag = "show more",
+                        linkInteractionListener = {
+                            isExpanded = !isExpanded
+                        }
+                    )
+                ) {
+                    this.withStyle(style = showMoreStyle) {
+                        this.append(showMoreText)
+                    }
+                }
             }
-            pop()
+        } else {
+            this.append(description)
         }
     }
 
-    Box(modifier = Modifier.fillMaxWidth()) {
-        ClickableText(
-            text = annotatedString,
-            style = TextStyle(
-                fontWeight = FontWeight.Medium,
-                color = Color.Gray,
-                fontSize = 18.sp
-            ),
-            maxLines = maxLines,
-            overflow = TextOverflow.Ellipsis,
-            onTextLayout = { textLayoutResult ->
-                hasOverflow = textLayoutResult.hasVisualOverflow
-            },
-            onClick = { offset ->
-                annotatedString.getStringAnnotations(
-                    tag = "SHOW_MORE",
-                    start = offset,
-                    end = offset
-                ).firstOrNull()?.let {
-                    isExpanded = true
-                }
-
-                annotatedString.getStringAnnotations(
-                    tag = "SHOW_LESS",
-                    start = offset,
-                    end = offset
-                ).firstOrNull()?.let {
-                    isExpanded = false
-                }
+    Text(
+        modifier = modifier
+            .fillMaxWidth()
+            .animateContentSize(),
+        text = annotatedText,
+        maxLines = if (isExpanded) Int.MAX_VALUE else collapsedMaxLine,
+        fontStyle = fontStyle,
+        onTextLayout = { textLayoutResult ->
+            if (!isExpanded && textLayoutResult.hasVisualOverflow) {
+                isClickable = true
+                lastCharIndex = textLayoutResult.getLineEnd(collapsedMaxLine - 1)
             }
-        )
-    }
+        },
+        fontSize = fontSize
+    )
 }
