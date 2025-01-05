@@ -1,11 +1,23 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package me.androidbox.echojournal
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import me.androidbox.echojournal.presentation.components.Emotion
+import me.androidbox.echojournal.presentation.components.EmotionContent
+import me.androidbox.echojournal.presentation.components.EmotionData
 import me.androidbox.echojournal.presentation.components.ExpandableText
+import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +29,42 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview
+@Composable
+fun EmotionContentPreview() {
+    val emotionList = remember {
+        mutableStateListOf<EmotionData>(
+            EmotionData(Emotion.STRESSED, false),
+            EmotionData(Emotion.SAD, false),
+            EmotionData(Emotion.NEUTRAL, false),
+            EmotionData(Emotion.PEACEFUL, false),
+            EmotionData(Emotion.EXCITED, false)
+        )
+    }
+
+    EmotionContent(
+        emotionList = emotionList,
+        onEmotionClicked = { newEmotionUpdate, index ->
+            emotionList[index] = newEmotionUpdate
+        },
+        onConfirmClicked = {},
+        onCancel = {}
+    )
+}
+
+@Preview
+@Composable
+fun RecordAudioBottomSheetPreview() {
+    val sheetState = rememberModalBottomSheetState()
+    RecordAudioBottomSheet(
+        sheetState = sheetState,
+        onDismiss = { /*TODO*/ },
+        onPauseClicked = { /*TODO*/ },
+        onRecordClicked = { /*TODO*/ },
+        containerColor = Color.White,
+        scrimColor = Color.Black.copy(alpha = 0.32f),
+    )
+}
 
 @Preview
 @Composable
