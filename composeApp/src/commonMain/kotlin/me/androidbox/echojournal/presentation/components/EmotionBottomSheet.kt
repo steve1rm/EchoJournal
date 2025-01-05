@@ -50,7 +50,7 @@ fun EmotionBottomSheet(
                     it.isSelected
                 }
             },
-            onCancel = {
+            onCancelClicked = {
                 onDismiss()
             }
         )

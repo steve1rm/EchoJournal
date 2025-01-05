@@ -10,10 +10,10 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.echojournal.presentation.components.Emotion
+import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.components.EmotionContent
 import me.androidbox.echojournal.presentation.components.EmotionData
 import me.androidbox.echojournal.presentation.components.ExpandableText
@@ -27,6 +27,21 @@ class MainActivity : ComponentActivity() {
             App()
         }
     }
+}
+
+
+@Preview
+@Composable
+fun EmotionBottomSheetPreview() {
+    val sheetState = rememberModalBottomSheetState()
+    EmotionBottomSheet(
+        sheetState = sheetState,
+        onDismiss = { /*TODO*/ },
+        onPauseClicked = { /*TODO*/ },
+        onRecordClicked = { /*TODO*/ },
+        containerColor = Color.White,
+        scrimColor = Color.Black
+    )
 }
 
 @Preview
@@ -48,7 +63,7 @@ fun EmotionContentPreview() {
             emotionList[index] = newEmotionUpdate
         },
         onConfirmClicked = {},
-        onCancel = {}
+        onCancelClicked = {}
     )
 }
 
