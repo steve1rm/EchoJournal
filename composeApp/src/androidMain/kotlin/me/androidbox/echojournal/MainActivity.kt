@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
 import me.androidbox.echojournal.presentation.components.Emotion
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.components.EmotionContent
@@ -29,6 +30,22 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+@Preview
+@Composable
+fun DropDownEmotionMenuPreview() {
+    val emotionList = remember {
+        mutableStateListOf<EmotionData>(
+            EmotionData(Emotion.STRESSED, false),
+            EmotionData(Emotion.SAD, false),
+            EmotionData(Emotion.NEUTRAL, false),
+            EmotionData(Emotion.PEACEFUL, false),
+            EmotionData(Emotion.EXCITED, false)
+        )
+    }
+
+    DropDownEmotionMenu(emotionList)
+}
 
 @Preview
 @Composable
