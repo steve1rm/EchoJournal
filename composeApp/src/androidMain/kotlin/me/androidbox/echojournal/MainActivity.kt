@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.components.EmotionContent
-import me.androidbox.echojournal.presentation.components.EmotionData
+import me.androidbox.echojournal.presentation.components.SelectableEmotion
 import me.androidbox.echojournal.presentation.components.EmotionDropDown
 import me.androidbox.echojournal.presentation.components.ExpandableText
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
@@ -35,12 +35,12 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DropDownEmotionMenuPreview() {
     val emotionList = remember {
-        mutableStateListOf<EmotionData>(
-            EmotionData(EmotionDropDown.STRESSED, false),
-            EmotionData(EmotionDropDown.SAD, false),
-            EmotionData(EmotionDropDown.NEUTRAL, false),
-            EmotionData(EmotionDropDown.PEACEFUL, false),
-            EmotionData(EmotionDropDown.EXCITED, false)
+        mutableStateListOf<SelectableEmotion>(
+            SelectableEmotion(EmotionDropDown.STRESSED, false),
+            SelectableEmotion(EmotionDropDown.SAD, false),
+            SelectableEmotion(EmotionDropDown.NEUTRAL, false),
+            SelectableEmotion(EmotionDropDown.PEACEFUL, false),
+            SelectableEmotion(EmotionDropDown.EXCITED, false)
         )
     }
 
@@ -69,12 +69,12 @@ fun EmotionBottomSheetPreview() {
 @Composable
 fun EmotionContentPreview() {
     val emotionList = remember {
-        mutableStateListOf<EmotionData>(
-            EmotionData(EmotionBottomSheet.STRESSED, false),
-            EmotionData(EmotionBottomSheet.SAD, false),
-            EmotionData(EmotionBottomSheet.NEUTRAL, false),
-            EmotionData(EmotionBottomSheet.PEACEFUL, false),
-            EmotionData(EmotionBottomSheet.EXCITED, false)
+        mutableStateListOf<SelectableEmotion>(
+            SelectableEmotion(EmotionBottomSheet.STRESSED, false),
+            SelectableEmotion(EmotionBottomSheet.SAD, false),
+            SelectableEmotion(EmotionBottomSheet.NEUTRAL, false),
+            SelectableEmotion(EmotionBottomSheet.PEACEFUL, false),
+            SelectableEmotion(EmotionBottomSheet.EXCITED, false)
         )
     }
 

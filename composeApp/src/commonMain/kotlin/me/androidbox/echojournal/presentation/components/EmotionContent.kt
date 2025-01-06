@@ -1,6 +1,5 @@
 package me.androidbox.echojournal.presentation.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -24,7 +22,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import echojournal.composeapp.generated.resources.Res
@@ -45,8 +42,8 @@ import kotlin.Unit
 @Composable
 fun EmotionContent(
     modifier: Modifier = Modifier,
-    emotionList: List<EmotionData>,
-    onEmotionClicked: (emotion: EmotionData, index: Int) -> Unit,
+    emotionList: List<SelectableEmotion>,
+    onEmotionClicked: (emotion: SelectableEmotion, index: Int) -> Unit,
     onConfirmClicked: () -> Unit,
     onCancelClicked: () -> Unit
 ) {
@@ -134,17 +131,17 @@ fun EmotionItem(
 }
 
 
-sealed interface EmotionalData {
+sealed interface EmotionType {
     val description: String
     val resource: DrawableResource
 }
 
-data class EmotionData(
-    val emotion: EmotionalData,
+data class SelectableEmotion(
+    val emotion: EmotionType,
     val isSelected: Boolean = false
 )
 
-enum class EmotionBottomSheet(override val description: String, override val resource: DrawableResource) : EmotionalData {
+enum class EmotionBottomSheet(override val description: String, override val resource: DrawableResource) : EmotionType {
     STRESSED("Stressed", Res.drawable.stressed),
     SAD("Sad", Res.drawable.sad),
     NEUTRAL("Neutral", Res.drawable.neutral),
@@ -152,7 +149,7 @@ enum class EmotionBottomSheet(override val description: String, override val res
     EXCITED("Excited", Res.drawable.excited)
 }
 
-enum class EmotionDropDown(override val description: String, override val resource: DrawableResource) : EmotionalData {
+enum class EmotionDropDown(override val description: String, override val resource: DrawableResource) : EmotionType {
     STRESSED("Stressed", Res.drawable.menu_stressed),
     SAD("Sad", Res.drawable.menu_sad),
     NEUTRAL("Neutral", Res.drawable.menu_neutral),
