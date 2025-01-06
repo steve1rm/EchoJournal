@@ -10,6 +10,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import me.androidbox.echojournal.presentation.components.models.EmotionBottomSheet
+import me.androidbox.echojournal.presentation.components.models.SelectableEmotion
 
 @Composable
 fun EmotionBottomSheet(

@@ -13,10 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
-import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
+import me.androidbox.echojournal.presentation.components.models.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.components.EmotionContent
-import me.androidbox.echojournal.presentation.components.SelectableEmotion
-import me.androidbox.echojournal.presentation.components.EmotionDropDown
+import me.androidbox.echojournal.presentation.components.models.SelectableEmotion
+import me.androidbox.echojournal.presentation.components.models.EmotionDropDown
 import me.androidbox.echojournal.presentation.components.ExpandableText
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
 
