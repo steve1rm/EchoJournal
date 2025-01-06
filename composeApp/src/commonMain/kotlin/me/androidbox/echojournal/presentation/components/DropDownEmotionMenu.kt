@@ -110,7 +110,7 @@ fun DropDownItem(
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = null,
-                    tint = Color.Green
+                    tint = Color(0xff00419C)
                 )
             }
         }

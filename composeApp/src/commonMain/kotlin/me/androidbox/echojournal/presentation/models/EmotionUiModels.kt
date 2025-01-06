@@ -49,12 +49,12 @@ enum class EmotionDropDown(override val description: String, override val resour
 }
 
 
-enum class MoodColors(val mood: String, val color: Color) {
-    RED("Stressed", Color.Red),
-    BLUE("Sad", Color.Blue),
-    GREEN("Neutral", Color.Green),
-    PINK("Peaceful", Color( 0xFFFCE4EC)),
-    ORANGE("Excited", Color(0xFFFFE8CC))
+enum class MoodColorType(val mood: String, val color: Color) {
+    RED("Stressed", Color(0xffED3A3A)),
+    BLUE("Sad", Color(0xff2993F7)),
+    GREEN("Neutral", Color(0xff71EBAC)),
+    PINK("Peaceful", Color( 0xffF991E0)),
+    ORANGE("Excited", Color(0xffF6B01A))
 }
 
 enum class AudioControl(val icon: ImageVector) {

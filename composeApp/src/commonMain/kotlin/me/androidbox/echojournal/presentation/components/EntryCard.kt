@@ -52,7 +52,7 @@ fun EntryCard(
             /** Audio control */
             PlayBack(
                 duration = "12:30",
-                progress = 0.5f
+                progress = 1f
             )
 
             ExpandableText(description = description)
