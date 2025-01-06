@@ -29,7 +29,7 @@ import org.jetbrains.compose.resources.vectorResource
 import kotlin.Unit
 
 @Composable
-fun EmotionContent(
+fun EmotionBottomSheetContent(
     modifier: Modifier = Modifier,
     emotionList: List<SelectableEmotion>,
     onEmotionClicked: (emotion: SelectableEmotion, index: Int) -> Unit,
@@ -45,18 +45,20 @@ fun EmotionContent(
 
             itemsIndexed(
                 items = emotionList,
-                itemContent = { index, emotion ->
+                itemContent = { index, selectableEmotion ->
                     EmotionItem(
                         icon = {
                             Icon(
                                 modifier = Modifier.clickable {
-                                    onEmotionClicked(emotion.copy(isSelected = !emotion.isSelected), index)
+                                    onEmotionClicked(selectableEmotion.copy(isSelected = !selectableEmotion.isSelected), index)
                                 },
-                                imageVector = vectorResource(resource = emotion.emotion.resource),
-                                contentDescription = emotion.emotion.description,
-                                tint = if(emotion.isSelected) Color.Blue else Color.Green
+                                imageVector = vectorResource(resource = selectableEmotion.emotion.resource),
+                                contentDescription = selectableEmotion.emotion.description,
+                                tint = if(selectableEmotion.isSelected) selectableEmotion.emotion.color else Color(0xff9FABCD)
                             )
-                        }, description = emotion.emotion.description)
+                        },
+                        description = selectableEmotion.emotion.description,
+                        isSelected = selectableEmotion.isSelected)
                 }
             )
         }
@@ -73,8 +75,11 @@ fun EmotionContent(
             Button(
                 modifier = Modifier
                     .width(width = 100.dp),
-                onClick = onCancelClicked,
-                shape = CircleShape
+                onClick = {
+                    onCancelClicked()
+                },
+                shape = CircleShape,
+                enabled = emotionList.any { it.isSelected }
             ) {
                 Text(text = "Cancel")
             }
@@ -83,7 +88,8 @@ fun EmotionContent(
                 modifier = Modifier
                     .weight(1f),
                 onClick = onConfirmClicked,
-                shape = CircleShape
+                shape = CircleShape,
+                enabled = emotionList.any { it.isSelected }
             ) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
@@ -96,7 +102,6 @@ fun EmotionContent(
                     Text(text = "Confirm")
                 }
             }
-
         }
     }
 }
@@ -105,7 +110,8 @@ fun EmotionContent(
 fun EmotionItem(
     modifier: Modifier = Modifier,
     icon: @Composable () -> Unit,
-    description: String
+    description: String,
+    isSelected: Boolean
 ) {
     Column(
         modifier = modifier
@@ -114,7 +120,8 @@ fun EmotionItem(
         icon()
 
         Text(
-            text = description
+            text = description,
+            color = if(isSelected) Color.Black else Color(0xff6C7085)
         )
     }
 }

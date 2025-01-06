@@ -17,8 +17,6 @@ import me.androidbox.echojournal.presentation.components.models.SelectableEmotio
 fun EmotionBottomSheet(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
-    onPauseClicked: () -> Unit,
-    onRecordClicked: () -> Unit,
     containerColor: Color,
     scrimColor: Color,
     sheetState: SheetState,
@@ -42,7 +40,7 @@ fun EmotionBottomSheet(
         scrimColor = scrimColor,
     ) {
 
-        EmotionContent(
+        EmotionBottomSheetContent(
             emotionList = emotionList,
             onEmotionClicked = { updateEmotion, index ->
                 emotionList[index] = updateEmotion
@@ -53,7 +51,9 @@ fun EmotionBottomSheet(
                 }
             },
             onCancelClicked = {
-                onDismiss()
+                emotionList.forEachIndexed { index, item ->
+                    emotionList[index] = item.copy(isSelected = false)
+                }
             }
         )
     }

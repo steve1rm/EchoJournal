@@ -13,12 +13,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
-import me.androidbox.echojournal.presentation.components.models.EmotionBottomSheet
-import me.androidbox.echojournal.presentation.components.EmotionContent
-import me.androidbox.echojournal.presentation.components.models.SelectableEmotion
-import me.androidbox.echojournal.presentation.components.models.EmotionDropDown
+import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
+import me.androidbox.echojournal.presentation.components.EmotionBottomSheetContent
 import me.androidbox.echojournal.presentation.components.ExpandableText
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
+import me.androidbox.echojournal.presentation.components.models.EmotionBottomSheet
+import me.androidbox.echojournal.presentation.components.models.EmotionDropDown
+import me.androidbox.echojournal.presentation.components.models.SelectableEmotion
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,11 +56,13 @@ fun DropDownEmotionMenuPreview() {
 @Composable
 fun EmotionBottomSheetPreview() {
     val sheetState = rememberModalBottomSheetState()
+
+
     EmotionBottomSheet(
         sheetState = sheetState,
-        onDismiss = { /*TODO*/ },
-        onPauseClicked = { /*TODO*/ },
-        onRecordClicked = { /*TODO*/ },
+        onDismiss = {
+
+        },
         containerColor = Color.White,
         scrimColor = Color.Black
     )
@@ -78,13 +81,22 @@ fun EmotionContentPreview() {
         )
     }
 
-    EmotionContent(
+    EmotionBottomSheetContent(
         emotionList = emotionList,
         onEmotionClicked = { newEmotionUpdate, index ->
             emotionList[index] = newEmotionUpdate
         },
-        onConfirmClicked = {},
-        onCancelClicked = {}
+        onConfirmClicked = {
+            println("onConfirmClicked")
+        },
+        onCancelClicked = {
+            emotionList.replaceAll {
+                it.copy(isSelected = false)
+            }
+           /* emotionList.forEachIndexed { index, item ->
+                emotionList[index] = item.copy(isSelected = false)
+            }*/
+        }
     )
 }
 
