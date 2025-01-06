@@ -36,7 +36,6 @@ fun DropDownEmotionMenu(
         mutableStateOf(false)
     }
 
-
     DropdownMenu(
         modifier = Modifier.fillMaxWidth(),
         expanded = !isExpanded,
@@ -66,7 +65,7 @@ fun DropDownEmotionMenu(
                                 Icon(
                                     imageVector = vectorResource(resource = emotion.emotion.resource),
                                     contentDescription = emotion.emotion.description,
-                                    tint = if(emotion.isSelected) Color.Blue else Color.Green
+                                    tint = Color.Unspecified
                                 )
                             },
                             description = emotion.emotion.description,

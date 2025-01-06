@@ -29,6 +29,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import echojournal.composeapp.generated.resources.Res
 import echojournal.composeapp.generated.resources.excited
+import echojournal.composeapp.generated.resources.menu_excited
+import echojournal.composeapp.generated.resources.menu_neutral
+import echojournal.composeapp.generated.resources.menu_peaceful
+import echojournal.composeapp.generated.resources.menu_sad
+import echojournal.composeapp.generated.resources.menu_stressed
 import echojournal.composeapp.generated.resources.neutral
 import echojournal.composeapp.generated.resources.peaceful
 import echojournal.composeapp.generated.resources.sad
@@ -128,15 +133,29 @@ fun EmotionItem(
     }
 }
 
+
+sealed interface EmotionalData {
+    val description: String
+    val resource: DrawableResource
+}
+
 data class EmotionData(
-    val emotion: Emotion,
+    val emotion: EmotionalData,
     val isSelected: Boolean = false
 )
 
-enum class Emotion(val description: String, val resource: DrawableResource) {
+enum class EmotionBottomSheet(override val description: String, override val resource: DrawableResource) : EmotionalData {
     STRESSED("Stressed", Res.drawable.stressed),
     SAD("Sad", Res.drawable.sad),
     NEUTRAL("Neutral", Res.drawable.neutral),
     PEACEFUL("Peaceful", Res.drawable.peaceful),
     EXCITED("Excited", Res.drawable.excited)
+}
+
+enum class EmotionDropDown(override val description: String, override val resource: DrawableResource) : EmotionalData {
+    STRESSED("Stressed", Res.drawable.menu_stressed),
+    SAD("Sad", Res.drawable.menu_sad),
+    NEUTRAL("Neutral", Res.drawable.menu_neutral),
+    PEACEFUL("Peaceful", Res.drawable.menu_peaceful),
+    EXCITED("Excited", Res.drawable.menu_excited)
 }

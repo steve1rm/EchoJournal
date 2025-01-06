@@ -24,11 +24,11 @@ fun EmotionBottomSheet(
 
     val emotionList = remember {
         mutableStateListOf<EmotionData>(
-            EmotionData(Emotion.STRESSED, false),
-            EmotionData(Emotion.SAD, false),
-            EmotionData(Emotion.NEUTRAL, false),
-            EmotionData(Emotion.PEACEFUL, false),
-            EmotionData(Emotion.EXCITED, false)
+            EmotionData(EmotionBottomSheet.STRESSED, false),
+            EmotionData(EmotionBottomSheet.SAD, false),
+            EmotionData(EmotionBottomSheet.NEUTRAL, false),
+            EmotionData(EmotionBottomSheet.PEACEFUL, false),
+            EmotionData(EmotionBottomSheet.EXCITED, false)
         )
     }
 

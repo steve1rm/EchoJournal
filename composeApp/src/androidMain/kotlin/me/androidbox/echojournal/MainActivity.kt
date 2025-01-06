@@ -13,10 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
-import me.androidbox.echojournal.presentation.components.Emotion
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.components.EmotionContent
 import me.androidbox.echojournal.presentation.components.EmotionData
+import me.androidbox.echojournal.presentation.components.EmotionDropDown
 import me.androidbox.echojournal.presentation.components.ExpandableText
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
 
@@ -36,11 +36,11 @@ class MainActivity : ComponentActivity() {
 fun DropDownEmotionMenuPreview() {
     val emotionList = remember {
         mutableStateListOf<EmotionData>(
-            EmotionData(Emotion.STRESSED, false),
-            EmotionData(Emotion.SAD, false),
-            EmotionData(Emotion.NEUTRAL, false),
-            EmotionData(Emotion.PEACEFUL, false),
-            EmotionData(Emotion.EXCITED, false)
+            EmotionData(EmotionDropDown.STRESSED, false),
+            EmotionData(EmotionDropDown.SAD, false),
+            EmotionData(EmotionDropDown.NEUTRAL, false),
+            EmotionData(EmotionDropDown.PEACEFUL, false),
+            EmotionData(EmotionDropDown.EXCITED, false)
         )
     }
 
@@ -70,11 +70,11 @@ fun EmotionBottomSheetPreview() {
 fun EmotionContentPreview() {
     val emotionList = remember {
         mutableStateListOf<EmotionData>(
-            EmotionData(Emotion.STRESSED, false),
-            EmotionData(Emotion.SAD, false),
-            EmotionData(Emotion.NEUTRAL, false),
-            EmotionData(Emotion.PEACEFUL, false),
-            EmotionData(Emotion.EXCITED, false)
+            EmotionData(EmotionBottomSheet.STRESSED, false),
+            EmotionData(EmotionBottomSheet.SAD, false),
+            EmotionData(EmotionBottomSheet.NEUTRAL, false),
+            EmotionData(EmotionBottomSheet.PEACEFUL, false),
+            EmotionData(EmotionBottomSheet.EXCITED, false)
         )
     }
 
