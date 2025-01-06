@@ -1,6 +1,9 @@
-package me.androidbox.echojournal.presentation.components.models
+package me.androidbox.echojournal.presentation.models
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import echojournal.composeapp.generated.resources.Res
 import echojournal.composeapp.generated.resources.excited
 import echojournal.composeapp.generated.resources.menu_excited
@@ -43,4 +46,19 @@ enum class EmotionDropDown(override val description: String, override val resour
     NEUTRAL("Neutral", Res.drawable.menu_neutral),
     PEACEFUL("Peaceful", Res.drawable.menu_peaceful),
     EXCITED("Excited", Res.drawable.menu_excited)
+}
+
+
+enum class MoodColors(val mood: String, val color: Color) {
+    RED("Stressed", Color.Red),
+    BLUE("Sad", Color.Blue),
+    GREEN("Neutral", Color.Green),
+    PINK("Peaceful", Color( 0xFFFCE4EC)),
+    ORANGE("Excited", Color(0xFFFFE8CC))
+}
+
+enum class AudioControl(val icon: ImageVector) {
+    PLAY(Icons.Default.PlayArrow),
+    STOP(Icons.Default.PlayArrow),
+    PAUSE(Icons.Default.PlayArrow)
 }

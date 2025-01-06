@@ -20,6 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
@@ -45,6 +47,7 @@ fun ExpandableText(
         if (isClickable) {
             if(isExpanded) {
                 this.append(description)
+
                 this.withLink(
                     link = Clickable(
                         tag = "show less",
@@ -89,13 +92,14 @@ fun ExpandableText(
             .animateContentSize(),
         text = annotatedText,
         maxLines = if (isExpanded) Int.MAX_VALUE else collapsedMaxLine,
-        fontStyle = fontStyle,
+        fontWeight = FontWeight.W500,
         onTextLayout = { textLayoutResult ->
             if (!isExpanded && textLayoutResult.hasVisualOverflow) {
                 isClickable = true
                 lastCharIndex = textLayoutResult.getLineEnd(collapsedMaxLine - 1)
             }
         },
-        fontSize = fontSize
+        fontSize = 14.sp,
+        lineHeight = TextUnit(20f, TextUnitType.Sp)
     )
 }

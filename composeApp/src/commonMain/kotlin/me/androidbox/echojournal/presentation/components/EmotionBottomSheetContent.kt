@@ -24,7 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import me.androidbox.echojournal.presentation.components.models.SelectableEmotion
+import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import org.jetbrains.compose.resources.vectorResource
 import kotlin.Unit
 

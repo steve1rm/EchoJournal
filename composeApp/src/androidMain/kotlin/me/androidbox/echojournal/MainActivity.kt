@@ -8,18 +8,24 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.coroutines.delay
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheetContent
+import me.androidbox.echojournal.presentation.components.EntryCard
 import me.androidbox.echojournal.presentation.components.ExpandableText
+import me.androidbox.echojournal.presentation.components.PlayBack
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
-import me.androidbox.echojournal.presentation.components.models.EmotionBottomSheet
-import me.androidbox.echojournal.presentation.components.models.EmotionDropDown
-import me.androidbox.echojournal.presentation.components.models.SelectableEmotion
+import me.androidbox.echojournal.presentation.models.EmotionBottomSheet
+import me.androidbox.echojournal.presentation.models.EmotionDropDown
+import me.androidbox.echojournal.presentation.models.SelectableEmotion
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +37,26 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+@Preview
+@Composable
+fun EntryCardPreview() {
+    EntryCard(
+        title = "My Entry",
+        time = "12:34",
+        start = "Start",
+        end = "End",
+        description = "This is a long description that might exceed the maximum number of lines and get truncated. In this case, we want to show an ellipsis and a 'Show more' button to expand the text. Long description that might exceed the maximum number of lines and get truncated",
+        onAudioClicked = {},
+        onShowMore = {}
+    )
+}
+
+@Preview
+@Composable
+fun PlayBackPreview() {
+    PlayBack(duration = "00:00/12:30", progress = 0.5f)
+}
 
 @Preview
 @Composable
@@ -56,7 +82,6 @@ fun DropDownEmotionMenuPreview() {
 @Composable
 fun EmotionBottomSheetPreview() {
     val sheetState = rememberModalBottomSheetState()
-
 
     EmotionBottomSheet(
         sheetState = sheetState,

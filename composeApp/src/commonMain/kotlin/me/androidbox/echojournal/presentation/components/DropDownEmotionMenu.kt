@@ -19,9 +19,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import me.androidbox.echojournal.presentation.components.models.SelectableEmotion
+import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import org.jetbrains.compose.resources.vectorResource
 
 @Composable
@@ -50,7 +51,7 @@ fun DropDownEmotionMenu(
                                 Modifier.background(color = Color.LightGray.copy(alpha = 0.2f), shape = RoundedCornerShape(16.dp))
                             }
                             else {
-                                Modifier
+                                Modifier.clip(shape = RoundedCornerShape(16.dp))
                             }
                         ),
                     onClick = {
