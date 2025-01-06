@@ -44,7 +44,11 @@ fun DropDownEmotionMenuPreview() {
         )
     }
 
-    DropDownEmotionMenu(emotionList)
+    DropDownEmotionMenu(
+        dropDownMenuItems = emotionList,
+        onMenuItemClicked = { emotion, index ->
+            emotionList[index] = emotion.copy(isSelected = !emotion.isSelected)
+        })
 }
 
 @Preview

@@ -29,21 +29,13 @@ import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun DropDownEmotionMenu(
-    dropDownMenuItems: List<EmotionData>
+    dropDownMenuItems: List<EmotionData>,
+    onMenuItemClicked: (item: EmotionData, index: Int) -> Unit
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
     }
 
-    val emotionList = remember {
-        mutableStateListOf<EmotionData>(
-            EmotionData(Emotion.STRESSED, false),
-            EmotionData(Emotion.SAD, false),
-            EmotionData(Emotion.NEUTRAL, false),
-            EmotionData(Emotion.PEACEFUL, false),
-            EmotionData(Emotion.EXCITED, false)
-        )
-    }
 
     DropdownMenu(
         modifier = Modifier.fillMaxWidth(),
@@ -52,14 +44,21 @@ fun DropDownEmotionMenu(
             isExpanded = false
         },
         content = {
-            emotionList.forEach { emotion ->
+            dropDownMenuItems.forEachIndexed { index, emotion ->
                 DropdownMenuItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(4.dp)
-                        .background(color = Color.LightGray, shape = RoundedCornerShape(16.dp)),
+                        .then(
+                            if(emotion.isSelected) {
+                                Modifier.background(color = Color.LightGray.copy(alpha = 0.2f), shape = RoundedCornerShape(16.dp))
+                            }
+                            else {
+                                Modifier
+                            }
+                        ),
                     onClick = {
-
+                        onMenuItemClicked(emotion, index)
                     },
                     content = {
                         DropDownItem(
@@ -70,7 +69,8 @@ fun DropDownEmotionMenu(
                                     tint = if(emotion.isSelected) Color.Blue else Color.Green
                                 )
                             },
-                            description = emotion.emotion.description
+                            description = emotion.emotion.description,
+                            isSelected = emotion.isSelected
                         )
                     }
                 )
@@ -84,7 +84,8 @@ fun DropDownEmotionMenu(
 fun DropDownItem(
     modifier: Modifier = Modifier,
     icon: @Composable () -> Unit,
-    description: String
+    description: String,
+    isSelected: Boolean
 ) {
 
     Row(
@@ -105,14 +106,16 @@ fun DropDownItem(
             )
         }
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Default.Check,
-                contentDescription = null,
-                tint = Color.Green
-            )
+        if(isSelected) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null,
+                    tint = Color.Green
+                )
+            }
         }
     }
 }
