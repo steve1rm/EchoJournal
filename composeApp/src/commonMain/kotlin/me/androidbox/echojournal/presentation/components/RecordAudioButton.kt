@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -24,31 +25,44 @@ fun RecordAudioButton(
     iconSize: Dp = 48.dp,
     onButtonClicked: () -> Unit
 ) {
+
     Box(
         modifier = modifier
-            .size(76.dp)
+            .size(128.dp)
             .clip(CircleShape)
             .clickable(onClick = onButtonClicked)
             .background(
-                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                color = Color(0xffEEF0FF)
             ),
         contentAlignment = Alignment.Center
     ) {
         Box(
-            modifier = Modifier
-                .size(50.dp)
+            modifier = modifier
+                .size(108.dp)
                 .clip(CircleShape)
+                .clickable(onClick = onButtonClicked)
                 .background(
-                    color = MaterialTheme.colorScheme.primary),
+                    color = Color(0xffD9E2FF)
+                ),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
+            Box(
                 modifier = Modifier
-                    .size(iconSize),
-                imageVector = icon,
-                contentDescription = contentDescription,
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
+                    .size(72.dp)
+                    .clip(CircleShape)
+                    .background(
+                        color = Color(0xff1F70F5)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(iconSize),
+                    imageVector = icon,
+                    contentDescription = contentDescription,
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
         }
     }
 }

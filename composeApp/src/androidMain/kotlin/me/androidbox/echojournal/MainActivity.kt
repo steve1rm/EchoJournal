@@ -93,9 +93,6 @@ fun EmotionContentPreview() {
             emotionList.replaceAll {
                 it.copy(isSelected = false)
             }
-           /* emotionList.forEachIndexed { index, item ->
-                emotionList[index] = item.copy(isSelected = false)
-            }*/
         }
     )
 }
