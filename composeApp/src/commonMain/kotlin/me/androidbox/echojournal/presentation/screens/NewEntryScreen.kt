@@ -135,7 +135,7 @@ fun NewEntryScreen(
                 )
 
                 TopicDropDown(
-                    listOfTopics = listOf("# Jack", "# Jared", "# Jasper", "# Bob", "# Peter", "# Steve", "# Stand", "# State")
+                    listOfTopics = listOf("Jack", "Jared", "Jasper", "Bob", "Peter", "Steve", "Stand", "State")
                 )
 
                 Row(
