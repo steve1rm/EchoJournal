@@ -11,12 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,21 +25,45 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.components.PlayBack
+import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
+import me.androidbox.echojournal.presentation.components.TopicDropDown
 
 @Composable
 fun NewEntryScreen(
     modifier: Modifier = Modifier,
-    title: String = "New Entry",
+    toolBarTitle: String = "New Entry",
+    onEmotionClicked: () -> Unit,
     onSaveClicked: () -> Unit,
     onCancelClicked: () -> Unit
 ) {
+
+    var title by remember {
+        mutableStateOf("")
+    }
+
+    var description by remember {
+        mutableStateOf("")
+    }
+
+    val sheetState = rememberModalBottomSheetState()
+
+    var openButtonSheet by remember {
+        mutableStateOf(false)
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -47,7 +71,7 @@ fun NewEntryScreen(
                 title = {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = title,
+                        text = toolBarTitle,
                         textAlign = TextAlign.Center)
                 },
                 navigationIcon = {
@@ -75,7 +99,7 @@ fun NewEntryScreen(
                             containerColor = Color.LightGray.copy(alpha = 0.6f)
                         ),
                         onClick = {
-
+                            openButtonSheet = true
                         },
                         content = {
                             Icon(
@@ -87,13 +111,21 @@ fun NewEntryScreen(
                     TextField(
                         modifier = Modifier
                             .weight(1f),
+                        colors = androidx.compose.material3.TextFieldDefaults.colors(
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedLabelColor = Color.Transparent,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedLabelColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        ),
                         placeholder = {
                             Text(text = "Add Title...")
                         },
                         onValueChange = { newTitle ->
-
+                            title = newTitle
                         },
-                        value = ""
+                        value = title
                     )
                 }
 
@@ -102,9 +134,9 @@ fun NewEntryScreen(
                     progress = 1f
                 )
 
-                /* SearchBar(
-
-            )*/
+                TopicDropDown(
+                    listOfTopics = listOf("# Jack", "# Jared", "# Jasper", "# Bob", "# Peter", "# Steve", "# Stand", "# State")
+                )
 
                 Row(
                     modifier = Modifier
@@ -121,13 +153,21 @@ fun NewEntryScreen(
                     TextField(
                         modifier = Modifier
                             .weight(1f),
+                        colors = androidx.compose.material3.TextFieldDefaults.colors(
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedLabelColor = Color.Transparent,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedLabelColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        ),
                         placeholder = {
-                            Text(text = "Add Title...")
+                            Text(text = "Add Description...")
                         },
-                        onValueChange = { newTitle ->
-
+                        onValueChange = { newDescription ->
+                            description = newDescription
                         },
-                        value = ""
+                        value = description
                     )
                 }
 
@@ -169,6 +209,17 @@ fun NewEntryScreen(
                         }
                     }
                 }
+            }
+
+            if(openButtonSheet) {
+                EmotionBottomSheet(
+                    sheetState = sheetState,
+                    onDismiss = {
+                        openButtonSheet = false
+                    },
+                    containerColor = Color.White,
+                    scrimColor = Color.Black.copy(alpha = 0.32f)
+                )
             }
         }
     )

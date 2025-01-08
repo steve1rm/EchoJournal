@@ -14,10 +14,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -56,13 +57,13 @@ fun TopicDropDown(
             modifier = Modifier.onFocusChanged { focusState ->
                 showList = focusState.isFocused
             },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                focusedLabelColor = Color.Transparent,
-                unfocusedLabelColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
-
+                unfocusedLabelColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedLabelColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
             ),
             value = searchText,
             onValueChange = { newSearch ->
@@ -104,7 +105,7 @@ fun TopicDropDown(
             Card(
                 modifier = Modifier
                     .fillMaxWidth(),
-                elevation = 4.dp
+             //   elevation = CardDefaults.cardElevation(disabledElevation = 6.dp)
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth().padding(all = 8.dp),

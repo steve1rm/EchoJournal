@@ -39,12 +39,12 @@ class MainActivity : ComponentActivity() {
             // App()
             NewEntryScreen(
                 onSaveClicked = {},
-                onCancelClicked = {}
+                onCancelClicked = {},
+                onEmotionClicked = {}
             )
         }
     }
 }
-
 
 @Preview
 @Composable
@@ -58,7 +58,8 @@ fun TopicChipPreview() {
 @Preview
 @Composable
 fun TopicDropDownPreview() {
-    TopicDropDown(modifier = Modifier)
+    TopicDropDown(modifier = Modifier,
+        listOfTopics = listOf("# Jack", "# Jared", "# Jasper", "# Bob", "# Peter", "# Steve", "# Stand", "# State"))
 }
 
 @Preview
