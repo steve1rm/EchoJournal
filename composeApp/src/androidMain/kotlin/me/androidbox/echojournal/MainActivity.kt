@@ -24,6 +24,7 @@ import me.androidbox.echojournal.presentation.components.EntryCard
 import me.androidbox.echojournal.presentation.components.ExpandableText
 import me.androidbox.echojournal.presentation.components.PlayBack
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
+import me.androidbox.echojournal.presentation.components.TopicChip
 import me.androidbox.echojournal.presentation.components.TopicDropDown
 import me.androidbox.echojournal.presentation.models.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.models.EmotionDropDown
@@ -44,6 +45,15 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+@Preview
+@Composable
+fun TopicChipPreview() {
+    TopicChip(
+        topic = "Compose",
+        onCloseClicked = {}
+    )
+}
 
 @Preview
 @Composable
