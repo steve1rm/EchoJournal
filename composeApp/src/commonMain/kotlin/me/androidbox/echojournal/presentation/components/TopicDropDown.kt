@@ -108,7 +108,10 @@ fun TopicDropDown(
             Card(
                 modifier = Modifier
                     .fillMaxWidth(),
-             //   elevation = CardDefaults.cardElevation(disabledElevation = 6.dp)
+                elevation = CardDefaults.cardElevation(disabledElevation = 16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White
+                )
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth().padding(all = 8.dp),
@@ -138,6 +141,9 @@ fun TopicDropDown(
                                         .clickable {
                                             selectedTopics.add(topic)
                                         },
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.W500,
+                                    color = Color(0xff3B4663),
                                     text = topic
                                 )
                             }

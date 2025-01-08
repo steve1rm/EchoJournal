@@ -59,7 +59,7 @@ fun TopicChipPreview() {
 @Composable
 fun TopicDropDownPreview() {
     TopicDropDown(modifier = Modifier,
-        listOfTopics = listOf("# Jack", "# Jared", "# Jasper", "# Bob", "# Peter", "# Steve", "# Stand", "# State"))
+        listOfTopics = listOf("Jack", "Jared", "Jasper", "Bob", "Peter", "Steve", "Stand", "State"))
 }
 
 @Preview

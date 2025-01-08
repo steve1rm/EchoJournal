@@ -5,11 +5,13 @@ package me.androidbox.echojournal.presentation.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -84,7 +86,7 @@ fun NewEntryScreen(
         content = { paddingValues ->
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .padding(paddingValues),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -117,7 +119,8 @@ fun NewEntryScreen(
                             focusedContainerColor = Color.Transparent,
                             unfocusedContainerColor = Color.Transparent,
                             focusedLabelColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
+                            unfocusedIndicatorColor = Color.Transparent,
+                            focusedTextColor = Color(0xffC1C3CE)
                         ),
                         placeholder = {
                             Text(text = "Add Title...")
@@ -125,7 +128,7 @@ fun NewEntryScreen(
                         onValueChange = { newTitle ->
                             title = newTitle
                         },
-                        value = title
+                        value = title,
                     )
                 }
 
@@ -141,7 +144,6 @@ fun NewEntryScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -171,10 +173,11 @@ fun NewEntryScreen(
                     )
                 }
 
+                Spacer(modifier = Modifier.weight(1f))
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(align = Alignment.Bottom)
                         .padding(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(space = 16.dp)
                 ) {
