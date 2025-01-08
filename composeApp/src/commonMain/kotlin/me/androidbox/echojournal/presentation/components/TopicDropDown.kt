@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -36,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -89,20 +91,24 @@ fun TopicDropDown(
         AnimatedVisibility(
             visible = selectedTopics.isNotEmpty(),
             content = {
-                FlowRow(
-                    modifier = modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    content = {
-                        selectedTopics.forEach { selectedTopic ->
-                            TopicChip(
-                                topic = selectedTopic,
-                                onCloseClicked = { selectedTopic ->
-                                    selectedTopics.remove(selectedTopic)
-                                })
+                Column {
+                    FlowRow(
+                        modifier = modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        content = {
+                            selectedTopics.forEach { selectedTopic ->
+                                TopicChip(
+                                    topic = selectedTopic,
+                                    onCloseClicked = { selectedTopic ->
+                                        selectedTopics.remove(selectedTopic)
+                                    })
+                            }
                         }
-                    }
-                )
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
             }
         )
 
@@ -110,39 +116,46 @@ fun TopicDropDown(
             visible = showList
         ) {
 
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                elevation = 4.dp
             ) {
-                item {
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth().padding(all = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
 
-                items(
-                    key = { topic ->
-                        topic
-                    },
-                    items = listOfTopics.filter { it.contains(searchText, ignoreCase = true)},
-                    itemContent = { topic ->
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                selectedTopics.add(topic)
-                            },
-                            text = topic)
-                    }
-                )
+                    items(
+                        key = { topic ->
+                            topic
+                        },
+                        items = listOfTopics.filter { it.contains(searchText, ignoreCase = true) },
+                        itemContent = { topic ->
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        selectedTopics.add(topic)
+                                    },
+                                text = topic
+                            )
+                        }
+                    )
 
-                if(listOfTopics.none {
-                        it.contains(searchText, ignoreCase = true)
-                    }) {
-                    item {
-                        Text(
-                            modifier = Modifier.clickable {
-                                selectedTopics.add(searchText)
-                            },
-                            text = "+ Create '$searchText'")
+                    if (listOfTopics.none {
+                            it.contains(searchText, ignoreCase = true)
+                        }) {
+                        item {
+                            Text(
+                                modifier = Modifier.clickable {
+                                    selectedTopics.add(searchText)
+                                },
+                                color = Color(0xff00419C),
+                                fontWeight = FontWeight.Medium,
+                                text = "+ Create '$searchText'"
+                            )
+                        }
                     }
                 }
             }
