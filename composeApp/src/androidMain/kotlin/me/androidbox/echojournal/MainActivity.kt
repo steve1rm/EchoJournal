@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.delay
@@ -23,20 +24,32 @@ import me.androidbox.echojournal.presentation.components.EntryCard
 import me.androidbox.echojournal.presentation.components.ExpandableText
 import me.androidbox.echojournal.presentation.components.PlayBack
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
+import me.androidbox.echojournal.presentation.components.TopicDropDown
 import me.androidbox.echojournal.presentation.models.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.models.EmotionDropDown
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
+import me.androidbox.echojournal.presentation.screens.NewEntryScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            App()
+            // App()
+            NewEntryScreen(
+                onSaveClicked = {},
+                onCancelClicked = {}
+            )
         }
     }
 }
 
+
+@Preview
+@Composable
+fun TopicDropDownPreview() {
+    TopicDropDown(modifier = Modifier)
+}
 
 @Preview
 @Composable

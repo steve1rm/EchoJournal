@@ -48,7 +48,6 @@ enum class EmotionDropDown(override val description: String, override val resour
     EXCITED("Excited", Res.drawable.menu_excited)
 }
 
-
 enum class MoodColorType(val mood: String, val color: Color) {
     RED("Stressed", Color(0xffED3A3A)),
     BLUE("Sad", Color(0xff2993F7)),
