@@ -22,13 +22,16 @@ import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheetContent
 import me.androidbox.echojournal.presentation.components.EntryCard
 import me.androidbox.echojournal.presentation.components.ExpandableText
+import me.androidbox.echojournal.presentation.components.MoodSelectionChip
 import me.androidbox.echojournal.presentation.components.PlayBack
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
 import me.androidbox.echojournal.presentation.components.TopicChip
 import me.androidbox.echojournal.presentation.components.TopicDropDown
 import me.androidbox.echojournal.presentation.models.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.models.EmotionDropDown
+import me.androidbox.echojournal.presentation.models.EmotionType
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
+import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
 import me.androidbox.echojournal.presentation.screens.NewEntryScreen
 
 class MainActivity : ComponentActivity() {
@@ -37,13 +40,26 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             // App()
-            NewEntryScreen(
+            /*NewEntryScreen(
                 onSaveClicked = {},
                 onCancelClicked = {},
                 onEmotionClicked = {}
-            )
+            )*/
+            EchoJournalScreen()
         }
     }
+}
+
+
+@Preview
+@Composable
+fun MoodSelectionChipPreview() {
+    val moods = listOf(
+        SelectableEmotion(EmotionDropDown.EXCITED, true),
+        SelectableEmotion(EmotionDropDown.PEACEFUL, false),
+        SelectableEmotion(EmotionDropDown.NEUTRAL, false)
+    )
+    MoodSelectionChip(listOfMoods = moods)
 }
 
 @Preview
