@@ -23,6 +23,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -87,11 +88,13 @@ fun TopicDropDown(
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                         content = {
                             selectedTopics.forEach { selectedTopic ->
-                                TopicChip(
-                                    topic = selectedTopic,
-                                    onCloseClicked = { selectedTopic ->
-                                        selectedTopics.remove(selectedTopic)
-                                    })
+                                key(selectedTopic) {
+                                    TopicChip(
+                                        topic = selectedTopic,
+                                        onCloseClicked = { selectedTopic ->
+                                            selectedTopics.remove(selectedTopic)
+                                        })
+                                }
                             }
                         }
                     )

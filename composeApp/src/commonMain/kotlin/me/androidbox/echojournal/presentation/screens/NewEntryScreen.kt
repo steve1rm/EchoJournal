@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,12 +37,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import echojournal.composeapp.generated.resources.Res
+import echojournal.composeapp.generated.resources.add
+import echojournal.composeapp.generated.resources.edit
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.components.PlayBack
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
 import me.androidbox.echojournal.presentation.components.TopicDropDown
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun NewEntryScreen(
@@ -97,16 +105,14 @@ fun NewEntryScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(
-                        colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = Color.LightGray.copy(alpha = 0.6f)
-                        ),
                         onClick = {
                             openButtonSheet = true
                         },
                         content = {
                             Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = "Add mood"
+                                imageVector = vectorResource(Res.drawable.add),
+                                contentDescription = "Add mood",
+                                tint = Color.Unspecified
                             )
                         })
 
@@ -129,10 +135,13 @@ fun NewEntryScreen(
                             title = newTitle
                         },
                         value = title,
+                        textStyle = TextStyle(fontSize = 26.sp, fontWeight = FontWeight.W500)
                     )
                 }
 
                 PlayBack(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp),
                     duration = "12:30",
                     progress = 1f
                 )
@@ -143,13 +152,15 @@ fun NewEntryScreen(
 
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
                     Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "description"
+                        imageVector = vectorResource(Res.drawable.edit),
+                        contentDescription = "description",
+                        tint = Color.Unspecified
                     )
 
                     TextField(
@@ -188,9 +199,14 @@ fun NewEntryScreen(
                             onCancelClicked()
                         },
                         shape = CircleShape,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xffEEF0FF),
+                        )
                         //      enabled = emotionList.any { it.isSelected }
                     ) {
-                        androidx.compose.material.Text(text = "Cancel")
+                        Text(
+                            text = "Cancel",
+                            color = Color(0xff00419C))
                     }
 
                     Button(
@@ -198,6 +214,9 @@ fun NewEntryScreen(
                             .weight(1f),
                         onClick = onSaveClicked,
                         shape = CircleShape,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xff578CFF)
+                        )
                         //     enabled = emotionList.any { it.isSelected }
                     ) {
                         Row(
@@ -206,9 +225,12 @@ fun NewEntryScreen(
                         ) {
                             androidx.compose.material.Icon(
                                 imageVector = Icons.Default.Check,
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = Color.White
                             )
-                            androidx.compose.material.Text(text = "Confirm")
+                            Text(
+                                text = "Save",
+                                color = Color.White)
                         }
                     }
                 }
