@@ -33,11 +33,11 @@ data class SelectableEmotion(
 )
 
 enum class EmotionMoodsOutlined(override val description: String, override val resource: DrawableResource, override val color: Color) : EmotionType {
-    STRESSED("Stressed", Res.drawable.stressed, Color(0xffED3A3A)),
-    SAD("Sad", Res.drawable.sad, Color(0xff2993F7)),
-    NEUTRAL("Neutral", Res.drawable.neutral, Color(0xff71EBAC)),
-    PEACEFUL("Peaceful", Res.drawable.peaceful, Color(0xffF991E0)),
-    EXCITED("Excited", Res.drawable.excited, Color(0xffF6B01A))
+    STRESSED("Stressed", Res.drawable.stressed, MoodColorType.RED.color),
+    SAD("Sad", Res.drawable.sad, MoodColorType.BLUE.color),
+    NEUTRAL("Neutral", Res.drawable.neutral, MoodColorType.GREEN.color),
+    PEACEFUL("Peaceful", Res.drawable.peaceful, MoodColorType.PINK.color),
+    EXCITED("Excited", Res.drawable.excited, MoodColorType.ORANGE.color)
 }
 
 enum class EmotionMoodsFilled(override val description: String, override val resource: DrawableResource) : EmotionType {
