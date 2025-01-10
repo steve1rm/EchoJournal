@@ -41,46 +41,51 @@ fun MoodSelectionChip(
             .border(width = 1.dp, color = Color.Black, shape = CircleShape)
             .padding(top = 4.dp, bottom = 4.dp, start = 8.dp, end = 8.dp)
     ) {
-        LazyRow(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy((-6).dp)
-        ) {
-            items(
-                items = emotions,
-                key = {
-                    it.description
-                },
-                itemContent = {
+        if(emotions.isEmpty()) {
+            Text(text = "All Moods")
+        }
+        else {
+            LazyRow(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy((-6).dp)
+            ) {
+                items(
+                    items = emotions,
+                    key = {
+                        it.description
+                    },
+                    itemContent = {
 
+                        Icon(
+                            modifier = Modifier.size(24.dp),
+                            imageVector = vectorResource(it.resource),
+                            contentDescription = it.description,
+                            tint = Color.Unspecified
+                        )
+
+                    }
+                )
+
+                item {
+                    Spacer(modifier = Modifier.width(16.dp))
+                }
+
+                item {
+                    Text(text = emotions.joinToString { it.description })
+                }
+
+                item {
+                    Spacer(modifier = Modifier.width(16.dp))
+                }
+
+                item {
                     Icon(
                         modifier = Modifier.size(24.dp),
-                        imageVector = vectorResource(it.resource),
-                        contentDescription = it.description,
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "close",
                         tint = Color.Unspecified
                     )
-
                 }
-            )
-
-            item {
-                Spacer(modifier = Modifier.width(16.dp))
-            }
-
-            item {
-                Text(text = emotions.joinToString { it.description })
-            }
-
-            item {
-                Spacer(modifier = Modifier.width(16.dp))
-            }
-
-            item {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "close",
-                    tint = Color.Unspecified
-                )
             }
         }
     }

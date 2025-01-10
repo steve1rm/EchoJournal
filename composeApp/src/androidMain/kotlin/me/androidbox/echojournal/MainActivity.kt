@@ -23,6 +23,7 @@ import me.androidbox.echojournal.presentation.components.PlayBack
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
 import me.androidbox.echojournal.presentation.components.TopicChip
 import me.androidbox.echojournal.presentation.components.TopicDropDown
+import me.androidbox.echojournal.presentation.components.TopicSelectionChip
 import me.androidbox.echojournal.presentation.models.EmotionMoodsOutlined
 import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
@@ -42,6 +43,25 @@ class MainActivity : ComponentActivity() {
             EchoJournalScreen()
         }
     }
+}
+
+
+@Preview
+@Composable
+fun TopicSelectionChipPreview() {
+    TopicSelectionChip(listOfTopics = listOf("Android", "iPhone", "Dell XPS", "Macbook Pro"))
+}
+
+@Preview
+@Composable
+fun TopicSelectionChipPreviewEmpty() {
+    TopicSelectionChip(listOfTopics = emptyList())
+}
+
+@Preview
+@Composable
+fun TopicSelectionChipPreviewTwo() {
+    TopicSelectionChip(listOfTopics = listOf("Work", "Balance"))
 }
 
 
