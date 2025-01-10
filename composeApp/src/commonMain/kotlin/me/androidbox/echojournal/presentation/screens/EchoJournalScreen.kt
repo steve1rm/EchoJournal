@@ -37,8 +37,9 @@ import me.androidbox.echojournal.presentation.models.SelectableEmotion
 @Composable
 fun EchoJournalScreen(
     modifier: Modifier = Modifier,
-    listOfJournals: List<EchoJournalUI>
+    listOfJournals: Map<String, List<EchoJournalUI>>
 ) {
+
 
     Scaffold(
         modifier = modifier,
@@ -71,12 +72,27 @@ fun EchoJournalScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    items(
+
+                    listOfJournals.forEach { (header, data) ->
+                        item {
+                            Text(text = header, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+                        }
+
+                        items(
+                            items = data,
+                            itemContent = {
+                                Text(text = it.title)
+                            }
+                        )
+
+                    }
+
+
+
+                    /*items(
                         items = listOfJournals,
-                        key = {
-                          it.title
-                        },
-                        itemContent = {echoJournal ->
+
+                       *//* itemContent = { echoJournal ->
                             EntryCard(
                                 title = echoJournal.title,
                                 description = echoJournal.description,
@@ -90,8 +106,8 @@ fun EchoJournalScreen(
 
                                 }
                             )
-                        }
-                    )
+                        }*/
+                    //)
                 }
             }
         },

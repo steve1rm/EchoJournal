@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheetContent
@@ -29,6 +30,7 @@ import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import me.androidbox.echojournal.presentation.models.populate
 import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
+import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 import me.androidbox.echojournal.presentation.screens.NewEntryScreen
 
 class MainActivity : ComponentActivity() {
@@ -37,17 +39,19 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             // App()
-            NewEntryScreen(
+            /*NewEntryScreen(
                 onSaveClicked = {},
                 onCancelClicked = {},
                 onEmotionClicked = {}
-            )
-
-          /*  val result = populate()
-            val list = result.getOrNull() ?: emptyList()
-            EchoJournalScreen(
-                listOfJournals = list
             )*/
+
+            val result = populate()
+
+            val viewModel = EchoJournalViewModel()
+            val list = viewModel.echoJournalState.collectAsStateWithLifecycle()
+            EchoJournalScreen(
+                listOfJournals = list.value.listOfJournals
+            )
         }
     }
 }

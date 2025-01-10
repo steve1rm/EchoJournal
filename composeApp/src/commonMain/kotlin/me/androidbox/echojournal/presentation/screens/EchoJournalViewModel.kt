@@ -9,10 +9,18 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
+import kotlinx.datetime.toLocalDateTime
 import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
+import me.androidbox.echojournal.presentation.models.populate
 
 class EchoJournalViewModel(
-    private val fetchEchoJournalsUseCase: FetchEchoJournalsUseCase
+  //  private val fetchEchoJournalsUseCase: FetchEchoJournalsUseCase
 ) : ViewModel() {
 
     private var hasFetched = false
@@ -34,21 +42,38 @@ class EchoJournalViewModel(
     fun fetchEchoJournalEntries() {
         try {
             viewModelScope.launch {
-                val result = fetchEchoJournalsUseCase.execute()
+                val result = populate()
 
                 result.onSuccess { echoJournal ->
-                        _echoEchoJournalState.update { echoJournalState ->
-                            echoJournalState.copy(
-                                listOfJournals = echoJournal
-                            )
-                        }
-                }.onFailure {
-                        _echoEchoJournalState.update { echoJournalState ->
-                            echoJournalState.copy(
-                                listOfJournals = emptyList()
-                            )
+                    val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+                    val groupedJournals = echoJournal.groupBy { journal ->
+
+                        val journalDate = Instant.fromEpochMilliseconds(journal.date).toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+                        when(journalDate) {
+                            today -> "Today"
+                            today.minus(1, DateTimeUnit.DAY) -> "Yesterday"
+                            else -> {
+                                journalDate.toString()
+                            }
                         }
                     }
+
+                    println(groupedJournals)
+
+                    _echoEchoJournalState.update { echoJournalState ->
+                        echoJournalState.copy(
+                            listOfJournals = groupedJournals
+                        )
+                    }
+                }.onFailure {
+                    _echoEchoJournalState.update { echoJournalState ->
+                        echoJournalState.copy(
+                            listOfJournals = emptyMap()
+                        )
+                    }
+                }
             }
         }
         catch(exception: Exception) {
