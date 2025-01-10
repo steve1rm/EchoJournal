@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import me.androidbox.echojournal.presentation.models.EmotionBottomSheet
+import me.androidbox.echojournal.presentation.models.EmotionMoodsOutlined
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
 
 @Composable
@@ -24,11 +24,11 @@ fun EmotionBottomSheet(
 
     val emotionList = remember {
         mutableStateListOf<SelectableEmotion>(
-            SelectableEmotion(EmotionBottomSheet.STRESSED, false),
-            SelectableEmotion(EmotionBottomSheet.SAD, false),
-            SelectableEmotion(EmotionBottomSheet.NEUTRAL, false),
-            SelectableEmotion(EmotionBottomSheet.PEACEFUL, false),
-            SelectableEmotion(EmotionBottomSheet.EXCITED, false)
+            SelectableEmotion(EmotionMoodsOutlined.STRESSED, false),
+            SelectableEmotion(EmotionMoodsOutlined.SAD, false),
+            SelectableEmotion(EmotionMoodsOutlined.NEUTRAL, false),
+            SelectableEmotion(EmotionMoodsOutlined.PEACEFUL, false),
+            SelectableEmotion(EmotionMoodsOutlined.EXCITED, false)
         )
     }
 

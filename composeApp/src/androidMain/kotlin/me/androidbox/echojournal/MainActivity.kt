@@ -8,15 +8,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.coroutines.delay
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheetContent
@@ -27,12 +23,10 @@ import me.androidbox.echojournal.presentation.components.PlayBack
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
 import me.androidbox.echojournal.presentation.components.TopicChip
 import me.androidbox.echojournal.presentation.components.TopicDropDown
-import me.androidbox.echojournal.presentation.models.EmotionBottomSheet
-import me.androidbox.echojournal.presentation.models.EmotionDropDown
-import me.androidbox.echojournal.presentation.models.EmotionType
+import me.androidbox.echojournal.presentation.models.EmotionMoodsOutlined
+import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
-import me.androidbox.echojournal.presentation.screens.NewEntryScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,9 +49,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MoodSelectionChipPreview() {
     val moods = listOf(
-        SelectableEmotion(EmotionDropDown.EXCITED, true),
-        SelectableEmotion(EmotionDropDown.PEACEFUL, false),
-        SelectableEmotion(EmotionDropDown.NEUTRAL, false)
+        SelectableEmotion(EmotionMoodsFilled.EXCITED, true),
+        SelectableEmotion(EmotionMoodsFilled.PEACEFUL, false),
+        SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false)
     )
     MoodSelectionChip(listOfMoods = moods)
 }
@@ -103,11 +97,11 @@ fun PlayBackPreview() {
 fun DropDownEmotionMenuPreview() {
     val emotionList = remember {
         mutableStateListOf<SelectableEmotion>(
-            SelectableEmotion(EmotionDropDown.STRESSED, false),
-            SelectableEmotion(EmotionDropDown.SAD, false),
-            SelectableEmotion(EmotionDropDown.NEUTRAL, false),
-            SelectableEmotion(EmotionDropDown.PEACEFUL, false),
-            SelectableEmotion(EmotionDropDown.EXCITED, false)
+            SelectableEmotion(EmotionMoodsFilled.STRESSED, false),
+            SelectableEmotion(EmotionMoodsFilled.SAD, false),
+            SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false),
+            SelectableEmotion(EmotionMoodsFilled.PEACEFUL, false),
+            SelectableEmotion(EmotionMoodsFilled.EXCITED, false)
         )
     }
 
@@ -138,11 +132,11 @@ fun EmotionBottomSheetPreview() {
 fun EmotionContentPreview() {
     val emotionList = remember {
         mutableStateListOf<SelectableEmotion>(
-            SelectableEmotion(EmotionBottomSheet.STRESSED, false),
-            SelectableEmotion(EmotionBottomSheet.SAD, false),
-            SelectableEmotion(EmotionBottomSheet.NEUTRAL, false),
-            SelectableEmotion(EmotionBottomSheet.PEACEFUL, false),
-            SelectableEmotion(EmotionBottomSheet.EXCITED, false)
+            SelectableEmotion(EmotionMoodsOutlined.STRESSED, false),
+            SelectableEmotion(EmotionMoodsOutlined.SAD, false),
+            SelectableEmotion(EmotionMoodsOutlined.NEUTRAL, false),
+            SelectableEmotion(EmotionMoodsOutlined.PEACEFUL, false),
+            SelectableEmotion(EmotionMoodsOutlined.EXCITED, false)
         )
     }
 
