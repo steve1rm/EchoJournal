@@ -7,6 +7,7 @@ data class EchoJournalUI(
     val description: String,
     val date: Long,
     val audioFilePath: String,
+    val topics: List<String>,
     val emotion: EmotionMoodsFilled
 )
 
@@ -18,6 +19,7 @@ fun populate(): Result<List<EchoJournalUI>> {
         description = "Planning a trip to Hong Kong",
         date = Clock.System.now().toEpochMilliseconds(),
         audioFilePath = "Path used for content resolver",
+            topics = listOf(""),
         emotion = EmotionMoodsFilled.EXCITED
     ),
         EchoJournalUI(
@@ -25,6 +27,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong Kong",
             date = Clock.System.now().toEpochMilliseconds(),
             audioFilePath = "Path used for content resolver",
+            topics = listOf(""),
             emotion = EmotionMoodsFilled.EXCITED
         ),
         EchoJournalUI(
@@ -32,6 +35,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong Kong",
             date = Clock.System.now().toEpochMilliseconds(),
             audioFilePath = "Path used for content resolver",
+            topics = listOf(""),
             emotion = EmotionMoodsFilled.EXCITED
         ),
         EchoJournalUI(
@@ -39,6 +43,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong Kong",
             date = Clock.System.now().toEpochMilliseconds(),
             audioFilePath = "Path used for content resolver",
+            topics = listOf(""),
             emotion = EmotionMoodsFilled.EXCITED
         ),
         EchoJournalUI(
@@ -46,6 +51,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong Kong",
             date = Clock.System.now().toEpochMilliseconds(),
             audioFilePath = "Path used for content resolver",
+            topics = listOf(""),
             emotion = EmotionMoodsFilled.EXCITED
         ),
         EchoJournalUI(
@@ -53,6 +59,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong Kong",
             date = Clock.System.now().toEpochMilliseconds(),
             audioFilePath = "Path used for content resolver",
+            topics = listOf(""),
             emotion = EmotionMoodsFilled.EXCITED
         ),
         EchoJournalUI(
@@ -60,6 +67,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong Kong",
             date = Clock.System.now().toEpochMilliseconds(),
             audioFilePath = "Path used for content resolver",
+            topics = listOf(""),
             emotion = EmotionMoodsFilled.EXCITED
         ))
 

@@ -27,7 +27,9 @@ import me.androidbox.echojournal.presentation.components.TopicSelectionChip
 import me.androidbox.echojournal.presentation.models.EmotionMoodsOutlined
 import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
+import me.androidbox.echojournal.presentation.models.populate
 import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
+import me.androidbox.echojournal.presentation.screens.NewEntryScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,12 +37,17 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             // App()
-            /*NewEntryScreen(
+            NewEntryScreen(
                 onSaveClicked = {},
                 onCancelClicked = {},
                 onEmotionClicked = {}
+            )
+
+          /*  val result = populate()
+            val list = result.getOrNull() ?: emptyList()
+            EchoJournalScreen(
+                listOfJournals = list
             )*/
-            EchoJournalScreen()
         }
     }
 }

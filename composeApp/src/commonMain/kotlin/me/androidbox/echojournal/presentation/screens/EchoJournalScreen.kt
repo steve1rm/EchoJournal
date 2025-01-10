@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -25,14 +27,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.androidbox.echojournal.presentation.components.EntryCard
 import me.androidbox.echojournal.presentation.components.MoodSelectionChip
 import me.androidbox.echojournal.presentation.components.TopicSelectionChip
+import me.androidbox.echojournal.presentation.models.EchoJournalUI
 import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
 
 @Composable
 fun EchoJournalScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    listOfJournals: List<EchoJournalUI>
 ) {
 
     Scaffold(
@@ -62,6 +67,32 @@ fun EchoJournalScreen(
                 TopicSelectionChip(
                     listOfTopics = listOf("Android", "iPhone", "Dell XPS", "Macbook Pro"),
                     onClearClicked = {})
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(
+                        items = listOfJournals,
+                        key = {
+                          it.title
+                        },
+                        itemContent = {echoJournal ->
+                            EntryCard(
+                                title = echoJournal.title,
+                                description = echoJournal.description,
+                                time = "7:30",
+                                start = "",
+                                end = "",
+                                onShowMore = {
+
+                                },
+                                onAudioClicked = {
+
+                                }
+                            )
+                        }
+                    )
+                }
             }
         },
         floatingActionButton = {
