@@ -49,19 +49,19 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun TopicSelectionChipPreview() {
-    TopicSelectionChip(listOfTopics = listOf("Android", "iPhone", "Dell XPS", "Macbook Pro"))
+    TopicSelectionChip(listOfTopics = listOf("Android", "iPhone", "Dell XPS", "Macbook Pro"), onClearClicked = {})
 }
 
 @Preview
 @Composable
 fun TopicSelectionChipPreviewEmpty() {
-    TopicSelectionChip(listOfTopics = emptyList())
+    TopicSelectionChip(listOfTopics = emptyList(), onClearClicked =  {})
 }
 
 @Preview
 @Composable
 fun TopicSelectionChipPreviewTwo() {
-    TopicSelectionChip(listOfTopics = listOf("Work", "Balance"))
+    TopicSelectionChip(listOfTopics = listOf("Work", "Balance"), onClearClicked = {})
 }
 
 
@@ -73,7 +73,7 @@ fun MoodSelectionChipPreview() {
         SelectableEmotion(EmotionMoodsFilled.PEACEFUL, false),
         SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false)
     )
-    MoodSelectionChip(listOfMoods = moods)
+    MoodSelectionChip(listOfMoods = moods, onClearClicked = {})
 }
 
 @Preview

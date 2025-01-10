@@ -1,7 +1,10 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 
 package me.androidbox.echojournal.presentation.screens
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,11 +19,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.echojournal.presentation.components.MoodSelectionChip
+import me.androidbox.echojournal.presentation.components.TopicSelectionChip
+import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
+import me.androidbox.echojournal.presentation.models.SelectableEmotion
 
 @Composable
 fun EchoJournalScreen(
@@ -37,13 +45,23 @@ fun EchoJournalScreen(
             )
         },
         content = { paddingValues ->
-            Row(modifier = Modifier
+            FlowRow(modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxWidth()) {
+                .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
+                verticalArrangement = Arrangement.spacedBy(4.dp)) {
 
-                MoodSelectionChip(listOfMoods = emptyList())
+                MoodSelectionChip(
+                    listOfMoods = listOf(
+                        SelectableEmotion(EmotionMoodsFilled.EXCITED, true),
+                        SelectableEmotion(EmotionMoodsFilled.PEACEFUL, false),
+                        SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false)
+                    ),
+                    onClearClicked = {})
 
-
+                TopicSelectionChip(
+                    listOfTopics = listOf("Android", "iPhone", "Dell XPS", "Macbook Pro"),
+                    onClearClicked = {})
             }
         },
         floatingActionButton = {
@@ -55,8 +73,9 @@ fun EchoJournalScreen(
                 shape = CircleShape,
                 content = {
                    Icon(
+
                         imageVector = Icons.Default.Add,
-                        contentDescription = "Add Meme",
+                        contentDescription = "Add entry",
                         tint = Color.White
                     )
                 }

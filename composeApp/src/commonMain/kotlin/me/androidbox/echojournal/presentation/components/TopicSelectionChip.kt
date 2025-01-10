@@ -1,15 +1,17 @@
 package me.androidbox.echojournal.presentation.components
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -22,14 +24,17 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun TopicSelectionChip(
     modifier: Modifier = Modifier,
-    listOfTopics: List<String>
+    listOfTopics: List<String>,
+    onClearClicked: () -> Unit
 ) {
 
     Box(
         modifier = modifier
-            .wrapContentSize()
+            .height(32.dp)
+            .wrapContentWidth()
             .border(width = 1.dp, color = Color.Black, shape = CircleShape)
-            .padding(top = 4.dp, bottom = 4.dp, start = 8.dp, end = 8.dp)
+            .padding(top = 4.dp, bottom = 4.dp, start = 8.dp, end = 8.dp),
+        contentAlignment = Alignment.Center
     ) {
         if(listOfTopics.isEmpty()) {
             Text(text = "All Topics")
@@ -46,12 +51,20 @@ fun TopicSelectionChip(
                     Text(text = listOfTopics.joinToString { it })
                 }
 
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "close",
-                    tint = Color.Unspecified
-                )
+                IconButton(
+                    modifier = Modifier
+                        .size(16.dp),
+                    onClick = onClearClicked
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .size(16.dp)
+                            .clickable { onClearClicked() },
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "close",
+                        tint = Color(0xff40434F)
+                    )
+                }
             }
         }
     }
