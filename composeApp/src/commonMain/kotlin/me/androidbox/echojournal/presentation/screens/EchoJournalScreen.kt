@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -40,9 +42,8 @@ fun EchoJournalScreen(
     listOfJournals: Map<String, List<EchoJournalUI>>
 ) {
 
-
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = 16.dp),
         topBar = {
             TopAppBar(
                 title = {
@@ -74,6 +75,7 @@ fun EchoJournalScreen(
                 ) {
 
                     listOfJournals.forEach { (header, data) ->
+
                         item {
                             Text(text = header, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
                         }
@@ -81,13 +83,22 @@ fun EchoJournalScreen(
                         items(
                             items = data,
                             itemContent = {
-                                Text(text = it.title)
+
+                                EntryCard(
+                                    title = it.title,
+                                    description = it.description,
+                                    start = "17:30",
+                                    end = "12:20",
+                                    time = "10:00",
+                                    onShowMore = {},
+                                    onAudioClicked = {}
+                                )
+
+                                Spacer(modifier = Modifier.height(16.dp))
                             }
                         )
 
                     }
-
-
 
                     /*items(
                         items = listOfJournals,

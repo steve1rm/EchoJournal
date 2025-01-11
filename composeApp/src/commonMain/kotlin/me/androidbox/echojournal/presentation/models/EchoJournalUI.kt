@@ -27,13 +27,13 @@ fun subtractDay(timestamp: Long, day: Int): Long {
 fun populate(): Result<List<EchoJournalUI>> {
     val listOfJournals = listOf(
         EchoJournalUI(
-        title = "Holiday",
-        description = "Planning a trip to Hong Kong",
-        date = Clock.System.now().toEpochMilliseconds(),
-        audioFilePath = "Path used for content resolver",
+            title = "Holiday",
+            description = "Planning a trip to Hong Kong",
+            date = Clock.System.now().toEpochMilliseconds(),
+            audioFilePath = "Path used for content resolver",
             topics = listOf(""),
-        emotion = EmotionMoodsFilled.EXCITED
-    ),
+            emotion = EmotionMoodsFilled.EXCITED
+        ),
         EchoJournalUI(
             title = "Going to work",
             description = "Planning a trip to Hong Kong",
