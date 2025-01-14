@@ -25,6 +25,9 @@ fun subtractDay(timestamp: Long, day: Int): Long {
 
 /** Testing data */
 fun populate(): Result<List<EchoJournalUI>> {
+
+    println("POPULATE")
+
     val listOfJournals = listOf(
         EchoJournalUI(
             title = "Holiday",

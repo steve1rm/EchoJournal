@@ -2,6 +2,9 @@ package me.androidbox.echojournal.presentation.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,8 +30,9 @@ class EchoJournalViewModel(
 
     private var _echoEchoJournalState = MutableStateFlow<EchoJournalState>(EchoJournalState())
     val echoJournalState = _echoEchoJournalState.asStateFlow()
-        .onStart {
+       /* .onStart {
             if(!hasFetched) {
+                println("HASFETCHED")
                 fetchEchoJournalEntries()
                 hasFetched = true
             }
@@ -37,13 +41,18 @@ class EchoJournalViewModel(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = EchoJournalState()
-        )
+        )*/
+
+    init {
+        fetchEchoJournalEntries()
+    }
 
     fun fetchEchoJournalEntries() {
         try {
             viewModelScope.launch {
+                println("LAUNCH")
                 val result = populate()
-
+                println("RESULT")
                 result.onSuccess { echoJournal ->
                     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
@@ -58,9 +67,11 @@ class EchoJournalViewModel(
                                 journalDate.toString()
                             }
                         }
-                    }
+                    }.mapValues {
+                        it.value.toPersistentList()
+                    }.toPersistentMap()
 
-                    println(groupedJournals)
+                    println("GROUPED $groupedJournals")
 
                     _echoEchoJournalState.update { echoJournalState ->
                         echoJournalState.copy(
@@ -70,7 +81,7 @@ class EchoJournalViewModel(
                 }.onFailure {
                     _echoEchoJournalState.update { echoJournalState ->
                         echoJournalState.copy(
-                            listOfJournals = emptyMap()
+                            listOfJournals = persistentMapOf()
                         )
                     }
                 }

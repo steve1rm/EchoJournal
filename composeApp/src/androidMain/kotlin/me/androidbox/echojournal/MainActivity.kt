@@ -31,7 +31,7 @@ import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import me.androidbox.echojournal.presentation.models.populate
 import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
 import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
-import me.androidbox.echojournal.presentation.screens.NewEntryScreen
+import androidx.compose.runtime.getValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,12 +45,13 @@ class MainActivity : ComponentActivity() {
                 onEmotionClicked = {}
             )*/
 
-            val result = populate()
+         //   val result = populate()
 
             val viewModel = EchoJournalViewModel()
-            val list = viewModel.echoJournalState.collectAsStateWithLifecycle()
+            val echoJournalState by viewModel.echoJournalState.collectAsStateWithLifecycle()
+            println("SETCONTENT")
             EchoJournalScreen(
-                listOfJournals = list.value.listOfJournals
+                echoJournalState = echoJournalState
             )
         }
     }

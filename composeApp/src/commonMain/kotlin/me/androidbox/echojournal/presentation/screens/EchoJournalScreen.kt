@@ -2,11 +2,8 @@
 
 package me.androidbox.echojournal.presentation.screens
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -19,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -37,7 +33,6 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -48,7 +43,6 @@ import echojournal.composeapp.generated.resources.excited
 import me.androidbox.echojournal.presentation.components.EntryCard
 import me.androidbox.echojournal.presentation.components.MoodSelectionChip
 import me.androidbox.echojournal.presentation.components.TopicSelectionChip
-import me.androidbox.echojournal.presentation.models.EchoJournalUI
 import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import org.jetbrains.compose.resources.vectorResource
@@ -56,7 +50,8 @@ import org.jetbrains.compose.resources.vectorResource
 @Composable
 fun EchoJournalScreen(
     modifier: Modifier = Modifier,
-    listOfJournals: Map<String, List<EchoJournalUI>>
+    echoJournalState: EchoJournalState
+//    listOfJournals: Map<String, List<EchoJournalUI>>
 ) {
 
     Scaffold(
@@ -97,7 +92,7 @@ fun EchoJournalScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
 
-                    listOfJournals.forEach { (header, data) ->
+                    echoJournalState.listOfJournals.forEach { (header, data) ->
 
                         item {
                             Text(text = header, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
@@ -131,12 +126,13 @@ fun EchoJournalScreen(
                                             )
 
                                             // Vertical Line
-                                            Box(
-                                                modifier = Modifier
-                                                    .width(2.dp)
-                                                    .fillMaxHeight() // Ensures the line spans the height
-                                                    .background(Color.DarkGray)
-                                            )
+                                            println("Header $header ${data.count()}")
+
+                                                VerticalDivider(
+                                                    thickness = 1.dp,
+                                                    color = Color.DarkGray
+                                                )
+
                                         }
                                     }
 
