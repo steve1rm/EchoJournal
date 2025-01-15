@@ -63,6 +63,16 @@ fun EchoJournalScreen(
         mutableStateOf(false)
     }
 
+    val emotionList = remember {
+        mutableStateListOf<SelectableEmotion>(
+            SelectableEmotion(EmotionMoodsFilled.STRESSED, false),
+            SelectableEmotion(EmotionMoodsFilled.SAD, false),
+            SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false),
+            SelectableEmotion(EmotionMoodsFilled.PEACEFUL, false),
+            SelectableEmotion(EmotionMoodsFilled.EXCITED, false)
+        )
+    }
+
     Scaffold(
         modifier = modifier.padding(horizontal = 16.dp),
         topBar = {
@@ -86,11 +96,7 @@ fun EchoJournalScreen(
                     ) {
 
                         MoodSelectionChip(
-                            listOfMoods = listOf(
-                                SelectableEmotion(EmotionMoodsFilled.EXCITED, true),
-                                SelectableEmotion(EmotionMoodsFilled.PEACEFUL, false),
-                                SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false)
-                            ),
+                            listOfMoods = emotionList.filter { it.isSelected },
                             onClearClicked = {
 
                             },
@@ -104,22 +110,18 @@ fun EchoJournalScreen(
                             })
                     }
 
-                    val emotionList = remember {
-                        mutableStateListOf<SelectableEmotion>(
-                            SelectableEmotion(EmotionMoodsFilled.STRESSED, false),
-                            SelectableEmotion(EmotionMoodsFilled.SAD, false),
-                            SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false),
-                            SelectableEmotion(EmotionMoodsFilled.PEACEFUL, false),
-                            SelectableEmotion(EmotionMoodsFilled.EXCITED, false)
-                        )
-                    }
+
 
                     if (shouldOpenMoodDropdown) {
                         DropDownEmotionMenu(
                             dropDownMenuItems = emotionList,
                             onMenuItemClicked = { emotion, index ->
                                 emotionList[index] = emotion.copy(isSelected = !emotion.isSelected)
-                            })
+                            },
+                            onDismissed = {
+                                shouldOpenMoodDropdown = false
+                            }
+                        )
                     }
                 }
 

@@ -36,11 +36,11 @@ fun MoodSelectionChip(
     onClicked: () -> Unit,
     onClearClicked: () -> Unit
 ) {
-    val emotions = remember {
+    /*val emotions = remember {
         listOfMoods.map { selectableEmotion ->
             selectableEmotion.emotion
         }
-    }
+    }*/
 
     Box(
         modifier = modifier
@@ -51,7 +51,7 @@ fun MoodSelectionChip(
             .clickable(onClick = onClicked),
         contentAlignment = Alignment.Center
     ) {
-        if(emotions.isEmpty()) {
+        if(listOfMoods.isEmpty()) {
             Text(text = "All Moods")
         }
         else {
@@ -60,7 +60,7 @@ fun MoodSelectionChip(
                 horizontalArrangement = Arrangement.spacedBy((-6).dp)
             ) {
                 items(
-                    items = emotions,
+                    items = listOfMoods.map { it.emotion },
                     key = {
                         it.description
                     },
@@ -79,7 +79,7 @@ fun MoodSelectionChip(
                 }
 
                 item {
-                    Text(text = emotions.joinToString { it.description })
+                    Text(text = listOfMoods.map { it.emotion }.joinToString { it.description })
                 }
 
                 item {

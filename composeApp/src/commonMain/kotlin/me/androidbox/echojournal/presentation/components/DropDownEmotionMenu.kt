@@ -28,7 +28,8 @@ import org.jetbrains.compose.resources.vectorResource
 @Composable
 fun DropDownEmotionMenu(
     dropDownMenuItems: List<SelectableEmotion>,
-    onMenuItemClicked: (item: SelectableEmotion, index: Int) -> Unit
+    onMenuItemClicked: (item: SelectableEmotion, index: Int) -> Unit,
+    onDismissed: () -> Unit
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
@@ -39,6 +40,7 @@ fun DropDownEmotionMenu(
         expanded = !isExpanded,
         onDismissRequest = {
             isExpanded = false
+            onDismissed()
         },
         content = {
             dropDownMenuItems.forEachIndexed { index, emotion ->
