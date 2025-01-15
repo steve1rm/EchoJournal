@@ -5,6 +5,7 @@ package me.androidbox.echojournal
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -32,6 +33,7 @@ import me.androidbox.echojournal.presentation.models.populate
 import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
 import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.models.SelectableTopic
 
@@ -47,7 +49,7 @@ class MainActivity : ComponentActivity() {
                 onEmotionClicked = {}
             )*/
 
-            val viewModel = EchoJournalViewModel()
+            val viewModel: EchoJournalViewModel = viewModel()
             val echoJournalState by viewModel.echoJournalState.collectAsStateWithLifecycle()
             println("SETCONTENT")
 

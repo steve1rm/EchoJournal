@@ -46,15 +46,15 @@ class EchoJournalViewModel(
     }
 
     fun updateTopicSelection(selectableTopic: SelectableTopic, index: Int) {
-      /*  val listOfTopic = echoJournalState.value.listOfTopic
+        val listOfTopic = echoJournalState.value.listOfTopic
 
         val listOfUpdatedTopics = listOfTopic.toMutableList().apply {
             this[index] = selectableTopic
         }.toList()
-*/
+
         _echoEchoJournalState.update { echoJournalState ->
             echoJournalState.copy(
-                listOfTopic = emptyList()
+                listOfTopic = listOfUpdatedTopics
             )
         }
     }
