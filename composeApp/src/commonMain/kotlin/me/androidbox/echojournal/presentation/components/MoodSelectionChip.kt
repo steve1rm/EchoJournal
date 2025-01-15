@@ -36,11 +36,6 @@ fun MoodSelectionChip(
     onClicked: () -> Unit,
     onClearClicked: () -> Unit
 ) {
-    /*val emotions = remember {
-        listOfMoods.map { selectableEmotion ->
-            selectableEmotion.emotion
-        }
-    }*/
 
     Box(
         modifier = modifier

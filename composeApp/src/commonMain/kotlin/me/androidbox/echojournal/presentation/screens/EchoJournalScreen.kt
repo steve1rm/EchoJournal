@@ -98,7 +98,9 @@ fun EchoJournalScreen(
                         MoodSelectionChip(
                             listOfMoods = emotionList.filter { it.isSelected },
                             onClearClicked = {
-
+                                emotionList.forEachIndexed { index, selectionEmotion ->
+                                    emotionList[index] = selectionEmotion.copy(isSelected = false)
+                                }
                             },
                             onClicked = {
                                 shouldOpenMoodDropdown = true
@@ -109,8 +111,6 @@ fun EchoJournalScreen(
                             onClearClicked = {
                             })
                     }
-
-
 
                     if (shouldOpenMoodDropdown) {
                         DropDownEmotionMenu(
