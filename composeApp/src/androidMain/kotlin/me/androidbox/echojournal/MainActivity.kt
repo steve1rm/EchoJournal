@@ -32,6 +32,8 @@ import me.androidbox.echojournal.presentation.models.populate
 import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
 import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 import androidx.compose.runtime.getValue
+import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
+import me.androidbox.echojournal.presentation.models.SelectableTopic
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,6 +122,25 @@ fun EntryCardPreview() {
 @Composable
 fun PlayBackPreview() {
     PlayBack(duration = "00:00/12:30", progress = 0.5f)
+}
+
+@Preview
+@Composable
+fun DropDownTopicMenuPreview() {
+    val dropDownMenuItems = listOf(
+        SelectableTopic("Work", false),
+        SelectableTopic("Life", true),
+        SelectableTopic("Relocation", false),
+        SelectableTopic("Rest", false),
+        SelectableTopic("Travel", true),
+        SelectableTopic("Flight Tickets", false)
+    )
+
+    DropDownTopicMenu(
+        dropDownMenuItems = dropDownMenuItems,
+        onMenuItemClicked = { _, _ -> },
+        onDismissed = {}
+    )
 }
 
 @Preview

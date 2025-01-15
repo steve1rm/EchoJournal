@@ -17,6 +17,10 @@ import echojournal.composeapp.generated.resources.sad
 import echojournal.composeapp.generated.resources.stressed
 import org.jetbrains.compose.resources.DrawableResource
 
+data class SelectableTopic(
+    val topic: String,
+    val isSelected: Boolean = false
+)
 
 sealed interface EmotionType {
     val description: String
