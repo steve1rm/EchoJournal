@@ -50,8 +50,12 @@ class MainActivity : ComponentActivity() {
             val viewModel = EchoJournalViewModel()
             val echoJournalState by viewModel.echoJournalState.collectAsStateWithLifecycle()
             println("SETCONTENT")
+
             EchoJournalScreen(
-                echoJournalState = echoJournalState
+                echoJournalState = echoJournalState,
+                updateTopicSelection = { selectableTopic, index ->
+                    viewModel.updateTopicSelection(selectableTopic, index)
+                }
             )
         }
     }
@@ -61,19 +65,19 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun TopicSelectionChipPreview() {
-    TopicSelectionChip(listOfTopics = listOf("Android", "iPhone", "Dell XPS", "Macbook Pro"), onClearClicked = {})
+    TopicSelectionChip(listOfTopics = listOf("Android", "iPhone", "Dell XPS", "Macbook Pro"), onClearClicked = {}, onClicked = {})
 }
 
 @Preview
 @Composable
 fun TopicSelectionChipPreviewEmpty() {
-    TopicSelectionChip(listOfTopics = emptyList(), onClearClicked =  {})
+    TopicSelectionChip(listOfTopics = emptyList(), onClearClicked =  {}, onClicked = {})
 }
 
 @Preview
 @Composable
 fun TopicSelectionChipPreviewTwo() {
-    TopicSelectionChip(listOfTopics = listOf("Work", "Balance"), onClearClicked = {})
+    TopicSelectionChip(listOfTopics = listOf("Work", "Balance"), onClearClicked = {}, onClicked = {})
 }
 
 

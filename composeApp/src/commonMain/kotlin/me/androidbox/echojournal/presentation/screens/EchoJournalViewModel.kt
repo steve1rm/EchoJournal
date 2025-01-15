@@ -6,20 +6,16 @@ import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
-import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
+import me.androidbox.echojournal.presentation.models.SelectableTopic
 import me.androidbox.echojournal.presentation.models.populate
 
 class EchoJournalViewModel(
@@ -30,7 +26,8 @@ class EchoJournalViewModel(
 
     private var _echoEchoJournalState = MutableStateFlow<EchoJournalState>(EchoJournalState())
     val echoJournalState = _echoEchoJournalState.asStateFlow()
-       /* .onStart {
+
+    /* .onStart {
             if(!hasFetched) {
                 println("HASFETCHED")
                 fetchEchoJournalEntries()
@@ -45,6 +42,40 @@ class EchoJournalViewModel(
 
     init {
         fetchEchoJournalEntries()
+        fetchTopics()
+    }
+
+    fun updateTopicSelection(selectableTopic: SelectableTopic, index: Int) {
+      /*  val listOfTopic = echoJournalState.value.listOfTopic
+
+        val listOfUpdatedTopics = listOfTopic.toMutableList().apply {
+            this[index] = selectableTopic
+        }.toList()
+*/
+        _echoEchoJournalState.update { echoJournalState ->
+            echoJournalState.copy(
+                listOfTopic = emptyList()
+            )
+        }
+    }
+
+    fun fetchTopics() {
+        viewModelScope.launch {
+            val topics = listOf(
+                SelectableTopic("Work", false),
+                SelectableTopic("Life", false),
+                SelectableTopic("Relocation", true),
+                SelectableTopic("Rest", false),
+                SelectableTopic("Travel", false),
+                SelectableTopic("Flight Tickets", false)
+            )
+
+            _echoEchoJournalState.update { echoJournalState ->
+                echoJournalState.copy(
+                    listOfTopic = topics
+                )
+            }
+        }
     }
 
     fun fetchEchoJournalEntries() {

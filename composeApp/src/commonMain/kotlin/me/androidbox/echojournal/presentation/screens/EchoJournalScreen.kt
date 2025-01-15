@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -46,20 +47,27 @@ import androidx.compose.ui.unit.sp
 import echojournal.composeapp.generated.resources.Res
 import echojournal.composeapp.generated.resources.excited
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
+import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.components.EntryCard
 import me.androidbox.echojournal.presentation.components.MoodSelectionChip
 import me.androidbox.echojournal.presentation.components.TopicSelectionChip
 import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
+import me.androidbox.echojournal.presentation.models.SelectableTopic
 import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun EchoJournalScreen(
     modifier: Modifier = Modifier,
-    echoJournalState: EchoJournalState
+    echoJournalState: EchoJournalState,
+    updateTopicSelection: (topic: SelectableTopic, index: Int) -> Unit
 ) {
 
     var shouldOpenMoodDropdown by remember {
+        mutableStateOf(false)
+    }
+
+    var shouldOpenTopicDropdown by remember {
         mutableStateOf(false)
     }
 
@@ -86,7 +94,7 @@ fun EchoJournalScreen(
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Box {
+                Box(modifier = Modifier.wrapContentSize()) {
                     FlowRow(
                         modifier = Modifier
                             .padding(paddingValues)
@@ -107,9 +115,24 @@ fun EchoJournalScreen(
                             })
 
                         TopicSelectionChip(
-                            listOfTopics = listOf("Android", "iPhone", "Dell XPS", "Macbook Pro"),
+                            listOfTopics = echoJournalState.listOfTopic.filter { it.isSelected }.map { it.topic },
                             onClearClicked = {
+                            },
+                            onClicked = {
+                                shouldOpenTopicDropdown = true
                             })
+                    }
+
+                    if (shouldOpenTopicDropdown) {
+                        DropDownTopicMenu(
+                            dropDownMenuItems = echoJournalState.listOfTopic,
+                            onMenuItemClicked = { selectableTopic, index ->
+                                updateTopicSelection(selectableTopic.copy(isSelected = !selectableTopic.isSelected), index)
+                            },
+                            onDismissed = {
+                                shouldOpenTopicDropdown = false
+                            }
+                        )
                     }
 
                     if (shouldOpenMoodDropdown) {

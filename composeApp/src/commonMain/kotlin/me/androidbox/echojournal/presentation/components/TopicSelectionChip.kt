@@ -25,7 +25,8 @@ import androidx.compose.ui.unit.dp
 fun TopicSelectionChip(
     modifier: Modifier = Modifier,
     listOfTopics: List<String>,
-    onClearClicked: () -> Unit
+    onClearClicked: () -> Unit,
+    onClicked: () -> Unit
 ) {
 
     Box(
@@ -33,7 +34,8 @@ fun TopicSelectionChip(
             .height(32.dp)
             .wrapContentWidth()
             .border(width = 1.dp, color = Color.Black, shape = CircleShape)
-            .padding(top = 4.dp, bottom = 4.dp, start = 8.dp, end = 8.dp),
+            .padding(top = 4.dp, bottom = 4.dp, start = 8.dp, end = 8.dp)
+            .clickable(onClick = onClicked),
         contentAlignment = Alignment.Center
     ) {
         if(listOfTopics.isEmpty()) {
