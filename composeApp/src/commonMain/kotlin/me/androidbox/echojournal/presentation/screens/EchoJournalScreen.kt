@@ -31,6 +31,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import echojournal.composeapp.generated.resources.Res
 import echojournal.composeapp.generated.resources.excited
+import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
 import me.androidbox.echojournal.presentation.components.EntryCard
 import me.androidbox.echojournal.presentation.components.MoodSelectionChip
 import me.androidbox.echojournal.presentation.components.TopicSelectionChip
@@ -51,8 +57,11 @@ import org.jetbrains.compose.resources.vectorResource
 fun EchoJournalScreen(
     modifier: Modifier = Modifier,
     echoJournalState: EchoJournalState
-//    listOfJournals: Map<String, List<EchoJournalUI>>
 ) {
+
+    var shouldOpenMoodDropdown by remember {
+        mutableStateOf(false)
+    }
 
     Scaffold(
         modifier = modifier.padding(horizontal = 16.dp),
@@ -67,25 +76,51 @@ fun EchoJournalScreen(
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                FlowRow(
-                    modifier = Modifier
-                        .padding(paddingValues)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
+                Box {
+                    FlowRow(
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
 
-                    MoodSelectionChip(
-                        listOfMoods = listOf(
-                            SelectableEmotion(EmotionMoodsFilled.EXCITED, true),
+                        MoodSelectionChip(
+                            listOfMoods = listOf(
+                                SelectableEmotion(EmotionMoodsFilled.EXCITED, true),
+                                SelectableEmotion(EmotionMoodsFilled.PEACEFUL, false),
+                                SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false)
+                            ),
+                            onClearClicked = {
+
+                            },
+                            onClicked = {
+                                shouldOpenMoodDropdown = true
+                            })
+
+                        TopicSelectionChip(
+                            listOfTopics = listOf("Android", "iPhone", "Dell XPS", "Macbook Pro"),
+                            onClearClicked = {
+                            })
+                    }
+
+                    val emotionList = remember {
+                        mutableStateListOf<SelectableEmotion>(
+                            SelectableEmotion(EmotionMoodsFilled.STRESSED, false),
+                            SelectableEmotion(EmotionMoodsFilled.SAD, false),
+                            SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false),
                             SelectableEmotion(EmotionMoodsFilled.PEACEFUL, false),
-                            SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false)
-                        ),
-                        onClearClicked = {})
+                            SelectableEmotion(EmotionMoodsFilled.EXCITED, false)
+                        )
+                    }
 
-                    TopicSelectionChip(
-                        listOfTopics = listOf("Android", "iPhone", "Dell XPS", "Macbook Pro"),
-                        onClearClicked = {})
+                    if (shouldOpenMoodDropdown) {
+                        DropDownEmotionMenu(
+                            dropDownMenuItems = emotionList,
+                            onMenuItemClicked = { emotion, index ->
+                                emotionList[index] = emotion.copy(isSelected = !emotion.isSelected)
+                            })
+                    }
                 }
 
                 LazyColumn(

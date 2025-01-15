@@ -45,8 +45,6 @@ class MainActivity : ComponentActivity() {
                 onEmotionClicked = {}
             )*/
 
-         //   val result = populate()
-
             val viewModel = EchoJournalViewModel()
             val echoJournalState by viewModel.echoJournalState.collectAsStateWithLifecycle()
             println("SETCONTENT")
@@ -85,7 +83,7 @@ fun MoodSelectionChipPreview() {
         SelectableEmotion(EmotionMoodsFilled.PEACEFUL, false),
         SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false)
     )
-    MoodSelectionChip(listOfMoods = moods, onClearClicked = {})
+    MoodSelectionChip(listOfMoods = moods, onClearClicked = {}, onClicked = {})
 }
 
 @Preview

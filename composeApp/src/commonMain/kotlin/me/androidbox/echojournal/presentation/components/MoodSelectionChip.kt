@@ -33,6 +33,7 @@ import org.jetbrains.compose.resources.vectorResource
 fun MoodSelectionChip(
     modifier: Modifier = Modifier,
     listOfMoods: List<SelectableEmotion>,
+    onClicked: () -> Unit,
     onClearClicked: () -> Unit
 ) {
     val emotions = remember {
@@ -46,7 +47,8 @@ fun MoodSelectionChip(
             .height(32.dp)
             .wrapContentWidth()
             .border(width = 1.dp, color = Color.Black, shape = CircleShape)
-            .padding(top = 4.dp, bottom = 4.dp, start = 8.dp, end = 8.dp),
+            .padding(top = 4.dp, bottom = 4.dp, start = 8.dp, end = 8.dp)
+            .clickable(onClick = onClicked),
         contentAlignment = Alignment.Center
     ) {
         if(emotions.isEmpty()) {
