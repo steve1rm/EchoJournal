@@ -51,9 +51,7 @@ class MainActivity : ComponentActivity() {
             )*/
 
             val viewModel = koinViewModel<EchoJournalViewModel>()
-
             val echoJournalState by viewModel.echoJournalState.collectAsStateWithLifecycle()
-            println("SETCONTENT")
 
             EchoJournalScreen(
                 echoJournalState = echoJournalState,

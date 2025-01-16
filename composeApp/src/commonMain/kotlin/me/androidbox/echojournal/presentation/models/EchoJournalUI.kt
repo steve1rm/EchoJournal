@@ -2,9 +2,6 @@ package me.androidbox.echojournal.presentation.models
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 
 data class EchoJournalUI(
@@ -43,7 +40,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             date = Clock.System.now().toEpochMilliseconds(),
             audioFilePath = "Path used for content resolver",
             topics = listOf(""),
-            emotion = EmotionMoodsFilled.EXCITED
+            emotion = EmotionMoodsFilled.PEACEFUL
         ),
         EchoJournalUI(
             title = "Getting Coffee",
@@ -51,7 +48,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             date = Clock.System.now().toEpochMilliseconds(),
             audioFilePath = "Path used for content resolver",
             topics = listOf(""),
-            emotion = EmotionMoodsFilled.EXCITED
+            emotion = EmotionMoodsFilled.STRESSED
         ),
         EchoJournalUI(
             title = "Writing code",
@@ -59,7 +56,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 1),
             audioFilePath = "Path used for content resolver",
             topics = listOf(""),
-            emotion = EmotionMoodsFilled.EXCITED
+            emotion = EmotionMoodsFilled.SAD
         ),
         EchoJournalUI(
             title = "Unit testing",
@@ -67,7 +64,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 1),
             audioFilePath = "Path used for content resolver",
             topics = listOf(""),
-            emotion = EmotionMoodsFilled.EXCITED
+            emotion = EmotionMoodsFilled.NEUTRAL
         ),
         EchoJournalUI(
             title = "Traveling to the south",
@@ -75,7 +72,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 2),
             audioFilePath = "Path used for content resolver",
             topics = listOf(""),
-            emotion = EmotionMoodsFilled.EXCITED
+            emotion = EmotionMoodsFilled.NEUTRAL
         ),
         EchoJournalUI(
             title = "Buy new Dell",
@@ -83,31 +80,31 @@ fun populate(): Result<List<EchoJournalUI>> {
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 3),
             audioFilePath = "Path used for content resolver",
             topics = listOf(""),
-            emotion = EmotionMoodsFilled.EXCITED
+            emotion = EmotionMoodsFilled.PEACEFUL
         ),
         EchoJournalUI(
-            title = "Unit testing",
-            description = "Planning a trip to Hong Kong",
+            title = "Working on moving location",
+            description = "Lets get this done today, and move all our stuff to another property. Lets Go...",
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 4),
             audioFilePath = "Path used for content resolver",
             topics = listOf(""),
-            emotion = EmotionMoodsFilled.EXCITED
+            emotion = EmotionMoodsFilled.PEACEFUL
         ),
         EchoJournalUI(
-            title = "Traveling to the south",
-            description = "Planning a trip to Hong Kong",
+            title = "Coffee with Donuts @ Dunkin Donuts",
+            description = "Lets get this party started. Start planning and less day dreaming",
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 4),
             audioFilePath = "Path used for content resolver",
             topics = listOf(""),
-            emotion = EmotionMoodsFilled.EXCITED
+            emotion = EmotionMoodsFilled.SAD
         ),
         EchoJournalUI(
-            title = "Buy new Dell",
-            description = "Planning a trip to Hong Kong",
+            title = "Relocation is in progress",
+            description = "Getting ready with flight and package of suitcases and other things",
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 4),
             audioFilePath = "Path used for content resolver",
             topics = listOf(""),
-            emotion = EmotionMoodsFilled.EXCITED
+            emotion = EmotionMoodsFilled.STRESSED
         ))
 
     return Result.success(listOfJournals)

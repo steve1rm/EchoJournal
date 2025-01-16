@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -160,9 +161,9 @@ fun EchoJournalScreen(
                             Text(text = header, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
                         }
 
-                        items(
+                        itemsIndexed(
                             items = data,
-                            itemContent = {
+                            itemContent = { index, journalItem ->
                                 // Row with vertical line and card
                                 Row(
                                     modifier = Modifier
@@ -181,7 +182,7 @@ fun EchoJournalScreen(
                                             modifier = Modifier.fillMaxHeight()
                                         ) {
                                             Icon(
-                                                imageVector = vectorResource(Res.drawable.excited),
+                                                imageVector = vectorResource(journalItem.emotion.resource),
                                                 contentDescription = null,
                                                 tint = Color.Unspecified,
                                                 modifier = Modifier.size(24.dp)
@@ -202,8 +203,8 @@ fun EchoJournalScreen(
 
                                     // EntryCard with Padding for Card Spacing
                                     EntryCard(
-                                        title = it.title,
-                                        description = it.description,
+                                        title = journalItem.title,
+                                        description = journalItem.description,
                                         start = "17:30",
                                         end = "12:20",
                                         time = "10:00",
