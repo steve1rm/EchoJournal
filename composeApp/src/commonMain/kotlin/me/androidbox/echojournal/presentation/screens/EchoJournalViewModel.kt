@@ -6,7 +6,10 @@ import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -26,11 +29,11 @@ class EchoJournalViewModel(
 
     private var _echoEchoJournalState = MutableStateFlow<EchoJournalState>(EchoJournalState())
     val echoJournalState = _echoEchoJournalState.asStateFlow()
-
-    /* .onStart {
+        .onStart {
             if(!hasFetched) {
                 println("HASFETCHED")
                 fetchEchoJournalEntries()
+                fetchTopics()
                 hasFetched = true
             }
         }
@@ -38,19 +41,34 @@ class EchoJournalViewModel(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = EchoJournalState()
-        )*/
+        )
 
-    init {
-        fetchEchoJournalEntries()
-        fetchTopics()
-    }
 
     fun updateTopicSelection(selectableTopic: SelectableTopic, index: Int) {
         val listOfTopic = echoJournalState.value.listOfTopic
 
-        val listOfUpdatedTopics = listOfTopic.toMutableList().apply {
-            this[index] = selectableTopic
-        }.toList()
+        val listOfUpdatedTopics = listOfTopic.mapIndexed { currentIndex, topic ->
+            if(currentIndex == index) {
+                selectableTopic
+            }
+            else {
+                topic
+            }
+        }
+
+        _echoEchoJournalState.update { echoJournalState ->
+            echoJournalState.copy(
+                listOfTopic = listOfUpdatedTopics
+            )
+        }
+    }
+
+    fun clearAllTopics() {
+        val listOfTopic = echoJournalState.value.listOfTopic
+
+        val listOfUpdatedTopics = listOfTopic.map { topic ->
+            topic.copy(isSelected = false)
+        }
 
         _echoEchoJournalState.update { echoJournalState ->
             echoJournalState.copy(
@@ -64,7 +82,7 @@ class EchoJournalViewModel(
             val topics = listOf(
                 SelectableTopic("Work", false),
                 SelectableTopic("Life", false),
-                SelectableTopic("Relocation", true),
+                SelectableTopic("Relocation", false),
                 SelectableTopic("Rest", false),
                 SelectableTopic("Travel", false),
                 SelectableTopic("Flight Tickets", false)

@@ -60,7 +60,8 @@ import org.jetbrains.compose.resources.vectorResource
 fun EchoJournalScreen(
     modifier: Modifier = Modifier,
     echoJournalState: EchoJournalState,
-    updateTopicSelection: (topic: SelectableTopic, index: Int) -> Unit
+    updateTopicSelection: (topic: SelectableTopic, index: Int) -> Unit,
+    clearAllTopics: () -> Unit
 ) {
 
     var shouldOpenMoodDropdown by remember {
@@ -117,6 +118,7 @@ fun EchoJournalScreen(
                         TopicSelectionChip(
                             listOfTopics = echoJournalState.listOfTopic.filter { it.isSelected }.map { it.topic },
                             onClearClicked = {
+                                clearAllTopics()
                             },
                             onClicked = {
                                 shouldOpenTopicDropdown = true

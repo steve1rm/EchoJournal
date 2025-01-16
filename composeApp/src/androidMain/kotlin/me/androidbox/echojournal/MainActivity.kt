@@ -57,6 +57,9 @@ class MainActivity : ComponentActivity() {
                 echoJournalState = echoJournalState,
                 updateTopicSelection = { selectableTopic, index ->
                     viewModel.updateTopicSelection(selectableTopic, index)
+                },
+                clearAllTopics = {
+                    viewModel.clearAllTopics()
                 }
             )
         }
