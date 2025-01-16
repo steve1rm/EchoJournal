@@ -6,6 +6,7 @@ import me.androidbox.echojournal.presentation.models.populate
 
 class FetchEchoJournalsUseCaseImp : FetchEchoJournalsUseCase {
     override suspend fun execute(): Result<List<EchoJournalUI>> {
+        /** TODO Replace with retrieve from local cache i.e. room db */
         return populate()
     }
 }

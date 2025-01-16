@@ -18,11 +18,11 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
+import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
 import me.androidbox.echojournal.presentation.models.SelectableTopic
-import me.androidbox.echojournal.presentation.models.populate
 
 class EchoJournalViewModel(
-  //  private val fetchEchoJournalsUseCase: FetchEchoJournalsUseCase
+    private val fetchEchoJournalsUseCase: FetchEchoJournalsUseCase
 ) : ViewModel() {
 
     private var hasFetched = false
@@ -31,7 +31,6 @@ class EchoJournalViewModel(
     val echoJournalState = _echoEchoJournalState.asStateFlow()
         .onStart {
             if(!hasFetched) {
-                println("HASFETCHED")
                 fetchEchoJournalEntries()
                 fetchTopics()
                 hasFetched = true
@@ -99,9 +98,7 @@ class EchoJournalViewModel(
     fun fetchEchoJournalEntries() {
         try {
             viewModelScope.launch {
-                println("LAUNCH")
-                val result = populate()
-                println("RESULT")
+                val result = fetchEchoJournalsUseCase.execute()
                 result.onSuccess { echoJournal ->
                     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
@@ -116,9 +113,7 @@ class EchoJournalViewModel(
                                 journalDate.toString()
                             }
                         }
-                    }.mapValues {
-                        it.value.toPersistentList()
-                    }.toPersistentMap()
+                    }
 
                     println("GROUPED $groupedJournals")
 

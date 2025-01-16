@@ -36,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.models.SelectableTopic
+import org.koin.compose.viewmodel.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +50,8 @@ class MainActivity : ComponentActivity() {
                 onEmotionClicked = {}
             )*/
 
-            val viewModel: EchoJournalViewModel = viewModel()
+            val viewModel = koinViewModel<EchoJournalViewModel>()
+
             val echoJournalState by viewModel.echoJournalState.collectAsStateWithLifecycle()
             println("SETCONTENT")
 
