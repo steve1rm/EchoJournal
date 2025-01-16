@@ -53,12 +53,12 @@ enum class EmotionMoodsOutlined(override val description: String, override val r
     EXCITED("Excited", Res.drawable.excited, MoodColorType.ORANGE.color)
 }
 
-enum class EmotionMoodsFilled(override val description: String, override val resource: DrawableResource) : EmotionType {
-    STRESSED("Stressed", Res.drawable.menu_stressed),
-    SAD("Sad", Res.drawable.menu_sad),
-    NEUTRAL("Neutral", Res.drawable.menu_neutral),
-    PEACEFUL("Peaceful", Res.drawable.menu_peaceful),
-    EXCITED("Excited", Res.drawable.menu_excited)
+enum class EmotionMoodsFilled(override val description: String, override val resource: DrawableResource, override val color: Color) : EmotionType {
+    STRESSED("Stressed", Res.drawable.menu_stressed, MoodColorType.RED.color),
+    SAD("Sad", Res.drawable.menu_sad, MoodColorType.BLUE.color),
+    NEUTRAL("Neutral", Res.drawable.menu_neutral, MoodColorType.GREEN.color),
+    PEACEFUL("Peaceful", Res.drawable.menu_peaceful, MoodColorType.PINK.color),
+    EXCITED("Excited", Res.drawable.menu_excited, MoodColorType.ORANGE.color)
 }
 
 enum class MoodColorType(val mood: String, val color: Color) {

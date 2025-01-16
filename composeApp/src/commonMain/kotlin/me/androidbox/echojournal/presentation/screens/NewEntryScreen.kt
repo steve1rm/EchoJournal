@@ -143,7 +143,8 @@ fun NewEntryScreen(
                     modifier = Modifier
                         .padding(horizontal = 16.dp),
                     duration = "12:30",
-                    progress = 1f
+                    progress = 1f,
+                    backgroundColor = Color.Green.copy(alpha = 0.5f)
                 )
 
                 TopicDropDown(

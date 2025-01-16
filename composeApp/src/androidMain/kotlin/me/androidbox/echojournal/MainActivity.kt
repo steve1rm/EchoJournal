@@ -123,6 +123,7 @@ fun EntryCardPreview() {
         end = "End",
         description = "This is a long description that might exceed the maximum number of lines and get truncated. In this case, we want to show an ellipsis and a 'Show more' button to expand the text. Long description that might exceed the maximum number of lines and get truncated",
         onAudioClicked = {},
+        backgroundColor = Color.Green.copy(alpha = 0.5f),
         onShowMore = {}
     )
 }
@@ -130,7 +131,7 @@ fun EntryCardPreview() {
 @Preview
 @Composable
 fun PlayBackPreview() {
-    PlayBack(duration = "00:00/12:30", progress = 0.5f)
+    PlayBack(duration = "00:00/12:30", progress = 0.5f, backgroundColor = Color.Green.copy(alpha = 0.5f))
 }
 
 @Preview

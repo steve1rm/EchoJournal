@@ -24,13 +24,14 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PlayBack(
     modifier: Modifier = Modifier,
+    backgroundColor: Color,
     duration: String,
     progress: Float
 ) {
     Row(modifier = modifier
         .fillMaxWidth()
-        .background(shape = RoundedCornerShape(100f), color = Color.Green.copy(alpha = 0.2f))
-        .padding(horizontal = 16.dp)
+        .background(shape = RoundedCornerShape(100f), color = backgroundColor.copy(alpha = 0.2f))
+        .padding(horizontal = 8.dp)
         .padding(top = 4.dp, bottom = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -45,7 +46,7 @@ fun PlayBack(
                     .size(32.dp),
                 imageVector = Icons.Default.PlayArrow,
                 contentDescription = "Play back button",
-                tint = Color.Blue)
+                tint = backgroundColor)
         }
 
         LinearProgressIndicator(
@@ -53,8 +54,8 @@ fun PlayBack(
             progress = {
                 progress
             },
-            trackColor = Color.Blue,
-            color = Color.Magenta,
+            trackColor = Color.LightGray,
+            color = backgroundColor.copy(alpha = 0.6f),
             strokeCap = StrokeCap.Round
         )
 

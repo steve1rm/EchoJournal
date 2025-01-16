@@ -200,6 +200,7 @@ fun EchoJournalScreen(
                                         time = "10:00",
                                         onShowMore = {},
                                         onAudioClicked = {},
+                                        backgroundColor = journalItem.emotion.color,
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(vertical = 8.dp) // Padding for spacing between cards

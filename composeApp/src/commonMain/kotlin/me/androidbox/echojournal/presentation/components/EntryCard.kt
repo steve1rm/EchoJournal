@@ -27,6 +27,7 @@ fun EntryCard(
     start: String,
     end: String,
     description: String,
+    backgroundColor: Color,
     onAudioClicked: (audioControl: AudioControl) -> Unit,
     onShowMore: () -> Unit
 ) {
@@ -65,10 +66,11 @@ fun EntryCard(
                 }
 
                 /** Audio control */
-                /* PlayBack(
+                 PlayBack(
                      duration = "12:30",
-                     progress = 1f
-                 )*/
+                     progress = 1f,
+                     backgroundColor = backgroundColor
+                 )
 
                 ExpandableText(description = description)
             }
