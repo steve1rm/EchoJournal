@@ -22,6 +22,15 @@ data class SelectableTopic(
     val isSelected: Boolean = false
 )
 
+val emotionList =
+    listOf<SelectableEmotion>(
+        SelectableEmotion(EmotionMoodsFilled.STRESSED, false),
+        SelectableEmotion(EmotionMoodsFilled.SAD, false),
+        SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false),
+        SelectableEmotion(EmotionMoodsFilled.PEACEFUL, false),
+        SelectableEmotion(EmotionMoodsFilled.EXCITED, false)
+    )
+
 sealed interface EmotionType {
     val description: String
     val resource: DrawableResource

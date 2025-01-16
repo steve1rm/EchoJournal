@@ -14,12 +14,20 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format
+import kotlinx.datetime.format.DateTimeFormat
+import kotlinx.datetime.format.DayOfWeekNames
+import kotlinx.datetime.format.MonthNames
+import kotlinx.datetime.format.char
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
 import me.androidbox.echojournal.presentation.models.SelectableTopic
+import me.androidbox.echojournal.presentation.models.emotionList
 
 class EchoJournalViewModel(
     private val fetchEchoJournalsUseCase: FetchEchoJournalsUseCase
@@ -33,6 +41,7 @@ class EchoJournalViewModel(
             if(!hasFetched) {
                 fetchEchoJournalEntries()
                 fetchTopics()
+                populateEmotions()
                 hasFetched = true
             }
         }
@@ -42,6 +51,11 @@ class EchoJournalViewModel(
             initialValue = EchoJournalState()
         )
 
+    fun populateEmotions() {
+        _echoEchoJournalState.update { echoJournalState ->
+            echoJournalState.copy(emotionList = emotionList)
+        }
+    }
 
     fun updateTopicSelection(selectableTopic: SelectableTopic, index: Int) {
         val listOfTopic = echoJournalState.value.listOfTopic
@@ -110,7 +124,15 @@ class EchoJournalViewModel(
                             today -> "Today"
                             today.minus(1, DateTimeUnit.DAY) -> "Yesterday"
                             else -> {
-                                journalDate.toString()
+                                journalDate.format(
+                                    LocalDate.Format {
+                                        dayOfWeek(DayOfWeekNames.ENGLISH_FULL)
+                                        chars(", ")
+                                        monthName(MonthNames.ENGLISH_ABBREVIATED)
+                                        char(' ')
+                                        dayOfMonth()
+                                    }
+                                )
                             }
                         }
                     }

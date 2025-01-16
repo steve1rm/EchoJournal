@@ -73,16 +73,6 @@ fun EchoJournalScreen(
         mutableStateOf(false)
     }
 
-    val emotionList = remember {
-        mutableStateListOf<SelectableEmotion>(
-            SelectableEmotion(EmotionMoodsFilled.STRESSED, false),
-            SelectableEmotion(EmotionMoodsFilled.SAD, false),
-            SelectableEmotion(EmotionMoodsFilled.NEUTRAL, false),
-            SelectableEmotion(EmotionMoodsFilled.PEACEFUL, false),
-            SelectableEmotion(EmotionMoodsFilled.EXCITED, false)
-        )
-    }
-
     Scaffold(
         modifier = modifier.padding(horizontal = 16.dp),
         topBar = {
@@ -106,10 +96,10 @@ fun EchoJournalScreen(
                     ) {
 
                         MoodSelectionChip(
-                            listOfMoods = emotionList.filter { it.isSelected },
+                            listOfMoods = echoJournalState.emotionList.filter { it.isSelected },
                             onClearClicked = {
-                                emotionList.forEachIndexed { index, selectionEmotion ->
-                                    emotionList[index] = selectionEmotion.copy(isSelected = false)
+                                echoJournalState.emotionList.forEachIndexed { index, selectionEmotion ->
+                             //       echoJournalState.emotionList[index] = selectionEmotion.copy(isSelected = false)
                                 }
                             },
                             onClicked = {
@@ -140,9 +130,9 @@ fun EchoJournalScreen(
 
                     if (shouldOpenMoodDropdown) {
                         DropDownEmotionMenu(
-                            dropDownMenuItems = emotionList,
+                            dropDownMenuItems = echoJournalState.emotionList,
                             onMenuItemClicked = { emotion, index ->
-                                emotionList[index] = emotion.copy(isSelected = !emotion.isSelected)
+                           //     emotionList[index] = emotion.copy(isSelected = !emotion.isSelected)
                             },
                             onDismissed = {
                                 shouldOpenMoodDropdown = false
