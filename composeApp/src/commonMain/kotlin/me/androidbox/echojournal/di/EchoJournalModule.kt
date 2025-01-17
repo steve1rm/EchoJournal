@@ -1,5 +1,6 @@
 package me.androidbox.echojournal.di
 
+import dev.icerock.moko.permissions.PermissionsController
 import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
 import me.androidbox.echojournal.domain.imp.FetchEchoJournalsUseCaseImp
 import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
@@ -13,6 +14,8 @@ val echoJournalModule = module {
     }
 
     viewModel {
-        EchoJournalViewModel(get<FetchEchoJournalsUseCase>())
+        EchoJournalViewModel(
+            get<FetchEchoJournalsUseCase>(),
+            permissionsController = get<PermissionsController>())
     }
 }

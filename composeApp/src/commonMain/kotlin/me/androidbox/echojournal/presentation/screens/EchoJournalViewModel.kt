@@ -2,6 +2,12 @@ package me.androidbox.echojournal.presentation.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.icerock.moko.permissions.DeniedAlwaysException
+import dev.icerock.moko.permissions.DeniedException
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.PermissionState
+import dev.icerock.moko.permissions.PermissionsController
+import dev.icerock.moko.permissions.RequestCanceledException
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,7 +33,8 @@ import me.androidbox.echojournal.presentation.models.SelectableTopic
 import me.androidbox.echojournal.presentation.models.emotionList
 
 class EchoJournalViewModel(
-    private val fetchEchoJournalsUseCase: FetchEchoJournalsUseCase
+    private val fetchEchoJournalsUseCase: FetchEchoJournalsUseCase,
+    val permissionsController: PermissionsController
 ) : ViewModel() {
 
     private var hasFetched = false
@@ -47,6 +54,50 @@ class EchoJournalViewModel(
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = EchoJournalState()
         )
+
+    init {
+        viewModelScope.launch {
+            _echoEchoJournalState.update { echoJournalState ->
+                echoJournalState.copy(
+                    permissionState = permissionsController.getPermissionState(Permission.RECORD_AUDIO)
+                )
+            }
+        }
+    }
+
+    fun openAppSettings() {
+        permissionsController.openAppSettings()
+    }
+
+    fun provideOrRequestRecordAudioPermission() {
+        viewModelScope.launch {
+            try {
+                permissionsController.providePermission(Permission.RECORD_AUDIO)
+                _echoEchoJournalState.update { echoJournalState ->
+                    echoJournalState.copy(
+                        permissionState = PermissionState.Granted
+                    )
+                }
+            }
+            catch (exception: DeniedAlwaysException) {
+                _echoEchoJournalState.update { echoJournalState ->
+                    echoJournalState.copy(
+                        permissionState = PermissionState.DeniedAlways
+                    )
+                }
+            }
+            catch (exception: DeniedException) {
+                _echoEchoJournalState.update { echoJournalState ->
+                    echoJournalState.copy(
+                        permissionState = PermissionState.Denied
+                    )
+                }
+            }
+            catch (exception: RequestCanceledException) {
+                exception.printStackTrace()
+            }
+        }
+    }
 
     fun populateEmotions() {
         _echoEchoJournalState.update { echoJournalState ->

@@ -29,7 +29,14 @@ fun RecordAudioBottomSheet(
     ) {
        RecordAudioContent(
            title = "Your record of memories",
-           duration = "12:34"
+           duration = "12:34",
+           startRecording = {
+               onRecordClicked()
+           },
+           stopRecording = {
+               onPauseClicked()
+           }
+
        )
     }
 }

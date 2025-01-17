@@ -29,6 +29,8 @@ fun RecordAudioContent(
     modifier: Modifier = Modifier,
     title: String,
     duration: String,
+    startRecording: () -> Unit,
+    stopRecording: () -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -56,7 +58,9 @@ fun RecordAudioContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                onClick = {}
+                onClick = {
+                    stopRecording()
+                }
             ) {
                 Icon(
                     imageVector = vectorResource(resource = Res.drawable.stop),
@@ -68,7 +72,7 @@ fun RecordAudioContent(
             RecordAudioButton(
                 icon = vectorResource(resource = Res.drawable.mic),
                 onButtonClicked = {
-
+                    startRecording()
                 }
             )
 

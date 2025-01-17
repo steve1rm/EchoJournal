@@ -34,6 +34,7 @@ import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
 import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.icerock.moko.permissions.compose.BindEffect
 import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.models.SelectableTopic
 import me.androidbox.echojournal.presentation.screens.NewEntryScreen
@@ -54,6 +55,8 @@ class MainActivity : ComponentActivity() {
             val viewModel = koinViewModel<EchoJournalViewModel>()
             val echoJournalState by viewModel.echoJournalState.collectAsStateWithLifecycle()
 
+            BindEffect(viewModel.permissionsController)
+
             EchoJournalScreen(
                 echoJournalState = echoJournalState,
                 updateTopicSelection = { selectableTopic, index ->
@@ -67,6 +70,12 @@ class MainActivity : ComponentActivity() {
                 },
                 clearAllEmotions = {
                     viewModel.clearAllEmotions()
+                },
+                onShowAppSettings = {
+                    viewModel.openAppSettings()
+                },
+                onShowPermissionDialog = {
+                    viewModel.provideOrRequestRecordAudioPermission()
                 }
             )
         }

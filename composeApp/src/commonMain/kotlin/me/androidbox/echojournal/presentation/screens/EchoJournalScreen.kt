@@ -47,6 +47,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.icerock.moko.permissions.PermissionState
+import dev.icerock.moko.permissions.compose.BindEffect
+import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
+import dev.theolm.record.Record
 import echojournal.composeapp.generated.resources.Res
 import echojournal.composeapp.generated.resources.excited
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
@@ -66,6 +70,8 @@ fun EchoJournalScreen(
     echoJournalState: EchoJournalState,
     updateTopicSelection: (topic: SelectableTopic, index: Int) -> Unit,
     updateEmotionSelection: (emotion: SelectableEmotion, index: Int) -> Unit,
+    onShowPermissionDialog: () -> Unit,
+    onShowAppSettings: () -> Unit,
     clearAllTopics: () -> Unit,
     clearAllEmotions: () -> Unit
 ) {
@@ -218,18 +224,34 @@ fun EchoJournalScreen(
                     }
                 }
 
-
                 if(shouldOpenAudioRecordingBottomSheet) {
-                    RecordAudioBottomSheet(
-                        onDismiss = {
-                            shouldOpenAudioRecordingBottomSheet = false
-                        },
-                        onPauseClicked = {},
-                        onRecordClicked = {},
-                        containerColor = Color.White,
-                        scrimColor = Color.Black.copy(alpha = 0.32f),
-                        sheetState = rememberModalBottomSheetState(),
-                    )
+                    when(echoJournalState.permissionState) {
+                        PermissionState.Granted -> {
+                            RecordAudioBottomSheet(
+                                onDismiss = {
+                                    shouldOpenAudioRecordingBottomSheet = false
+                                },
+                                onPauseClicked = {
+                                    val path = Record.stopRecording()
+                                    println("RECORD STOPPED $path")
+                                },
+                                onRecordClicked = {
+                                    println("RECORD STARTED")
+                                    Record.startRecording()
+                                },
+                                containerColor = Color.White,
+                                scrimColor = Color.Black.copy(alpha = 0.32f),
+                                sheetState = rememberModalBottomSheetState(),
+                            )
+                        }
+                        PermissionState.DeniedAlways -> {
+                            onShowAppSettings()
+                        }
+                        else -> {
+                            /** show permission dialog again */
+                            onShowPermissionDialog()
+                        }
+                    }
                 }
             }
         },
