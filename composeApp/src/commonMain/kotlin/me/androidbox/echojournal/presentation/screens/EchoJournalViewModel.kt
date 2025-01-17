@@ -22,6 +22,7 @@ import kotlinx.datetime.format.char
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
+import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import me.androidbox.echojournal.presentation.models.SelectableTopic
 import me.androidbox.echojournal.presentation.models.emotionList
 
@@ -72,6 +73,24 @@ class EchoJournalViewModel(
         }
     }
 
+    fun updateEmotionSelection(selectableEmotion: SelectableEmotion, index: Int) {
+        val listOfEmotions = echoJournalState.value.emotionList
+
+        val updatedEmotion = listOfEmotions.mapIndexed { currentIndex, emotion ->
+            if(currentIndex == index) {
+                selectableEmotion
+            }
+            else {
+                emotion
+            }
+        }
+
+        _echoEchoJournalState.update { echoJournalState ->
+            echoJournalState.copy(
+                emotionList = updatedEmotion)
+        }
+    }
+
     fun clearAllTopics() {
         val listOfTopic = echoJournalState.value.listOfTopic
 
@@ -82,6 +101,20 @@ class EchoJournalViewModel(
         _echoEchoJournalState.update { echoJournalState ->
             echoJournalState.copy(
                 listOfTopic = listOfUpdatedTopics
+            )
+        }
+    }
+
+    fun clearAllEmotions() {
+        val listOfEmotions = echoJournalState.value.emotionList
+
+        val listOfUpdatedEmotions = listOfEmotions.map { emotion ->
+            emotion.copy(isSelected = false)
+        }
+
+        _echoEchoJournalState.update { echoJournalState ->
+            echoJournalState.copy(
+                emotionList = listOfUpdatedEmotions
             )
         }
     }

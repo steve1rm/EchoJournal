@@ -62,7 +62,9 @@ fun EchoJournalScreen(
     modifier: Modifier = Modifier,
     echoJournalState: EchoJournalState,
     updateTopicSelection: (topic: SelectableTopic, index: Int) -> Unit,
-    clearAllTopics: () -> Unit
+    updateEmotionSelection: (emotion: SelectableEmotion, index: Int) -> Unit,
+    clearAllTopics: () -> Unit,
+    clearAllEmotions: () -> Unit
 ) {
 
     var shouldOpenMoodDropdown by remember {
@@ -98,9 +100,7 @@ fun EchoJournalScreen(
                         MoodSelectionChip(
                             listOfMoods = echoJournalState.emotionList.filter { it.isSelected },
                             onClearClicked = {
-                                echoJournalState.emotionList.forEachIndexed { index, selectionEmotion ->
-                             //       echoJournalState.emotionList[index] = selectionEmotion.copy(isSelected = false)
-                                }
+                                clearAllEmotions()
                             },
                             onClicked = {
                                 shouldOpenMoodDropdown = true
@@ -132,7 +132,7 @@ fun EchoJournalScreen(
                         DropDownEmotionMenu(
                             dropDownMenuItems = echoJournalState.emotionList,
                             onMenuItemClicked = { emotion, index ->
-                           //     emotionList[index] = emotion.copy(isSelected = !emotion.isSelected)
+                                updateEmotionSelection(emotion.copy(isSelected = !emotion.isSelected), index)
                             },
                             onDismissed = {
                                 shouldOpenMoodDropdown = false

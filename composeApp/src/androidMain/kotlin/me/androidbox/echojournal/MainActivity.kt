@@ -36,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.models.SelectableTopic
+import me.androidbox.echojournal.presentation.screens.NewEntryScreen
 import org.koin.compose.viewmodel.koinViewModel
 
 class MainActivity : ComponentActivity() {
@@ -44,12 +45,12 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             // App()
-            /*NewEntryScreen(
+          /*  NewEntryScreen(
                 onSaveClicked = {},
                 onCancelClicked = {},
                 onEmotionClicked = {}
-            )*/
-
+            )
+*/
             val viewModel = koinViewModel<EchoJournalViewModel>()
             val echoJournalState by viewModel.echoJournalState.collectAsStateWithLifecycle()
 
@@ -60,6 +61,12 @@ class MainActivity : ComponentActivity() {
                 },
                 clearAllTopics = {
                     viewModel.clearAllTopics()
+                },
+                updateEmotionSelection = { selectableEmotion, index ->
+                    viewModel.updateEmotionSelection(selectableEmotion, index)
+                },
+                clearAllEmotions = {
+                    viewModel.clearAllEmotions()
                 }
             )
         }
