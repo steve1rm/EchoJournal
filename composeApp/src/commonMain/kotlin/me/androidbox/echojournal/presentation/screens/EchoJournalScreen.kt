@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Divider
@@ -32,6 +33,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.VerticalDivider
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -51,6 +53,7 @@ import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
 import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.components.EntryCard
 import me.androidbox.echojournal.presentation.components.MoodSelectionChip
+import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
 import me.androidbox.echojournal.presentation.components.TopicSelectionChip
 import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
@@ -72,6 +75,10 @@ fun EchoJournalScreen(
     }
 
     var shouldOpenTopicDropdown by remember {
+        mutableStateOf(false)
+    }
+
+    var shouldOpenAudioRecordingBottomSheet by remember {
         mutableStateOf(false)
     }
 
@@ -210,13 +217,27 @@ fun EchoJournalScreen(
                         )
                     }
                 }
+
+
+                if(shouldOpenAudioRecordingBottomSheet) {
+                    RecordAudioBottomSheet(
+                        onDismiss = {
+                            shouldOpenAudioRecordingBottomSheet = false
+                        },
+                        onPauseClicked = {},
+                        onRecordClicked = {},
+                        containerColor = Color.White,
+                        scrimColor = Color.Black.copy(alpha = 0.32f),
+                        sheetState = rememberModalBottomSheetState(),
+                    )
+                }
             }
         },
         floatingActionButton = {
             FloatingActionButton(
                 containerColor = Color(0xff578CFF),
                 onClick = {
-                    //  showBottomSheet = true
+                    shouldOpenAudioRecordingBottomSheet = true
                 },
                 shape = CircleShape,
                 content = {
