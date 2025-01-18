@@ -1,4 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class,
+    ExperimentalBasicSound::class
+)
 
 package me.androidbox.echojournal.presentation.screens
 
@@ -47,12 +49,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.lexilabs.basic.sound.Audio
+import app.lexilabs.basic.sound.ExperimentalBasicSound
 import dev.icerock.moko.permissions.PermissionState
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import dev.theolm.record.Record
 import echojournal.composeapp.generated.resources.Res
 import echojournal.composeapp.generated.resources.excited
+import eu.iamkonstantin.kotlin.gadulka.GadulkaPlayer
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
 import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.components.EntryCard
@@ -73,7 +78,11 @@ fun EchoJournalScreen(
     onShowPermissionDialog: () -> Unit,
     onShowAppSettings: () -> Unit,
     clearAllTopics: () -> Unit,
-    clearAllEmotions: () -> Unit
+    clearAllEmotions: () -> Unit,
+    startRecording: () -> Unit,
+    finishRecording: () -> Unit,
+    pauseResumeRecording: () -> Unit,
+    cancelRecording: () -> Unit
 ) {
 
     var shouldOpenMoodDropdown by remember {
@@ -87,6 +96,7 @@ fun EchoJournalScreen(
     var shouldOpenAudioRecordingBottomSheet by remember {
         mutableStateOf(false)
     }
+
 
     Scaffold(
         modifier = modifier.padding(horizontal = 16.dp),
@@ -231,17 +241,28 @@ fun EchoJournalScreen(
                                 onDismiss = {
                                     shouldOpenAudioRecordingBottomSheet = false
                                 },
-                                onPauseClicked = {
+                               /* onPauseClicked = {
+
                                     val path = Record.stopRecording()
                                     println("RECORD STOPPED $path")
+                                    val audio = Audio(
+                                        "/data/user/0/me.androidbox.echojournal/cache/1737115297858.mp4",
+                                        true
+                                    )
+
+                                    audio.pause()
                                 },
                                 onRecordClicked = {
                                     println("RECORD STARTED")
                                     Record.startRecording()
-                                },
+                                },*/
                                 containerColor = Color.White,
                                 scrimColor = Color.Black.copy(alpha = 0.32f),
                                 sheetState = rememberModalBottomSheetState(),
+                                startRecording = startRecording,
+                                finishRecording = finishRecording,
+                                pauseResumeRecording = pauseResumeRecording,
+                                cancelRecording = cancelRecording,
                             )
                         }
                         PermissionState.DeniedAlways -> {

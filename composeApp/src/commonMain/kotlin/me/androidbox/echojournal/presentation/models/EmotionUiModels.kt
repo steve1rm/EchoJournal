@@ -1,6 +1,8 @@
 package me.androidbox.echojournal.presentation.models
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -11,10 +13,14 @@ import echojournal.composeapp.generated.resources.menu_neutral
 import echojournal.composeapp.generated.resources.menu_peaceful
 import echojournal.composeapp.generated.resources.menu_sad
 import echojournal.composeapp.generated.resources.menu_stressed
+import echojournal.composeapp.generated.resources.mic
 import echojournal.composeapp.generated.resources.neutral
+import echojournal.composeapp.generated.resources.pause
 import echojournal.composeapp.generated.resources.peaceful
 import echojournal.composeapp.generated.resources.sad
+import echojournal.composeapp.generated.resources.stop
 import echojournal.composeapp.generated.resources.stressed
+import echojournal.composeapp.generated.resources.tick
 import org.jetbrains.compose.resources.DrawableResource
 
 data class SelectableTopic(
@@ -69,8 +75,7 @@ enum class MoodColorType(val mood: String, val color: Color) {
     ORANGE("Excited", Color(0xffF6B01A))
 }
 
-enum class AudioControl(val icon: ImageVector) {
-    PLAY(Icons.Default.PlayArrow),
-    STOP(Icons.Default.PlayArrow),
-    PAUSE(Icons.Default.PlayArrow)
+enum class AudioControl(val recordingStateIcon: DrawableResource, pausedStateIcon: DrawableResource) {
+    RECORDING(recordingStateIcon = Res.drawable.tick, pausedStateIcon = Res.drawable.pause),
+    PAUSED(recordingStateIcon = Res.drawable.mic, pausedStateIcon = Res.drawable.stop),
 }

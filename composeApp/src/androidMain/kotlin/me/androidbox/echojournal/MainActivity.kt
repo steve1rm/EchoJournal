@@ -1,7 +1,10 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalBasicSound::class)
 
 package me.androidbox.echojournal
 
+import android.content.Context
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -33,14 +36,36 @@ import me.androidbox.echojournal.presentation.models.populate
 import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
 import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 import androidx.compose.runtime.getValue
+import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.lexilabs.basic.sound.Audio
+import app.lexilabs.basic.sound.ExperimentalBasicSound
 import dev.icerock.moko.permissions.compose.BindEffect
+import eu.iamkonstantin.kotlin.gadulka.GadulkaPlayer
 import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.models.SelectableTopic
 import me.androidbox.echojournal.presentation.screens.NewEntryScreen
 import org.koin.compose.viewmodel.koinViewModel
+import java.io.File
 
 class MainActivity : ComponentActivity() {
+
+    fun extractFileFromCache(fileName: String): Uri {
+        // Get the cache directory
+        val cacheDir = this@MainActivity.cacheDir
+
+        // Create a File object for the file
+        val file = File(cacheDir, fileName)
+
+        // Check if the file exists. If it doesn't, this means the file doesn't exist, or it has been deleted by Android.
+        if (!file.exists()) {
+            println("File doesn't exist in cache!")
+            return Uri.EMPTY
+        }
+
+        return file.toUri()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -57,6 +82,23 @@ class MainActivity : ComponentActivity() {
 
             BindEffect(viewModel.permissionsController)
 
+        //    val audio = Audio(extractFileFromCache("1737106878440.mp4").toString(), false)
+          //  val audio = Audio("/data/user/0/me.androidbox.echojournal/cache/1737115297858.mp4", true)
+         //   val audio = Audio("https://dare.wisc.edu/wp-content/uploads/sites/1051/2008/11/MS072.mp3", false)
+
+
+
+         /*   val resource = "https://dare.wisc.edu/wp-content/uploads/sites/1051/2008/11/MS072.mp3"
+            val audio = Audio(resource, true) // AutoPlay is marked "true"*/
+
+          /*  MediaPlayer.create(this@MainActivity, extractFileFromCache("1737115297858.mp4")).also {
+               // it.setDataSource("/data/user/0/me.androidbox.echojournal/cache/1737115297858.mp4")
+                it.start()
+            }*/
+
+          /*  val player = GadulkaPlayer(this@MainActivity)
+            player.play("/data/user/0/me.androidbox.echojournal/cache/1737115297858.mp4")
+            player.stop()*/
             EchoJournalScreen(
                 echoJournalState = echoJournalState,
                 updateTopicSelection = { selectableTopic, index ->
@@ -76,7 +118,11 @@ class MainActivity : ComponentActivity() {
                 },
                 onShowPermissionDialog = {
                     viewModel.provideOrRequestRecordAudioPermission()
-                }
+                },
+                startRecording = {},
+                finishRecording = {},
+                pauseResumeRecording = {},
+                cancelRecording = {},
             )
         }
     }
@@ -241,10 +287,13 @@ fun RecordAudioBottomSheetPreview() {
     RecordAudioBottomSheet(
         sheetState = sheetState,
         onDismiss = { /*TODO*/ },
-        onPauseClicked = { /*TODO*/ },
-        onRecordClicked = { /*TODO*/ },
         containerColor = Color.White,
         scrimColor = Color.Black.copy(alpha = 0.32f),
+        modifier = TODO(),
+        startRecording = TODO(),
+        finishRecording = TODO(),
+        pauseResumeRecording = TODO(),
+        cancelRecording = TODO(),
     )
 }
 

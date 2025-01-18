@@ -30,7 +30,9 @@ fun RecordAudioContent(
     title: String,
     duration: String,
     startRecording: () -> Unit,
-    stopRecording: () -> Unit
+    finishRecording: () -> Unit,
+    pauseResumeRecording: () -> Unit,
+    cancelRecording: () -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -59,7 +61,7 @@ fun RecordAudioContent(
         ) {
             IconButton(
                 onClick = {
-                    stopRecording()
+                    cancelRecording()
                 }
             ) {
                 Icon(
@@ -72,12 +74,14 @@ fun RecordAudioContent(
             RecordAudioButton(
                 icon = vectorResource(resource = Res.drawable.mic),
                 onButtonClicked = {
-                    startRecording()
+                    pauseResumeRecording()
                 }
             )
 
             IconButton(
-                onClick = {}
+                onClick = {
+                    pauseResumeRecording()
+                }
             ) {
                 Icon(
                     imageVector = vectorResource(resource = Res.drawable.pause),

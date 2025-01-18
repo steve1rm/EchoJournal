@@ -13,11 +13,13 @@ import androidx.compose.ui.graphics.Color
 fun RecordAudioBottomSheet(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
-    onPauseClicked: () -> Unit,
-    onRecordClicked: () -> Unit,
     containerColor: Color,
     scrimColor: Color,
     sheetState: SheetState,
+    startRecording: () -> Unit,
+    finishRecording: () -> Unit,
+    pauseResumeRecording: () -> Unit,
+    cancelRecording: () -> Unit
 ) {
 
     ModalBottomSheet(
@@ -27,16 +29,14 @@ fun RecordAudioBottomSheet(
         onDismissRequest = onDismiss,
         scrimColor = scrimColor,
     ) {
-       RecordAudioContent(
-           title = "Your record of memories",
-           duration = "12:34",
-           startRecording = {
-               onRecordClicked()
-           },
-           stopRecording = {
-               onPauseClicked()
-           }
 
-       )
+        RecordAudioContent(
+            title = "Your record of memories",
+            duration = "12:34",
+            startRecording = startRecording,
+            finishRecording = finishRecording,
+            pauseResumeRecording = pauseResumeRecording,
+            cancelRecording = cancelRecording,
+        )
     }
 }

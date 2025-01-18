@@ -67,7 +67,8 @@ kotlin {
             implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
             implementation("dev.theolm.record:record-core:0.3.0")
-
+            api("eu.iamkonstantin.kotlin:gadulka:1.4.3")
+            implementation("app.lexilabs.basic:basic-sound:0.2.2")
             api(libs.moko.permissions)
             api(libs.moko.permissions.compose)
         }
