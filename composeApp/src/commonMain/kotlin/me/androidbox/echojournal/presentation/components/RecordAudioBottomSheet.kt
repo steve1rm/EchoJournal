@@ -16,6 +16,7 @@ fun RecordAudioBottomSheet(
     containerColor: Color,
     scrimColor: Color,
     sheetState: SheetState,
+    isRecording: Boolean,
     startRecording: () -> Unit,
     finishRecording: () -> Unit,
     pauseResumeRecording: () -> Unit,
@@ -31,12 +32,12 @@ fun RecordAudioBottomSheet(
     ) {
 
         RecordAudioContent(
-            title = "Your record of memories",
             duration = "12:34",
             startRecording = startRecording,
             finishRecording = finishRecording,
             pauseResumeRecording = pauseResumeRecording,
             cancelRecording = cancelRecording,
+            isRecording = isRecording,
         )
     }
 }

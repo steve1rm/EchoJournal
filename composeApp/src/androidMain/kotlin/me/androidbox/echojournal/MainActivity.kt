@@ -2,13 +2,10 @@
 
 package me.androidbox.echojournal
 
-import android.content.Context
-import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -32,19 +29,14 @@ import me.androidbox.echojournal.presentation.components.TopicSelectionChip
 import me.androidbox.echojournal.presentation.models.EmotionMoodsOutlined
 import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
-import me.androidbox.echojournal.presentation.models.populate
 import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
 import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 import androidx.compose.runtime.getValue
 import androidx.core.net.toUri
-import androidx.lifecycle.viewmodel.compose.viewModel
-import app.lexilabs.basic.sound.Audio
 import app.lexilabs.basic.sound.ExperimentalBasicSound
 import dev.icerock.moko.permissions.compose.BindEffect
-import eu.iamkonstantin.kotlin.gadulka.GadulkaPlayer
 import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.models.SelectableTopic
-import me.androidbox.echojournal.presentation.screens.NewEntryScreen
 import org.koin.compose.viewmodel.koinViewModel
 import java.io.File
 
@@ -77,10 +69,10 @@ class MainActivity : ComponentActivity() {
                 onEmotionClicked = {}
             )
 */
-            val viewModel = koinViewModel<EchoJournalViewModel>()
-            val echoJournalState by viewModel.echoJournalState.collectAsStateWithLifecycle()
+            val echoJournalViewModel = koinViewModel<EchoJournalViewModel>()
+            val echoJournalState by echoJournalViewModel.echoJournalState.collectAsStateWithLifecycle()
 
-            BindEffect(viewModel.permissionsController)
+            BindEffect(echoJournalViewModel.permissionsController)
 
         //    val audio = Audio(extractFileFromCache("1737106878440.mp4").toString(), false)
           //  val audio = Audio("/data/user/0/me.androidbox.echojournal/cache/1737115297858.mp4", true)
@@ -102,22 +94,22 @@ class MainActivity : ComponentActivity() {
             EchoJournalScreen(
                 echoJournalState = echoJournalState,
                 updateTopicSelection = { selectableTopic, index ->
-                    viewModel.updateTopicSelection(selectableTopic, index)
+                    echoJournalViewModel.updateTopicSelection(selectableTopic, index)
                 },
                 clearAllTopics = {
-                    viewModel.clearAllTopics()
+                    echoJournalViewModel.clearAllTopics()
                 },
                 updateEmotionSelection = { selectableEmotion, index ->
-                    viewModel.updateEmotionSelection(selectableEmotion, index)
+                    echoJournalViewModel.updateEmotionSelection(selectableEmotion, index)
                 },
                 clearAllEmotions = {
-                    viewModel.clearAllEmotions()
+                    echoJournalViewModel.clearAllEmotions()
                 },
                 onShowAppSettings = {
-                    viewModel.openAppSettings()
+                    echoJournalViewModel.openAppSettings()
                 },
                 onShowPermissionDialog = {
-                    viewModel.provideOrRequestRecordAudioPermission()
+                    echoJournalViewModel.provideOrRequestRecordAudioPermission()
                 },
                 startRecording = {},
                 finishRecording = {},
@@ -294,6 +286,7 @@ fun RecordAudioBottomSheetPreview() {
         finishRecording = TODO(),
         pauseResumeRecording = TODO(),
         cancelRecording = TODO(),
+        isRecording = true
     )
 }
 

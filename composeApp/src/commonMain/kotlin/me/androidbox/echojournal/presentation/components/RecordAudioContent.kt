@@ -20,15 +20,17 @@ import androidx.compose.ui.unit.sp
 import echojournal.composeapp.generated.resources.Res
 import echojournal.composeapp.generated.resources.mic
 import echojournal.composeapp.generated.resources.pause
+import echojournal.composeapp.generated.resources.recording_tick
 import echojournal.composeapp.generated.resources.stop
+import echojournal.composeapp.generated.resources.tick
 import org.jetbrains.compose.resources.imageResource
 import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun RecordAudioContent(
     modifier: Modifier = Modifier,
-    title: String,
     duration: String,
+    isRecording: Boolean,
     startRecording: () -> Unit,
     finishRecording: () -> Unit,
     pauseResumeRecording: () -> Unit,
@@ -39,7 +41,7 @@ fun RecordAudioContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = title,
+            text = if(isRecording) "Recording your memories..." else "Recording paused ",
             fontSize = 24.sp,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
@@ -72,19 +74,19 @@ fun RecordAudioContent(
             }
 
             RecordAudioButton(
-                icon = vectorResource(resource = Res.drawable.mic),
                 onButtonClicked = {
                     pauseResumeRecording()
-                }
+                },
+                isRecording = isRecording
             )
 
             IconButton(
                 onClick = {
-                    pauseResumeRecording()
+                    /** Not implemented */
                 }
             ) {
                 Icon(
-                    imageVector = vectorResource(resource = Res.drawable.pause),
+                    imageVector = if(isRecording) vectorResource(resource = Res.drawable.pause) else vectorResource(resource = Res.drawable.tick),
                     contentDescription = "stop",
                     tint = Color.Unspecified
                 )

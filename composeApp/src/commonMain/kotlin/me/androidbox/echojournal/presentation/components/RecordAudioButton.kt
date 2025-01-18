@@ -16,23 +16,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import echojournal.composeapp.generated.resources.Res
+import echojournal.composeapp.generated.resources.mic
+import echojournal.composeapp.generated.resources.recording_tick
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun RecordAudioButton(
-    icon: ImageVector,
     modifier: Modifier = Modifier,
-    contentDescription: String? = null,
     iconSize: Dp = 48.dp,
-    onButtonClicked: () -> Unit
+    isRecording: Boolean,
+    onButtonClicked: () -> Unit,
 ) {
 
     Box(
         modifier = modifier
             .size(128.dp)
             .clip(CircleShape)
-            .clickable(onClick = onButtonClicked)
             .background(
-                color = Color(0xffEEF0FF)
+                color = if(isRecording) Color(0xffEEF0FF) else Color.Transparent
             ),
         contentAlignment = Alignment.Center
     ) {
@@ -42,7 +44,8 @@ fun RecordAudioButton(
                 .clip(CircleShape)
                 .clickable(onClick = onButtonClicked)
                 .background(
-                    color = Color(0xffD9E2FF)
+                    color = if(isRecording) Color(0xffD9E2FF) else Color.Transparent
+            //        color = Color(0xffD9E2FF)
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -52,14 +55,15 @@ fun RecordAudioButton(
                     .clip(CircleShape)
                     .background(
                         color = Color(0xff1F70F5)
-                    ),
+                    )
+                    .clickable(onClick = onButtonClicked),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     modifier = Modifier
                         .size(iconSize),
-                    imageVector = icon,
-                    contentDescription = contentDescription,
+                    imageVector = if(isRecording) vectorResource(resource = Res.drawable.recording_tick) else vectorResource(resource = Res.drawable.mic),
+                    contentDescription = "Record pause audio",
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
             }

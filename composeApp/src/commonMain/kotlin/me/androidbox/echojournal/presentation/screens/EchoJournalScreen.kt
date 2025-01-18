@@ -263,6 +263,7 @@ fun EchoJournalScreen(
                                 finishRecording = finishRecording,
                                 pauseResumeRecording = pauseResumeRecording,
                                 cancelRecording = cancelRecording,
+                                isRecording = echoJournalState.isRecording
                             )
                         }
                         PermissionState.DeniedAlways -> {

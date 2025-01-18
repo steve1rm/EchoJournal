@@ -8,6 +8,8 @@ import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionState
 import dev.icerock.moko.permissions.PermissionsController
 import dev.icerock.moko.permissions.RequestCanceledException
+import dev.theolm.record.Record
+import dev.theolm.record.config.RecordConfig
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -62,6 +64,40 @@ class EchoJournalViewModel(
                     permissionState = permissionsController.getPermissionState(Permission.RECORD_AUDIO)
                 )
             }
+        }
+    }
+
+    fun startRecording() {
+        println("Starting recording")
+        if(!Record.isRecording()) {
+            Record.startRecording()
+
+            _echoEchoJournalState.update { echoJournalState ->
+                echoJournalState.copy(isRecording = true)
+            }
+        }
+    }
+
+    fun finishRecording() {
+        if(Record.isRecording()) {
+            val audioPath = Record.stopRecording()
+
+            _echoEchoJournalState.update { echoJournalState ->
+                echoJournalState.copy(
+                    isRecording = false,
+                    audioFile = audioPath)
+            }
+        }
+    }
+
+    fun pauseResumeRecording() {
+        /** Not implemented */
+    }
+
+    fun cancelRecording() {
+        /** Discard recording and close button sheet */
+        if(Record.isRecording()) {
+            Record.stopRecording()
         }
     }
 
