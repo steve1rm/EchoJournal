@@ -10,7 +10,8 @@ data class EchoJournalState(
     val listOfTopic: List<SelectableTopic> = emptyList(),
     val emotionList: List<SelectableEmotion> = emptyList(),
     val permissionState: PermissionState = PermissionState.NotDetermined,
-    val isRecording: Boolean = true,
+    val isRecording: Boolean = false,
+    val isPaused: Boolean = false,
     val audioFile: String = ""
 )
 

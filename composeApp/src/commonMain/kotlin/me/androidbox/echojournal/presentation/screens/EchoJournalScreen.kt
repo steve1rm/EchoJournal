@@ -80,7 +80,6 @@ fun EchoJournalScreen(
     clearAllTopics: () -> Unit,
     clearAllEmotions: () -> Unit,
     startRecording: () -> Unit,
-    finishRecording: () -> Unit,
     pauseResumeRecording: () -> Unit,
     cancelRecording: () -> Unit
 ) {
@@ -202,7 +201,7 @@ fun EchoJournalScreen(
                                             )
 
                                             // Vertical Line
-                                            println("Header $header ${data.count()}")
+                                       //     println("Header $header ${data.count()}")
 
                                                 VerticalDivider(
                                                     thickness = 1.dp,
@@ -260,10 +259,10 @@ fun EchoJournalScreen(
                                 scrimColor = Color.Black.copy(alpha = 0.32f),
                                 sheetState = rememberModalBottomSheetState(),
                                 startRecording = startRecording,
-                                finishRecording = finishRecording,
                                 pauseResumeRecording = pauseResumeRecording,
                                 cancelRecording = cancelRecording,
-                                isRecording = echoJournalState.isRecording
+                                isRecording = echoJournalState.isRecording,
+                                isPaused = echoJournalState.isPaused
                             )
                         }
                         PermissionState.DeniedAlways -> {

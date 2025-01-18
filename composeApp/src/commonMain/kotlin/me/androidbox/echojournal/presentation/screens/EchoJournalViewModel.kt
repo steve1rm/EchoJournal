@@ -68,34 +68,47 @@ class EchoJournalViewModel(
     }
 
     fun startRecording() {
-        println("Starting recording")
-        if(!Record.isRecording()) {
-            Record.startRecording()
+        if (!echoJournalState.value.isPaused) {
+            if (Record.isRecording()) {
+                val filePath = Record.stopRecording()
+                println("Stop recording $filePath")
 
-            _echoEchoJournalState.update { echoJournalState ->
-                echoJournalState.copy(isRecording = true)
+                _echoEchoJournalState.update { echoJournalState ->
+                    echoJournalState.copy(
+                        isRecording = false,
+                        audioFile = filePath
+                    )
+                }
+            } else {
+                println("Starting recording")
+                Record.startRecording()
+
+                _echoEchoJournalState.update { echoJournalState ->
+                    echoJournalState.copy(isRecording = true)
+                }
             }
         }
-    }
-
-    fun finishRecording() {
-        if(Record.isRecording()) {
-            val audioPath = Record.stopRecording()
-
+        else {
+            println("resume recording")
             _echoEchoJournalState.update { echoJournalState ->
                 echoJournalState.copy(
-                    isRecording = false,
-                    audioFile = audioPath)
+                    isPaused = false)
             }
         }
     }
 
     fun pauseResumeRecording() {
+        println("pause recording")
         /** Not implemented */
+        _echoEchoJournalState.update { echoJournalState ->
+            echoJournalState.copy(
+                isPaused = true)
+        }
     }
 
     fun cancelRecording() {
         /** Discard recording and close button sheet */
+        println("cancel recording")
         if(Record.isRecording()) {
             Record.stopRecording()
         }

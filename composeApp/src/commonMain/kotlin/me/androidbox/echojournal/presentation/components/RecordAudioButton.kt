@@ -26,6 +26,7 @@ fun RecordAudioButton(
     modifier: Modifier = Modifier,
     iconSize: Dp = 48.dp,
     isRecording: Boolean,
+    isPaused: Boolean,
     onButtonClicked: () -> Unit,
 ) {
 
@@ -34,7 +35,7 @@ fun RecordAudioButton(
             .size(128.dp)
             .clip(CircleShape)
             .background(
-                color = if(isRecording) Color(0xffEEF0FF) else Color.Transparent
+                color = if(isRecording && !isPaused) Color(0xffEEF0FF) else Color.Transparent
             ),
         contentAlignment = Alignment.Center
     ) {
@@ -44,8 +45,7 @@ fun RecordAudioButton(
                 .clip(CircleShape)
                 .clickable(onClick = onButtonClicked)
                 .background(
-                    color = if(isRecording) Color(0xffD9E2FF) else Color.Transparent
-            //        color = Color(0xffD9E2FF)
+                    color = if(isRecording && !isPaused) Color(0xffD9E2FF) else Color.Transparent
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -62,7 +62,7 @@ fun RecordAudioButton(
                 Icon(
                     modifier = Modifier
                         .size(iconSize),
-                    imageVector = if(isRecording) vectorResource(resource = Res.drawable.recording_tick) else vectorResource(resource = Res.drawable.mic),
+                    imageVector = if(isRecording && !isPaused) vectorResource(resource = Res.drawable.recording_tick) else vectorResource(resource = Res.drawable.mic),
                     contentDescription = "Record pause audio",
                     tint = MaterialTheme.colorScheme.onPrimary
                 )

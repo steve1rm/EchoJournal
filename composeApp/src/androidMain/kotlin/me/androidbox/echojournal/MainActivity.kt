@@ -2,6 +2,7 @@
 
 package me.androidbox.echojournal
 
+import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -91,6 +92,8 @@ class MainActivity : ComponentActivity() {
           /*  val player = GadulkaPlayer(this@MainActivity)
             player.play("/data/user/0/me.androidbox.echojournal/cache/1737115297858.mp4")
             player.stop()*/
+
+
             EchoJournalScreen(
                 echoJournalState = echoJournalState,
                 updateTopicSelection = { selectableTopic, index ->
@@ -111,10 +114,15 @@ class MainActivity : ComponentActivity() {
                 onShowPermissionDialog = {
                     echoJournalViewModel.provideOrRequestRecordAudioPermission()
                 },
-                startRecording = {},
-                finishRecording = {},
-                pauseResumeRecording = {},
-                cancelRecording = {},
+                startRecording = {
+                    echoJournalViewModel.startRecording()
+                },
+                pauseResumeRecording = {
+                    echoJournalViewModel.pauseResumeRecording()
+                },
+                cancelRecording = {
+                    echoJournalViewModel.cancelRecording()
+                },
             )
         }
     }
@@ -283,10 +291,10 @@ fun RecordAudioBottomSheetPreview() {
         scrimColor = Color.Black.copy(alpha = 0.32f),
         modifier = TODO(),
         startRecording = TODO(),
-        finishRecording = TODO(),
         pauseResumeRecording = TODO(),
         cancelRecording = TODO(),
-        isRecording = true
+        isRecording = true,
+        isPaused = false
     )
 }
 

@@ -31,8 +31,8 @@ fun RecordAudioContent(
     modifier: Modifier = Modifier,
     duration: String,
     isRecording: Boolean,
+    isPaused: Boolean,
     startRecording: () -> Unit,
-    finishRecording: () -> Unit,
     pauseResumeRecording: () -> Unit,
     cancelRecording: () -> Unit
 ) {
@@ -41,7 +41,7 @@ fun RecordAudioContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = if(isRecording) "Recording your memories..." else "Recording paused ",
+            text = if(isRecording && !isPaused) "Recording your memories..." else "Recording paused ",
             fontSize = 24.sp,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
@@ -75,18 +75,19 @@ fun RecordAudioContent(
 
             RecordAudioButton(
                 onButtonClicked = {
-                    pauseResumeRecording()
+                    startRecording()
                 },
-                isRecording = isRecording
+                isRecording = isRecording,
+                isPaused = isPaused
             )
 
             IconButton(
                 onClick = {
-                    /** Not implemented */
+                    pauseResumeRecording()
                 }
             ) {
                 Icon(
-                    imageVector = if(isRecording) vectorResource(resource = Res.drawable.pause) else vectorResource(resource = Res.drawable.tick),
+                    imageVector = if(isRecording && !isPaused) vectorResource(resource = Res.drawable.pause) else vectorResource(resource = Res.drawable.tick),
                     contentDescription = "stop",
                     tint = Color.Unspecified
                 )
