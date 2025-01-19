@@ -18,6 +18,7 @@ fun RecordAudioBottomSheet(
     sheetState: SheetState,
     isRecording: Boolean,
     isPaused: Boolean,
+    duration: Long,
     startRecording: () -> Unit,
     pauseResumeRecording: () -> Unit,
     cancelRecording: () -> Unit
@@ -32,7 +33,7 @@ fun RecordAudioBottomSheet(
     ) {
 
         RecordAudioContent(
-            duration = "12:34",
+            duration = duration,
             startRecording = startRecording,
             pauseResumeRecording = pauseResumeRecording,
             cancelRecording = cancelRecording,

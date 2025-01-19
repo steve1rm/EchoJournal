@@ -1,5 +1,7 @@
 package me.androidbox.echojournal.presentation.screens
 
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.icerock.moko.permissions.DeniedAlwaysException
@@ -9,11 +11,15 @@ import dev.icerock.moko.permissions.PermissionState
 import dev.icerock.moko.permissions.PermissionsController
 import dev.icerock.moko.permissions.RequestCanceledException
 import dev.theolm.record.Record
-import dev.theolm.record.config.RecordConfig
 import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -33,6 +39,7 @@ import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import me.androidbox.echojournal.presentation.models.SelectableTopic
 import me.androidbox.echojournal.presentation.models.emotionList
+import me.androidbox.echojournal.presentation.timeAndEmit
 
 class EchoJournalViewModel(
     private val fetchEchoJournalsUseCase: FetchEchoJournalsUseCase,
@@ -57,6 +64,46 @@ class EchoJournalViewModel(
             initialValue = EchoJournalState()
         )
 
+  /*  val timerFlow = snapshotFlow {
+        echoJournalState.value.isRecording
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = false
+    )*/
+
+    val timerFlow = echoJournalState
+        .map {
+            it.isRecording && !it.isPaused
+        }
+        .distinctUntilChanged()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000L),
+            initialValue = false
+        )
+
+    var timerJob: Job? = null
+
+    fun startTimer(isRecording: Boolean) {
+        timerJob?.cancel()
+
+        if(isRecording) {
+            timerJob = viewModelScope.launch {
+                println("timer on each $isRecording")
+                timeAndEmit(1f)
+                    .collect { duration ->
+                        println("duration $duration")
+                        _echoEchoJournalState.update { echoJournalState ->
+                            echoJournalState.copy(
+                                duration = duration
+                            )
+                        }
+                    }
+            }
+        }
+    }
+
     init {
         viewModelScope.launch {
             _echoEchoJournalState.update { echoJournalState ->
@@ -65,6 +112,12 @@ class EchoJournalViewModel(
                 )
             }
         }
+
+        timerFlow
+            .onEach {
+                println("timerflow $it")
+                startTimer(it)
+            }.launchIn(viewModelScope)
     }
 
     fun startRecording() {

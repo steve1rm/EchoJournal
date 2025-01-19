@@ -70,10 +70,7 @@ class MainActivity : ComponentActivity() {
                 onEmotionClicked = {}
             )
 */
-            val echoJournalViewModel = koinViewModel<EchoJournalViewModel>()
-            val echoJournalState by echoJournalViewModel.echoJournalState.collectAsStateWithLifecycle()
 
-            BindEffect(echoJournalViewModel.permissionsController)
 
         //    val audio = Audio(extractFileFromCache("1737106878440.mp4").toString(), false)
           //  val audio = Audio("/data/user/0/me.androidbox.echojournal/cache/1737115297858.mp4", true)
@@ -93,6 +90,12 @@ class MainActivity : ComponentActivity() {
             player.play("/data/user/0/me.androidbox.echojournal/cache/1737115297858.mp4")
             player.stop()*/
 
+
+            val echoJournalViewModel = koinViewModel<EchoJournalViewModel>()
+            val echoJournalState by echoJournalViewModel.echoJournalState.collectAsStateWithLifecycle()
+
+
+            BindEffect(echoJournalViewModel.permissionsController)
 
             EchoJournalScreen(
                 echoJournalState = echoJournalState,
@@ -294,7 +297,8 @@ fun RecordAudioBottomSheetPreview() {
         pauseResumeRecording = TODO(),
         cancelRecording = TODO(),
         isRecording = true,
-        isPaused = false
+        isPaused = false,
+        duration = 0L
     )
 }
 

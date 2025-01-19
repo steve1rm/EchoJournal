@@ -10,6 +10,11 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,24 +23,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import echojournal.composeapp.generated.resources.Res
-import echojournal.composeapp.generated.resources.mic
 import echojournal.composeapp.generated.resources.pause
-import echojournal.composeapp.generated.resources.recording_tick
 import echojournal.composeapp.generated.resources.stop
 import echojournal.composeapp.generated.resources.tick
-import org.jetbrains.compose.resources.imageResource
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun RecordAudioContent(
     modifier: Modifier = Modifier,
-    duration: String,
+    duration: Long,
     isRecording: Boolean,
     isPaused: Boolean,
     startRecording: () -> Unit,
     pauseResumeRecording: () -> Unit,
     cancelRecording: () -> Unit
 ) {
+
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -50,7 +56,7 @@ fun RecordAudioContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = duration,
+            text = formatTime(duration),
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal)
 
@@ -76,6 +82,9 @@ fun RecordAudioContent(
             RecordAudioButton(
                 onButtonClicked = {
                     startRecording()
+                    if(isRecording && !isPaused) {
+                        println("start timer")
+                    }
                 },
                 isRecording = isRecording,
                 isPaused = isPaused
@@ -84,6 +93,9 @@ fun RecordAudioContent(
             IconButton(
                 onClick = {
                     pauseResumeRecording()
+                    if(isPaused) {
+                        println("Pause timer")
+                    }
                 }
             ) {
                 Icon(
@@ -96,4 +108,17 @@ fun RecordAudioContent(
 
         Spacer(modifier = Modifier.height(24.dp))
     }
+}
+
+
+
+fun formatTime(millis: Long): String {
+    val totalSeconds = millis / 1000
+    val minutes = totalSeconds / 60
+    val seconds = totalSeconds % 60
+
+    val minutesStr = if (minutes < 10) "0$minutes" else "$minutes"
+    val secondsStr = if (seconds < 10) "0$seconds" else "$seconds"
+
+    return "$minutesStr:$secondsStr"
 }
