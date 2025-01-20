@@ -5,11 +5,11 @@ class EchoJournalDataSourceImp(
 ): EchoJournalDataSource {
 
 
-    override fun getAllTopic(): List<Topic> {
+    override suspend fun getAllTopic(): List<Topic> {
         return database.topicDao().getAll()
     }
 
-    override fun getTopicWithPrefix(title: String): List<Topic> {
+    override suspend fun getTopicWithPrefix(title: String): List<Topic> {
         return database.topicDao().getTopicWithPrefix(title)
     }
 
@@ -17,7 +17,7 @@ class EchoJournalDataSourceImp(
         database.topicDao().insertAll(topic)
     }
 
-    override fun getAllJournal(): List<Journal> {
+    override suspend fun getAllJournal(): List<Journal> {
         return database.journalDao().getAll()
     }
 

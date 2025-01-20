@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface JournalDao {
     @Query("SELECT * FROM journal")
-    fun getAll(): List<Journal>
+    suspend fun getAll(): List<Journal>
 
     @Insert
     fun insertAll(vararg journal: Journal)

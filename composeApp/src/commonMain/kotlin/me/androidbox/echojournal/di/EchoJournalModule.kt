@@ -7,11 +7,13 @@ import me.androidbox.echojournal.data.EchoJournalDatabase
 import me.androidbox.echojournal.domain.CreateJournalUseCase
 import me.androidbox.echojournal.domain.CreateTopicUseCase
 import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
+import me.androidbox.echojournal.domain.FetchTopicsWithPrefixUseCase
 import me.androidbox.echojournal.domain.FetchTopicsUseCase
 import me.androidbox.echojournal.domain.imp.CreateJournalUseCaseImp
 import me.androidbox.echojournal.domain.imp.CreateTopicUseCaseImp
 import me.androidbox.echojournal.domain.imp.FetchEchoJournalsUseCaseImp
 import me.androidbox.echojournal.domain.imp.FetchTopicsUseCaseImp
+import me.androidbox.echojournal.domain.imp.FetchTopicsWithPrefixUseCaseImp
 import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -36,6 +38,12 @@ val echoJournalModule = module {
         )
     }
 
+    factory<FetchTopicsWithPrefixUseCase> {
+        FetchTopicsWithPrefixUseCaseImp(
+            get<EchoJournalDataSource>()
+        )
+    }
+
     factory<CreateTopicUseCase> {
         CreateTopicUseCaseImp(
             get<EchoJournalDataSource>()
@@ -53,6 +61,7 @@ val echoJournalModule = module {
             get<FetchEchoJournalsUseCase>(),
             get<CreateJournalUseCase>(),
             get<FetchTopicsUseCase>(),
+            get<FetchTopicsWithPrefixUseCase>(),
             get<CreateTopicUseCase>(),
             permissionsController = get<PermissionsController>()
         )

@@ -1,7 +1,5 @@
 package me.androidbox.echojournal.presentation.screens
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.icerock.moko.permissions.DeniedAlwaysException
@@ -13,7 +11,6 @@ import dev.icerock.moko.permissions.RequestCanceledException
 import dev.theolm.record.Record
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,7 +22,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
@@ -38,11 +34,11 @@ import kotlinx.datetime.format.char
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import me.androidbox.echojournal.data.Journal
-import me.androidbox.echojournal.data.Topic
 import me.androidbox.echojournal.domain.CreateJournalUseCase
 import me.androidbox.echojournal.domain.CreateTopicUseCase
 import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
 import me.androidbox.echojournal.domain.FetchTopicsUseCase
+import me.androidbox.echojournal.domain.FetchTopicsWithPrefixUseCase
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import me.androidbox.echojournal.presentation.models.SelectableTopic
 import me.androidbox.echojournal.presentation.models.emotionList
@@ -52,6 +48,7 @@ class EchoJournalViewModel(
     private val fetchEchoJournalsUseCase: FetchEchoJournalsUseCase,
     private val createJournalUseCase: CreateJournalUseCase,
     private val fetchTopicsUseCase: FetchTopicsUseCase,
+    private val fetchTopicsWithPrefixUseCase: FetchTopicsWithPrefixUseCase,
     private val createTopicUseCase: CreateTopicUseCase,
     val permissionsController: PermissionsController
 ) : ViewModel() {
@@ -304,6 +301,23 @@ class EchoJournalViewModel(
                     _echoEchoJournalState.update { echoJournalState ->
                         echoJournalState.copy(
                             listOfTopic = topics
+                        )
+                    }
+                }
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+            }
+        }
+    }
+
+    fun fetchFilteredTopics(prefix: String) {
+        viewModelScope.launch {
+            try {
+                val result = fetchTopicsWithPrefixUseCase.execute(prefix)
+                result.onSuccess { topics ->
+                    _echoEchoJournalState.update { echoJournalState ->
+                        echoJournalState.copy(
+                            listOfTopicWithPrefix = topics
                         )
                     }
                 }

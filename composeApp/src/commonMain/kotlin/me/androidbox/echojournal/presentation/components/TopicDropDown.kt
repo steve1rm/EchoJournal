@@ -34,16 +34,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 
 @Composable
 fun TopicDropDown(
     modifier: Modifier = Modifier,
- //   viewModel: EchoJournalViewModel,
-    listOfTopics: List<String>
+    listOfTopics: List<String>,
+    onTextChanged: (String) -> Unit,
+    onTopicCreated: (String) -> Unit,
 ) {
 
-    var selectedTopics = remember {
+    val selectedTopics = remember {
         mutableStateListOf<String>()
     }
 
@@ -74,6 +74,7 @@ fun TopicDropDown(
             value = searchText,
             onValueChange = { newSearch ->
                 searchText = newSearch
+                onTextChanged.invoke(searchText)
             },
             placeholder = {
                 Text("# Topic")
@@ -95,7 +96,8 @@ fun TopicDropDown(
                                         topic = selectedTopic,
                                         onCloseClicked = { selectedTopic ->
                                             selectedTopics.remove(selectedTopic)
-                                        })
+                                        }
+                                    )
                                 }
                             }
                         }
@@ -107,7 +109,7 @@ fun TopicDropDown(
         )
 
         AnimatedVisibility(
-            visible = showList
+            visible = showList && searchText.isNotBlank()
         ) {
 
             Card(
@@ -127,7 +129,7 @@ fun TopicDropDown(
                         key = { topic ->
                             topic
                         },
-                        items = listOfTopics.filter { it.contains(searchText, ignoreCase = true) },
+                        items = listOfTopics,
                         itemContent = { topic ->
 
                             Row(
@@ -145,6 +147,7 @@ fun TopicDropDown(
                                         .fillMaxWidth()
                                         .clickable {
                                             selectedTopics.add(topic)
+                                            searchText = ""
                                         },
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.W500,
@@ -155,14 +158,14 @@ fun TopicDropDown(
                         }
                     )
 
-                    if (listOfTopics.firstOrNull {
-                            it.contains(searchText, ignoreCase = true)
-                        } == null) {
+                    if (listOfTopics.isEmpty() && searchText.isNotEmpty()) {
                         item {
                             Text(
                                 modifier = Modifier.clickable {
-                             //       viewModel.createTopic(searchText)
+                                    //       viewModel.createTopic(searchText)
+                                    onTopicCreated.invoke(searchText)
                                     selectedTopics.add(searchText)
+                                    searchText = ""
                                 },
                                 color = Color(0xff00419C),
                                 fontWeight = FontWeight.Medium,
