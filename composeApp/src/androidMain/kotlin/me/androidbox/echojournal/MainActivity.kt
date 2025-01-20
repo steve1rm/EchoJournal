@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            // App()
+             App()
           /*  NewEntryScreen(
                 onSaveClicked = {},
                 onCancelClicked = {},
@@ -97,36 +97,36 @@ class MainActivity : ComponentActivity() {
 
             BindEffect(echoJournalViewModel.permissionsController)
 
-            EchoJournalScreen(
-                echoJournalState = echoJournalState,
-                updateTopicSelection = { selectableTopic, index ->
-                    echoJournalViewModel.updateTopicSelection(selectableTopic, index)
-                },
-                clearAllTopics = {
-                    echoJournalViewModel.clearAllTopics()
-                },
-                updateEmotionSelection = { selectableEmotion, index ->
-                    echoJournalViewModel.updateEmotionSelection(selectableEmotion, index)
-                },
-                clearAllEmotions = {
-                    echoJournalViewModel.clearAllEmotions()
-                },
-                onShowAppSettings = {
-                    echoJournalViewModel.openAppSettings()
-                },
-                onShowPermissionDialog = {
-                    echoJournalViewModel.provideOrRequestRecordAudioPermission()
-                },
-                startRecording = {
-                    echoJournalViewModel.startRecording()
-                },
-                pauseResumeRecording = {
-                    echoJournalViewModel.pauseResumeRecording()
-                },
-                cancelRecording = {
-                    echoJournalViewModel.cancelRecording()
-                },
-            )
+//            EchoJournalScreen(
+//                echoJournalState = echoJournalState,
+//                updateTopicSelection = { selectableTopic, index ->
+//                    echoJournalViewModel.updateTopicSelection(selectableTopic, index)
+//                },
+//                clearAllTopics = {
+//                    echoJournalViewModel.clearAllTopics()
+//                },
+//                updateEmotionSelection = { selectableEmotion, index ->
+//                    echoJournalViewModel.updateEmotionSelection(selectableEmotion, index)
+//                },
+//                clearAllEmotions = {
+//                    echoJournalViewModel.clearAllEmotions()
+//                },
+//                onShowAppSettings = {
+//                    echoJournalViewModel.openAppSettings()
+//                },
+//                onShowPermissionDialog = {
+//                    echoJournalViewModel.provideOrRequestRecordAudioPermission()
+//                },
+//                startRecording = {
+//                    echoJournalViewModel.startRecording()
+//                },
+//                pauseResumeRecording = {
+//                    echoJournalViewModel.pauseResumeRecording()
+//                },
+//                cancelRecording = {
+//                    echoJournalViewModel.cancelRecording()
+//                },
+//            )
         }
     }
 }
@@ -174,8 +174,8 @@ fun TopicChipPreview() {
 @Preview
 @Composable
 fun TopicDropDownPreview() {
-    TopicDropDown(modifier = Modifier,
-        listOfTopics = listOf("Jack", "Jared", "Jasper", "Bob", "Peter", "Steve", "Stand", "State"))
+//    TopicDropDown(modifier = Modifier,
+//        listOfTopics = listOf("Jack", "Jared", "Jasper", "Bob", "Peter", "Steve", "Stand", "State"))
 }
 
 @Preview

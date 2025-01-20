@@ -21,6 +21,11 @@ import echojournal.composeapp.generated.resources.sad
 import echojournal.composeapp.generated.resources.stop
 import echojournal.composeapp.generated.resources.stressed
 import echojournal.composeapp.generated.resources.tick
+import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled.EXCITED
+import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled.NEUTRAL
+import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled.PEACEFUL
+import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled.SAD
+import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled.STRESSED
 import org.jetbrains.compose.resources.DrawableResource
 
 data class SelectableTopic(
@@ -65,6 +70,17 @@ enum class EmotionMoodsFilled(override val description: String, override val res
     NEUTRAL("Neutral", Res.drawable.menu_neutral, MoodColorType.GREEN.color),
     PEACEFUL("Peaceful", Res.drawable.menu_peaceful, MoodColorType.PINK.color),
     EXCITED("Excited", Res.drawable.menu_excited, MoodColorType.ORANGE.color)
+}
+
+fun getEmotionMoodsFilled(name: String) : EmotionMoodsFilled {
+    return when(name) {
+        STRESSED.name -> STRESSED
+        SAD.name -> SAD
+        NEUTRAL.name -> NEUTRAL
+        PEACEFUL.name -> PEACEFUL
+        EXCITED.name -> EXCITED
+        else -> NEUTRAL
+    }
 }
 
 enum class MoodColorType(val mood: String, val color: Color) {

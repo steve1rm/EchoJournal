@@ -34,10 +34,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 
 @Composable
 fun TopicDropDown(
     modifier: Modifier = Modifier,
+    viewModel: EchoJournalViewModel,
     listOfTopics: List<String>
 ) {
 
@@ -159,6 +161,7 @@ fun TopicDropDown(
                         item {
                             Text(
                                 modifier = Modifier.clickable {
+                                    viewModel.createTopic(searchText)
                                     selectedTopics.add(searchText)
                                 },
                                 color = Color(0xff00419C),

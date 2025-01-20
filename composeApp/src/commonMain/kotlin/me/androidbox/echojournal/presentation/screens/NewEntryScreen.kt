@@ -2,6 +2,7 @@
 
 package me.androidbox.echojournal.presentation.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,6 +43,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import echojournal.composeapp.generated.resources.Res
 import echojournal.composeapp.generated.resources.add
 import echojournal.composeapp.generated.resources.edit
@@ -54,6 +57,8 @@ import org.jetbrains.compose.resources.vectorResource
 @Composable
 fun NewEntryScreen(
     modifier: Modifier = Modifier,
+    navController: NavController,
+    viewModel: EchoJournalViewModel,
     toolBarTitle: String = "New Entry",
     onEmotionClicked: () -> Unit,
     onSaveClicked: () -> Unit,
@@ -86,6 +91,9 @@ fun NewEntryScreen(
                 },
                 navigationIcon = {
                     Icon(
+                        modifier = Modifier.clickable {
+                            navController.navigateUp()
+                        },
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Go Back")
                 }
@@ -148,6 +156,7 @@ fun NewEntryScreen(
                 )
 
                 TopicDropDown(
+                    viewModel = viewModel,
                     listOfTopics = listOf("Jack", "Jared", "Jasper", "Bob", "Peter", "Steve", "Stand", "State")
                 )
 
