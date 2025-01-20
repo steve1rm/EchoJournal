@@ -1,7 +1,5 @@
 package me.androidbox.echojournal.presentation.screens
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import dev.icerock.moko.permissions.PermissionState
 import me.androidbox.echojournal.presentation.models.EchoJournalUI
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
@@ -14,6 +12,7 @@ data class EchoJournalState(
     val permissionState: PermissionState = PermissionState.NotDetermined,
     val isRecording: Boolean = false,
     val isPaused: Boolean = false,
+    val pausedDuration: Long = 0L,
     val audioFile: String = "",
     val duration: Long = 0L
 )

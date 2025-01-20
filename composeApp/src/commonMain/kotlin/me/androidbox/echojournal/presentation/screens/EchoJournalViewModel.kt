@@ -47,6 +47,7 @@ class EchoJournalViewModel(
 ) : ViewModel() {
 
     private var hasFetched = false
+    private var timerJob: Job? = null
 
     private var _echoEchoJournalState = MutableStateFlow<EchoJournalState>(EchoJournalState())
     val echoJournalState = _echoEchoJournalState.asStateFlow()
@@ -64,7 +65,8 @@ class EchoJournalViewModel(
             initialValue = EchoJournalState()
         )
 
-  /*  val timerFlow = snapshotFlow {
+  /** Just testing this using a snapshowflow
+    val timerFlow = snapshotFlow {
         echoJournalState.value.isRecording
     }.stateIn(
         scope = viewModelScope,
@@ -83,16 +85,18 @@ class EchoJournalViewModel(
             initialValue = false
         )
 
-    var timerJob: Job? = null
-
     fun startTimer(isRecording: Boolean) {
         timerJob?.cancel()
 
         if(isRecording) {
             timerJob = viewModelScope.launch {
+                val initialDuration = echoJournalState.value.pausedDuration
+
                 println("timer on each $isRecording")
                 timeAndEmit(1f)
-                    .collect { duration ->
+                    .collect { elapsed ->
+                        val duration = initialDuration + (elapsed - (elapsed % 1_000))
+
                         println("duration $duration")
                         _echoEchoJournalState.update { echoJournalState ->
                             echoJournalState.copy(
@@ -114,9 +118,9 @@ class EchoJournalViewModel(
         }
 
         timerFlow
-            .onEach {
-                println("timerflow $it")
-                startTimer(it)
+            .onEach { canStartRecording ->
+                println("timerflow $canStartRecording")
+                startTimer(canStartRecording)
             }.launchIn(viewModelScope)
     }
 
@@ -155,7 +159,8 @@ class EchoJournalViewModel(
         /** Not implemented */
         _echoEchoJournalState.update { echoJournalState ->
             echoJournalState.copy(
-                isPaused = true)
+                isPaused = true,
+                pausedDuration = echoJournalState.duration)
         }
     }
 
@@ -272,6 +277,7 @@ class EchoJournalViewModel(
         }
     }
 
+    /** TODO Should be fetched from the local cache */
     fun fetchTopics() {
         viewModelScope.launch {
             val topics = listOf(
@@ -299,7 +305,6 @@ class EchoJournalViewModel(
                     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
                     val groupedJournals = echoJournal.groupBy { journal ->
-
                         val journalDate = Instant.fromEpochMilliseconds(journal.date).toLocalDateTime(TimeZone.currentSystemDefault()).date
 
                         when(journalDate) {
@@ -336,5 +341,10 @@ class EchoJournalViewModel(
         catch(exception: Exception) {
             exception.printStackTrace()
         }
+    }
+
+    override fun onCleared() {
+        timerJob?.cancel()
+        super.onCleared()
     }
 }
