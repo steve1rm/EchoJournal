@@ -6,14 +6,18 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dev.icerock.moko.permissions.compose.BindEffect
 import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
+import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 import me.androidbox.echojournal.presentation.screens.NewEntryScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 @Preview
@@ -38,28 +42,59 @@ fun EchoJournalApp(
     val currentScreen = EchoJournalScreens.valueOf(
         backStackEntry?.destination?.route ?: EchoJournalScreens.EchoJournalScreen.name
     )
+    val echoJournalViewModel = koinViewModel<EchoJournalViewModel>()
+    val echoJournalState by echoJournalViewModel.echoJournalState.collectAsStateWithLifecycle()
 
-    Scaffold(
-        topBar = {
-            // TODO LATER
-        },
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = EchoJournalScreens.EchoJournalScreen.name,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            composable(route = EchoJournalScreens.EchoJournalScreen.name) {
-//                EchoJournalScreen()
-            }
 
-            composable(route = EchoJournalScreens.NewEntryScreen.name) {
-                NewEntryScreen(
-                    onSaveClicked = {},
-                    onCancelClicked = {},
-                    onEmotionClicked = {}
-                )
-            }
+    BindEffect(echoJournalViewModel.permissionsController)
+
+    NavHost(
+        navController = navController,
+        startDestination = EchoJournalScreens.EchoJournalScreen.name,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        composable(route = EchoJournalScreens.EchoJournalScreen.name) {
+            EchoJournalScreen(
+                navController = navController,
+                echoJournalState = echoJournalState,
+                updateTopicSelection = { selectableTopic, index ->
+                    echoJournalViewModel.updateTopicSelection(selectableTopic, index)
+                },
+                clearAllTopics = {
+                    echoJournalViewModel.clearAllTopics()
+                },
+                updateEmotionSelection = { selectableEmotion, index ->
+                    echoJournalViewModel.updateEmotionSelection(selectableEmotion, index)
+                },
+                clearAllEmotions = {
+                    echoJournalViewModel.clearAllEmotions()
+                },
+                onShowAppSettings = {
+                    echoJournalViewModel.openAppSettings()
+                },
+                onShowPermissionDialog = {
+                    echoJournalViewModel.provideOrRequestRecordAudioPermission()
+                },
+                startRecording = {
+                    echoJournalViewModel.startRecording()
+                },
+                pauseResumeRecording = {
+                    echoJournalViewModel.pauseResumeRecording()
+                },
+                cancelRecording = {
+                    echoJournalViewModel.cancelRecording()
+                },
+            )
+        }
+
+        composable(route = EchoJournalScreens.NewEntryScreen.name) {
+            NewEntryScreen(
+                navController = navController,
+                viewModel = echoJournalViewModel,
+                onSaveClicked = {},
+                onCancelClicked = {},
+                onEmotionClicked = {}
+            )
         }
     }
 }

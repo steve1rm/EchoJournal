@@ -49,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import app.lexilabs.basic.sound.Audio
 import app.lexilabs.basic.sound.ExperimentalBasicSound
 import dev.icerock.moko.permissions.PermissionState
@@ -58,6 +59,7 @@ import dev.theolm.record.Record
 import echojournal.composeapp.generated.resources.Res
 import echojournal.composeapp.generated.resources.excited
 import eu.iamkonstantin.kotlin.gadulka.GadulkaPlayer
+import me.androidbox.echojournal.EchoJournalScreens
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
 import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.components.EntryCard
@@ -72,6 +74,7 @@ import org.jetbrains.compose.resources.vectorResource
 @Composable
 fun EchoJournalScreen(
     modifier: Modifier = Modifier,
+    navController: NavController,
     echoJournalState: EchoJournalState,
     updateTopicSelection: (topic: SelectableTopic, index: Int) -> Unit,
     updateEmotionSelection: (emotion: SelectableEmotion, index: Int) -> Unit,
@@ -239,6 +242,8 @@ fun EchoJournalScreen(
                             RecordAudioBottomSheet(
                                 onDismiss = {
                                     shouldOpenAudioRecordingBottomSheet = false
+                                    // TODO CHANGE NAVIGATION BEHAVIOUR LATER
+                                    navController.navigate(EchoJournalScreens.NewEntryScreen.name)
                                 },
                                /* onPauseClicked = {
 

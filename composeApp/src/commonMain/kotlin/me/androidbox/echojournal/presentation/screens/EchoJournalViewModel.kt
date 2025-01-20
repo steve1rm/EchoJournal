@@ -13,6 +13,7 @@ import dev.icerock.moko.permissions.RequestCanceledException
 import dev.theolm.record.Record
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
@@ -35,7 +37,12 @@ import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
+import me.androidbox.echojournal.data.Journal
+import me.androidbox.echojournal.data.Topic
+import me.androidbox.echojournal.domain.CreateJournalUseCase
+import me.androidbox.echojournal.domain.CreateTopicUseCase
 import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
+import me.androidbox.echojournal.domain.FetchTopicsUseCase
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import me.androidbox.echojournal.presentation.models.SelectableTopic
 import me.androidbox.echojournal.presentation.models.emotionList
@@ -43,6 +50,9 @@ import me.androidbox.echojournal.presentation.timeAndEmit
 
 class EchoJournalViewModel(
     private val fetchEchoJournalsUseCase: FetchEchoJournalsUseCase,
+    private val createJournalUseCase: CreateJournalUseCase,
+    private val fetchTopicsUseCase: FetchTopicsUseCase,
+    private val createTopicUseCase: CreateTopicUseCase,
     val permissionsController: PermissionsController
 ) : ViewModel() {
 
@@ -52,7 +62,7 @@ class EchoJournalViewModel(
     private var _echoEchoJournalState = MutableStateFlow<EchoJournalState>(EchoJournalState())
     val echoJournalState = _echoEchoJournalState.asStateFlow()
         .onStart {
-            if(!hasFetched) {
+            if (!hasFetched) {
                 fetchEchoJournalEntries()
                 fetchTopics()
                 populateEmotions()
@@ -144,12 +154,12 @@ class EchoJournalViewModel(
                     echoJournalState.copy(isRecording = true)
                 }
             }
-        }
-        else {
+        } else {
             println("resume recording")
             _echoEchoJournalState.update { echoJournalState ->
                 echoJournalState.copy(
-                    isPaused = false)
+                    isPaused = false
+                )
             }
         }
     }
@@ -160,14 +170,15 @@ class EchoJournalViewModel(
         _echoEchoJournalState.update { echoJournalState ->
             echoJournalState.copy(
                 isPaused = true,
-                pausedDuration = echoJournalState.duration)
+                pausedDuration = echoJournalState.duration
+            )
         }
     }
 
     fun cancelRecording() {
         /** Discard recording and close button sheet */
         println("cancel recording")
-        if(Record.isRecording()) {
+        if (Record.isRecording()) {
             Record.stopRecording()
         }
     }
@@ -185,22 +196,19 @@ class EchoJournalViewModel(
                         permissionState = PermissionState.Granted
                     )
                 }
-            }
-            catch (exception: DeniedAlwaysException) {
+            } catch (exception: DeniedAlwaysException) {
                 _echoEchoJournalState.update { echoJournalState ->
                     echoJournalState.copy(
                         permissionState = PermissionState.DeniedAlways
                     )
                 }
-            }
-            catch (exception: DeniedException) {
+            } catch (exception: DeniedException) {
                 _echoEchoJournalState.update { echoJournalState ->
                     echoJournalState.copy(
                         permissionState = PermissionState.Denied
                     )
                 }
-            }
-            catch (exception: RequestCanceledException) {
+            } catch (exception: RequestCanceledException) {
                 exception.printStackTrace()
             }
         }
@@ -216,10 +224,9 @@ class EchoJournalViewModel(
         val listOfTopic = echoJournalState.value.listOfTopic
 
         val listOfUpdatedTopics = listOfTopic.mapIndexed { currentIndex, topic ->
-            if(currentIndex == index) {
+            if (currentIndex == index) {
                 selectableTopic
-            }
-            else {
+            } else {
                 topic
             }
         }
@@ -235,17 +242,17 @@ class EchoJournalViewModel(
         val listOfEmotions = echoJournalState.value.emotionList
 
         val updatedEmotion = listOfEmotions.mapIndexed { currentIndex, emotion ->
-            if(currentIndex == index) {
+            if (currentIndex == index) {
                 selectableEmotion
-            }
-            else {
+            } else {
                 emotion
             }
         }
 
         _echoEchoJournalState.update { echoJournalState ->
             echoJournalState.copy(
-                emotionList = updatedEmotion)
+                emotionList = updatedEmotion
+            )
         }
     }
 
@@ -280,26 +287,50 @@ class EchoJournalViewModel(
     /** TODO Should be fetched from the local cache */
     fun fetchTopics() {
         viewModelScope.launch {
-            val topics = listOf(
-                SelectableTopic("Work", false),
-                SelectableTopic("Life", false),
-                SelectableTopic("Relocation", false),
-                SelectableTopic("Rest", false),
-                SelectableTopic("Travel", false),
-                SelectableTopic("Flight Tickets", false)
-            )
-
-            _echoEchoJournalState.update { echoJournalState ->
-                echoJournalState.copy(
-                    listOfTopic = topics
-                )
+            try {
+                val result = fetchTopicsUseCase.execute()
+                result.onSuccess { topics ->
+                    _echoEchoJournalState.update { echoJournalState ->
+                        echoJournalState.copy(
+                            listOfTopic = topics
+                        )
+                    }
+                }
+            } catch (exception: Exception) {
+                exception.printStackTrace()
             }
         }
     }
 
-    fun fetchEchoJournalEntries() {
-        try {
-            viewModelScope.launch {
+    fun createTopic(topic: String) {
+        viewModelScope.launch {
+            try {
+                val result = createTopicUseCase.execute(topic)
+                result.onSuccess { topics ->
+                    // TODO HANDLE SUCCESS CASE
+                }
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+            }
+        }
+    }
+
+    fun createJournal(journal: Journal) {
+        viewModelScope.launch {
+            try {
+                val result = createJournalUseCase.execute(journal)
+                result.onSuccess { journal ->
+                    // TODO HANDLE SUCCESS CASE
+                }
+            } catch (exception: Exception) {
+                exception.printStackTrace()
+            }
+        }
+    }
+
+    private fun fetchEchoJournalEntries() {
+        viewModelScope.launch {
+            try {
                 val result = fetchEchoJournalsUseCase.execute()
                 result.onSuccess { echoJournal ->
                     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
@@ -336,10 +367,9 @@ class EchoJournalViewModel(
                         )
                     }
                 }
+            } catch (exception: Exception) {
+                exception.printStackTrace()
             }
-        }
-        catch(exception: Exception) {
-            exception.printStackTrace()
         }
     }
 
