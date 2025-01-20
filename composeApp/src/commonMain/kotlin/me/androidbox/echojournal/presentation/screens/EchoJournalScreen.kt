@@ -260,7 +260,11 @@ fun EchoJournalScreen(
                                 sheetState = rememberModalBottomSheetState(),
                                 startRecording = startRecording,
                                 pauseResumeRecording = pauseResumeRecording,
-                                cancelRecording = cancelRecording,
+                                cancelRecording = {
+                                    cancelRecording()
+                                    /** Maybe should use a one-time event to close this bottom sheet*/
+                                    shouldOpenAudioRecordingBottomSheet = false
+                                },
                                 isRecording = echoJournalState.isRecording,
                                 isPaused = echoJournalState.isPaused,
                                 duration = echoJournalState.duration

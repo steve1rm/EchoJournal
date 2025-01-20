@@ -74,7 +74,7 @@ class EchoJournalViewModel(
         initialValue = false
     )*/
 
-    val timerFlow = echoJournalState
+    private val timerFlow = echoJournalState
         .map {
             it.isRecording && !it.isPaused
         }
@@ -133,6 +133,7 @@ class EchoJournalViewModel(
                 _echoEchoJournalState.update { echoJournalState ->
                     echoJournalState.copy(
                         isRecording = false,
+                        isPaused = false,
                         audioFile = filePath
                     )
                 }
@@ -170,6 +171,16 @@ class EchoJournalViewModel(
         if(Record.isRecording()) {
             Record.stopRecording()
         }
+
+        _echoEchoJournalState.update { echoJournalState ->
+            echoJournalState.copy(
+                isPaused = false,
+                isRecording = false,
+                audioFile = "",
+                duration = 0L,
+                pausedDuration = 0L)
+        }
+        timerJob?.cancel()
     }
 
     fun openAppSettings() {
