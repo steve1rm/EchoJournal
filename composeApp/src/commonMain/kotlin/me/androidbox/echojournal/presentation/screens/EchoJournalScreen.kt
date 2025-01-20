@@ -41,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,6 +59,7 @@ import dev.theolm.record.Record
 import echojournal.composeapp.generated.resources.Res
 import echojournal.composeapp.generated.resources.excited
 import eu.iamkonstantin.kotlin.gadulka.GadulkaPlayer
+import kotlinx.coroutines.launch
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
 import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.components.EntryCard
@@ -95,6 +97,10 @@ fun EchoJournalScreen(
     var shouldOpenAudioRecordingBottomSheet by remember {
         mutableStateOf(false)
     }
+
+    val sheetState = rememberModalBottomSheetState()
+
+    val scope = rememberCoroutineScope()
 
 
     Scaffold(
@@ -257,13 +263,16 @@ fun EchoJournalScreen(
                                 },*/
                                 containerColor = Color.White,
                                 scrimColor = Color.Black.copy(alpha = 0.32f),
-                                sheetState = rememberModalBottomSheetState(),
+                                sheetState = sheetState ,
                                 startRecording = startRecording,
                                 pauseResumeRecording = pauseResumeRecording,
                                 cancelRecording = {
                                     cancelRecording()
                                     /** Maybe should use a one-time event to close this bottom sheet*/
-                                    shouldOpenAudioRecordingBottomSheet = false
+                                    scope.launch {
+                                        sheetState.hide()
+                                        shouldOpenAudioRecordingBottomSheet = false
+                                    }
                                 },
                                 isRecording = echoJournalState.isRecording,
                                 isPaused = echoJournalState.isPaused,
