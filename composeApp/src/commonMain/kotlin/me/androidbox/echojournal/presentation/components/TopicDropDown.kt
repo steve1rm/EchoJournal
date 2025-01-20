@@ -39,7 +39,7 @@ import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 @Composable
 fun TopicDropDown(
     modifier: Modifier = Modifier,
-    viewModel: EchoJournalViewModel,
+ //   viewModel: EchoJournalViewModel,
     listOfTopics: List<String>
 ) {
 
@@ -161,7 +161,7 @@ fun TopicDropDown(
                         item {
                             Text(
                                 modifier = Modifier.clickable {
-                                    viewModel.createTopic(searchText)
+                             //       viewModel.createTopic(searchText)
                                     selectedTopics.add(searchText)
                                 },
                                 color = Color(0xff00419C),

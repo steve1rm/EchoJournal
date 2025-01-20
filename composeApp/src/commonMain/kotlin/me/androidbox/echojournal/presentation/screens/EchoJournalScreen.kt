@@ -37,6 +37,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -105,6 +106,13 @@ fun EchoJournalScreen(
 
     val scope = rememberCoroutineScope()
 
+
+    LaunchedEffect(echoJournalState.audioFile) {
+        if(echoJournalState.audioFile.isNotBlank()) {
+            // TODO CHANGE NAVIGATION BEHAVIOUR LATER
+            navController.navigate(EchoJournalScreens.NewEntryScreen.name)
+        }
+    }
 
     Scaffold(
         modifier = modifier.padding(horizontal = 16.dp),
@@ -248,8 +256,6 @@ fun EchoJournalScreen(
                             RecordAudioBottomSheet(
                                 onDismiss = {
                                     shouldOpenAudioRecordingBottomSheet = false
-                                    // TODO CHANGE NAVIGATION BEHAVIOUR LATER
-                                    navController.navigate(EchoJournalScreens.NewEntryScreen.name)
                                 },
                                /* onPauseClicked = {
 

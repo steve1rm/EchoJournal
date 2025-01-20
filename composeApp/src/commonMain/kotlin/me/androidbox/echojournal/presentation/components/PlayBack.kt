@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalBasicSound::class)
+
 package me.androidbox.echojournal.presentation.components
 
 import androidx.compose.foundation.background
@@ -20,13 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
+import app.lexilabs.basic.sound.Audio
+import app.lexilabs.basic.sound.ExperimentalBasicSound
 
 @Composable
 fun PlayBack(
     modifier: Modifier = Modifier,
     backgroundColor: Color,
     duration: String,
-    progress: Float
+    progress: Float,
+    audioFile: String
 ) {
     Row(modifier = modifier
         .fillMaxWidth()
@@ -39,7 +44,10 @@ fun PlayBack(
         IconButton(
             modifier = Modifier
                 .background(color = Color.White, RoundedCornerShape(100f)),
-            onClick = {}
+            onClick = {
+                println("AUDIO FILE PATH $audioFile")
+                val audio = Audio("/data/user/0/me.androidbox.echojournal/cache/1737381056940.mp4", true)
+            }
         ) {
             Icon(
                 modifier = Modifier

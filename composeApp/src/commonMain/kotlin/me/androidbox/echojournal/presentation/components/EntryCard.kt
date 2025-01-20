@@ -69,7 +69,8 @@ fun EntryCard(
                  PlayBack(
                      duration = "12:30",
                      progress = 1f,
-                     backgroundColor = backgroundColor
+                     backgroundColor = backgroundColor,
+                     audioFile = ""
                  )
 
                 ExpandableText(description = description)

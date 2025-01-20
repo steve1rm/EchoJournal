@@ -58,7 +58,7 @@ import org.jetbrains.compose.resources.vectorResource
 fun NewEntryScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: EchoJournalViewModel,
+    echoJournalState: EchoJournalState,
     toolBarTitle: String = "New Entry",
     onEmotionClicked: () -> Unit,
     onSaveClicked: () -> Unit,
@@ -152,11 +152,12 @@ fun NewEntryScreen(
                         .padding(horizontal = 16.dp),
                     duration = "12:30",
                     progress = 1f,
+                    audioFile = echoJournalState.audioFile,
                     backgroundColor = Color.Green.copy(alpha = 0.5f)
                 )
 
                 TopicDropDown(
-                    viewModel = viewModel,
+                   // viewModel = viewModel,
                     listOfTopics = listOf("Jack", "Jared", "Jasper", "Bob", "Peter", "Steve", "Stand", "State")
                 )
 

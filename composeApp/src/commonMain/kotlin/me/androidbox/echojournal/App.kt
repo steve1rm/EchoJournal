@@ -90,7 +90,7 @@ fun EchoJournalApp(
         composable(route = EchoJournalScreens.NewEntryScreen.name) {
             NewEntryScreen(
                 navController = navController,
-                viewModel = echoJournalViewModel,
+                echoJournalState = echoJournalState,
                 onSaveClicked = {},
                 onCancelClicked = {},
                 onEmotionClicked = {}

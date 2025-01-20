@@ -15,6 +15,7 @@ captures/
 *.apk
 output.json
 .kotlin/
+composeApp/schemas/
 
 # IntelliJ
 *.iml
