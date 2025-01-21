@@ -68,7 +68,6 @@ fun EntryCard(
                 /** Audio control */
                  PlayBack(
                      duration = 0L,
-                     progress = 1f,
                      backgroundColor = backgroundColor,
                      audioFile = "",
                      onPlayback = {}

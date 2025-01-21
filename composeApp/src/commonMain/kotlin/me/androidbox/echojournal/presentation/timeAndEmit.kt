@@ -1,19 +1,25 @@
 package me.androidbox.echojournal.presentation
 
+import androidx.compose.runtime.MutableLongState
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlin.math.roundToLong
 
-fun timeAndEmit(emissionsPerSecond: Float) : Flow<Long> {
+fun timeAndEmit(emissionsPerSecond: Float): Flow<Long> {
     return flow {
         val startTime = Clock.System.now().toEpochMilliseconds()
         var lastEmitTime = startTime
         emit(0L)
 
-        while(true) {
+        while (true) {
             delay((1_000L / emissionsPerSecond).roundToLong())
 
             val currentTime = Clock.System.now().toEpochMilliseconds()
@@ -25,36 +31,47 @@ fun timeAndEmit(emissionsPerSecond: Float) : Flow<Long> {
     }
 }
 
-class TimeAndEmitPlay() {
+class TimeAndEmitPlay(
+    private val scope: CoroutineScope
+) {
+    enum class PlayerState {
+        IDLE,
+        PLAY,
+        PAUSE
+    }
 
-    private var currentTime = 0L
-    private var isPaused = false
+    var state: MutableState<PlayerState> = mutableStateOf(PlayerState.IDLE)
+    val currentTime: MutableLongState = mutableLongStateOf(0L)
+    private var playbackDuration: Long = 0L
 
-    fun timeAndEmitPlayback(emissionsPerSecond: Float, playbackDuration: Long, isPaused: Boolean): Flow<Long> {
-        return flow {
-            val startTime = Clock.System.now().toEpochMilliseconds()
-            emit(0L)
+    fun setDuration(playbackDuration: Long) {
+        currentTime.value = 0L
+        state.value = PlayerState.IDLE
+        this.playbackDuration = playbackDuration
+    }
 
-            while (!isPaused) {
+    fun start() {
+        state.value = PlayerState.PLAY
+        timeAndEmitPlayback(30f)
+    }
+
+    fun pause() {
+        state.value = PlayerState.PAUSE
+    }
+
+    private fun timeAndEmitPlayback(emissionsPerSecond: Float) {
+        scope.launch {
+            while (state.value == PlayerState.PLAY) {
                 delay((1_000L / emissionsPerSecond).roundToLong())
-                val currentTime = Clock.System.now().toEpochMilliseconds()
-                val elapsedTime = currentTime - startTime
+                currentTime.value += (1_000L / emissionsPerSecond).roundToLong()
+                println("TIME AND EMIT PLAYING ${currentTime.value}")
 
-                if (elapsedTime >= playbackDuration) {
-                    emit(playbackDuration) // Emit the final value
+                if (currentTime.value >= playbackDuration) {
+                    state.value = PlayerState.IDLE
+                    currentTime.value = 0L
                     break // Stop the loop
                 }
-
-                emit(elapsedTime)
             }
         }
     }
-
-    fun shouldPause() {
-        isPaused = !isPaused
-    }
 }
-
-
-
-

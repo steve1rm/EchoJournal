@@ -196,7 +196,7 @@ fun EntryCardPreview() {
 @Preview
 @Composable
 fun PlayBackPreview() {
-    PlayBack(duration = 0L, progress = 0.5f, backgroundColor = Color.Green.copy(alpha = 0.5f), audioFile = "", onPlayback = {})
+    PlayBack(duration = 0L, backgroundColor = Color.Green.copy(alpha = 0.5f), audioFile = "", onPlayback = {})
 }
 
 @Preview
