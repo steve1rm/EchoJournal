@@ -100,7 +100,7 @@ fun EchoJournalApp(
                 onCancelClicked = {},
                 onSaveClicked = {},
                 onPlayBack = {
-                    echoJournalViewModel.startPlayBack(5000L, false)
+                    echoJournalViewModel.startPlayBack(echoJournalState.duration, false)
                 }
             )
         }

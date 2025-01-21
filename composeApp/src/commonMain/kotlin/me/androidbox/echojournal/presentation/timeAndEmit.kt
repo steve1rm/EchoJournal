@@ -2,6 +2,7 @@ package me.androidbox.echojournal.presentation
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.Clock
 import kotlin.math.roundToLong
@@ -24,23 +25,36 @@ fun timeAndEmit(emissionsPerSecond: Float) : Flow<Long> {
     }
 }
 
-fun timeAndEmitPlayback(emissionsPerSecond: Float, playbackDuration: Long): Flow<Long> {
-    return flow {
-        val startTime = Clock.System.now().toEpochMilliseconds()
-        emit(0L)
+class TimeAndEmitPlay() {
 
-        while (true) {
-            delay((1_000L / emissionsPerSecond).roundToLong())
-            val currentTime = Clock.System.now().toEpochMilliseconds()
-            val elapsedTime = currentTime - startTime
+    private var currentTime = 0L
+    private var isPaused = false
 
-            if (elapsedTime >= playbackDuration) {
-                emit(playbackDuration) // Emit the final value
-                break // Stop the loop
+    fun timeAndEmitPlayback(emissionsPerSecond: Float, playbackDuration: Long, isPaused: Boolean): Flow<Long> {
+        return flow {
+            val startTime = Clock.System.now().toEpochMilliseconds()
+            emit(0L)
+
+            while (!isPaused) {
+                delay((1_000L / emissionsPerSecond).roundToLong())
+                val currentTime = Clock.System.now().toEpochMilliseconds()
+                val elapsedTime = currentTime - startTime
+
+                if (elapsedTime >= playbackDuration) {
+                    emit(playbackDuration) // Emit the final value
+                    break // Stop the loop
+                }
+
+                emit(elapsedTime)
             }
-
-            emit(elapsedTime)
         }
     }
+
+    fun shouldPause() {
+        isPaused = !isPaused
+    }
 }
+
+
+
 
