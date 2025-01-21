@@ -18,10 +18,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.runningReduce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -47,6 +49,7 @@ import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import me.androidbox.echojournal.presentation.models.SelectableTopic
 import me.androidbox.echojournal.presentation.models.emotionList
 import me.androidbox.echojournal.presentation.timeAndEmit
+import me.androidbox.echojournal.presentation.timeAndEmitPlayback
 
 class EchoJournalViewModel(
     private val fetchEchoJournalsUseCase: FetchEchoJournalsUseCase,
@@ -116,6 +119,46 @@ class EchoJournalViewModel(
                     }
             }
         }
+    }
+
+    fun startPlayBackold(playbackDuration: Long, isPaused: Boolean) {
+        timeAndEmit(1000f)
+            .runningReduce { incrementedElapsedTime, newElapsedTime ->
+                incrementedElapsedTime + newElapsedTime
+            }
+            .onEach { totalElapsedTime ->
+                val progress = (totalElapsedTime / playbackDuration.toFloat())
+                    .coerceIn(0.0f..1.0f)
+
+                println("startplayback $progress")
+                _echoEchoJournalState.update { echoJournalState ->
+                    echoJournalState.copy(playbackProgress = progress)
+                }
+            }
+            .launchIn(viewModelScope)
+
+    }
+
+    fun startPlayBack(playbackDuration: Long, isPaused: Boolean) {
+        if (isPaused) return // Pause logic (can be extended)
+
+        timeAndEmitPlayback(1f, playbackDuration) // Emit once per second
+            .onEach { elapsedTime ->
+                val progress = (elapsedTime / playbackDuration.toFloat())
+                    .coerceIn(0.0f..1.0f)
+
+                println("startPlayBack progress: $progress")
+
+                _echoEchoJournalState.update { echoJournalState ->
+                    echoJournalState.copy(playbackProgress = progress)
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+
+    fun pausePlayBack() {
+
     }
 
     init {

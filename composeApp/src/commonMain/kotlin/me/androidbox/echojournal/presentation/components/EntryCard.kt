@@ -67,10 +67,11 @@ fun EntryCard(
 
                 /** Audio control */
                  PlayBack(
-                     duration = "12:30",
+                     duration = 0L,
                      progress = 1f,
                      backgroundColor = backgroundColor,
-                     audioFile = ""
+                     audioFile = "",
+                     onPlayback = {}
                  )
 
                 ExpandableText(description = description)

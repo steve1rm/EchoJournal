@@ -93,7 +93,10 @@ fun EchoJournalApp(
                 echoJournalState = echoJournalState,
                 onSaveClicked = {},
                 onCancelClicked = {},
-                onEmotionClicked = {}
+                onEmotionClicked = {},
+                onPlayBack = {
+                    echoJournalViewModel.startPlayBack(5000L, false)
+                }
             )
         }
     }

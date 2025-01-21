@@ -62,7 +62,8 @@ fun NewEntryScreen(
     toolBarTitle: String = "New Entry",
     onEmotionClicked: () -> Unit,
     onSaveClicked: () -> Unit,
-    onCancelClicked: () -> Unit
+    onCancelClicked: () -> Unit,
+    onPlayBack: () -> Unit
 ) {
 
     var title by remember {
@@ -150,10 +151,13 @@ fun NewEntryScreen(
                 PlayBack(
                     modifier = Modifier
                         .padding(horizontal = 16.dp),
-                    duration = "12:30",
-                    progress = 1f,
+                    duration = echoJournalState.duration,
+                    progress = echoJournalState.playbackProgress,
                     audioFile = echoJournalState.audioFile,
-                    backgroundColor = Color.Green.copy(alpha = 0.5f)
+                    backgroundColor = Color.Green.copy(alpha = 0.5f),
+                    onPlayback = {
+                        onPlayBack()
+                    }
                 )
 
                 TopicDropDown(

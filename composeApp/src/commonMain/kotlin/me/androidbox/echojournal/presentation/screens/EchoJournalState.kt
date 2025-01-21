@@ -14,6 +14,7 @@ data class EchoJournalState(
     val isPaused: Boolean = false,
     val pausedDuration: Long = 0L,
     val audioFile: String = "",
-    val duration: Long = 0L
+    val duration: Long = 0L,
+    val playbackProgress: Float = 0.0f
 )
 
