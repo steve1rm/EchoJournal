@@ -9,10 +9,10 @@ import androidx.room.Query
 interface TopicDao {
 
     @Query("SELECT * FROM topic")
-    fun getAll(): List<Topic>
+    suspend fun getAll(): List<Topic>
 
     @Query("SELECT * FROM topic WHERE title LIKE :title || '%'")
-    fun getTopicWithPrefix(title: String): List<Topic>
+    suspend fun getTopicWithPrefix(title: String): List<Topic>
 
     @Insert
     fun insertAll(vararg topic: Topic)

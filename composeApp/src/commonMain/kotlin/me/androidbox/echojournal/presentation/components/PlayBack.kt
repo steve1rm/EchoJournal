@@ -153,7 +153,7 @@ fun PlayBack(
         )
 
         Text(
-            text = formatTime(duration)
+            text = "${formatTime(progress.toLong())}/${formatTime(duration)}"
         )
     }
 }

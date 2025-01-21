@@ -2,7 +2,6 @@ package me.androidbox.echojournal
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -91,9 +90,15 @@ fun EchoJournalApp(
             NewEntryScreen(
                 navController = navController,
                 echoJournalState = echoJournalState,
-                onSaveClicked = {},
-                onCancelClicked = {},
                 onEmotionClicked = {},
+                onTextChanged = { text ->
+                    echoJournalViewModel.fetchFilteredTopics(text)
+                },
+                onTopicCreated = { text ->
+                    echoJournalViewModel.createTopic(text)
+                },
+                onCancelClicked = {},
+                onSaveClicked = {},
                 onPlayBack = {
                     echoJournalViewModel.startPlayBack(5000L, false)
                 }
