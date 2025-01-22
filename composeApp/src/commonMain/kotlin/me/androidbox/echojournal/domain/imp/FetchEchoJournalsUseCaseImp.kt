@@ -27,7 +27,7 @@ class FetchEchoJournalsUseCaseImp(
                     )
                 }
 
-                Result.success(populate().getOrNull() ?: emptyList())
+                Result.success(journals)
             } catch (e: Exception) {
                 Result.failure(e)
             }
