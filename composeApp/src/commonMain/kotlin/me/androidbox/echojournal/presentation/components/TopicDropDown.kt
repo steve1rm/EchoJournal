@@ -24,7 +24,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -38,14 +37,13 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TopicDropDown(
     modifier: Modifier = Modifier,
+    selectedTopics: List<String>,
     listOfTopics: List<String>,
     onTextChanged: (String) -> Unit,
     onTopicCreated: (String) -> Unit,
+    onTopicRemoved: (String) -> Unit,
+    onTopicSelected: (String) -> Unit,
 ) {
-
-    val selectedTopics = remember {
-        mutableStateListOf<String>()
-    }
 
     var searchText by remember {
         mutableStateOf("")
@@ -95,7 +93,7 @@ fun TopicDropDown(
                                     TopicChip(
                                         topic = selectedTopic,
                                         onCloseClicked = { selectedTopic ->
-                                            selectedTopics.remove(selectedTopic)
+                                            onTopicRemoved.invoke(selectedTopic)
                                         }
                                     )
                                 }
@@ -146,7 +144,7 @@ fun TopicDropDown(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable {
-                                            selectedTopics.add(topic)
+                                            onTopicSelected.invoke(topic)
                                             searchText = ""
                                         },
                                     fontSize = 14.sp,
@@ -162,9 +160,7 @@ fun TopicDropDown(
                         item {
                             Text(
                                 modifier = Modifier.clickable {
-                                    //       viewModel.createTopic(searchText)
                                     onTopicCreated.invoke(searchText)
-                                    selectedTopics.add(searchText)
                                     searchText = ""
                                 },
                                 color = Color(0xff00419C),

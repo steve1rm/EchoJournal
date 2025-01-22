@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "journal")
 data class Journal(
-    @PrimaryKey val uid: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "title") val title: String?,
     @ColumnInfo(name = "audioFilePath") val audioFilePath: String?,
     @ColumnInfo(name = "topics") val topics: List<String>?,

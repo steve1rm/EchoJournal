@@ -39,11 +39,11 @@ import me.androidbox.echojournal.domain.CreateTopicUseCase
 import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
 import me.androidbox.echojournal.domain.FetchTopicsUseCase
 import me.androidbox.echojournal.domain.FetchTopicsWithPrefixUseCase
+import me.androidbox.echojournal.presentation.models.EchoJournalUI
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import me.androidbox.echojournal.presentation.models.SelectableTopic
 import me.androidbox.echojournal.presentation.models.emotionList
 import me.androidbox.echojournal.presentation.timeAndEmit
-
 
 class EchoJournalViewModel(
     private val fetchEchoJournalsUseCase: FetchEchoJournalsUseCase,
@@ -73,13 +73,13 @@ class EchoJournalViewModel(
             initialValue = EchoJournalState()
         )
 
-  /** Just testing this using a snapshowflow
+    /** Just testing this using a snapshowflow
     val timerFlow = snapshotFlow {
-        echoJournalState.value.isRecording
+    echoJournalState.value.isRecording
     }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Lazily,
-        initialValue = false
+    scope = viewModelScope,
+    started = SharingStarted.Lazily,
+    initialValue = false
     )*/
 
     private val timerFlow = echoJournalState
@@ -96,7 +96,7 @@ class EchoJournalViewModel(
     fun startTimer(isRecording: Boolean) {
         timerJob?.cancel()
 
-        if(isRecording) {
+        if (isRecording) {
             timerJob = viewModelScope.launch {
                 val initialDuration = echoJournalState.value.pausedDuration
 
@@ -114,28 +114,6 @@ class EchoJournalViewModel(
                     }
             }
         }
-    }
-
-  /*  fun startPlayBack(playbackDuration: Long, isPaused: Boolean) {
-        if (isPaused) return // Pause logic (can be extended)
-
-        timeAndEmitPlayback(30f, playbackDuration) // Emit once per second
-            .onEach { elapsedTime ->
-                val progress = (elapsedTime / playbackDuration.toFloat())
-                    .coerceIn(0.0f..1.0f)
-
-                println("startPlayBack progress: $progress")
-
-                _echoEchoJournalState.update { echoJournalState ->
-                    echoJournalState.copy(playbackProgress = progress)
-                }
-            }
-            .launchIn(viewModelScope)
-    }
-*/
-
-    fun pausePlayBack() {
-
     }
 
     init {
@@ -363,12 +341,47 @@ class EchoJournalViewModel(
         }
     }
 
-    fun createJournal(journal: Journal) {
+    fun resetNewEntryState() {
+        _echoEchoJournalState.update { echoJournalState ->
+            echoJournalState.copy(
+                isRecording = false,
+                isPaused = false,
+                pausedDuration = 0L,
+                audioFile = "",
+                duration = 0L
+            )
+        }
+    }
+
+    fun createJournal(journal: EchoJournalUI) {
+        _echoEchoJournalState.update { echoJournalState ->
+            echoJournalState.copy(
+                createJournalState = CreateJournalState.Empty
+            )
+        }
         viewModelScope.launch {
             try {
-                val result = createJournalUseCase.execute(journal)
-                result.onSuccess { journal ->
-                    // TODO HANDLE SUCCESS CASE
+                val result = createJournalUseCase.execute(
+                    Journal(
+                        title = journal.title,
+                        audioFilePath = journal.audioFilePath,
+                        topics = journal.topics,
+                        description = journal.description,
+                        emotion = journal.emotion.name,
+                        createdAt = journal.date
+                    )
+                )
+                result.onSuccess {
+                    _echoEchoJournalState.update { echoJournalState ->
+                        echoJournalState.copy(
+                            isRecording = false,
+                            isPaused = false,
+                            pausedDuration = 0L,
+                            audioFile = "",
+                            duration = 0L,
+                            createJournalState = CreateJournalState.Success
+                        )
+                    }
                 }
             } catch (exception: Exception) {
                 exception.printStackTrace()
@@ -376,7 +389,7 @@ class EchoJournalViewModel(
         }
     }
 
-    private fun fetchEchoJournalEntries() {
+    fun fetchEchoJournalEntries() {
         viewModelScope.launch {
             try {
                 val result = fetchEchoJournalsUseCase.execute()
@@ -386,7 +399,7 @@ class EchoJournalViewModel(
                     val groupedJournals = echoJournal.groupBy { journal ->
                         val journalDate = Instant.fromEpochMilliseconds(journal.date).toLocalDateTime(TimeZone.currentSystemDefault()).date
 
-                        when(journalDate) {
+                        when (journalDate) {
                             today -> "Today"
                             today.minus(1, DateTimeUnit.DAY) -> "Yesterday"
                             else -> {
@@ -405,13 +418,15 @@ class EchoJournalViewModel(
 
                     _echoEchoJournalState.update { echoJournalState ->
                         echoJournalState.copy(
-                            listOfJournals = groupedJournals
+                            listOfJournals = groupedJournals,
+                            createJournalState = CreateJournalState.Empty
                         )
                     }
                 }.onFailure {
                     _echoEchoJournalState.update { echoJournalState ->
                         echoJournalState.copy(
-                            listOfJournals = persistentMapOf()
+                            listOfJournals = persistentMapOf(),
+                            createJournalState = CreateJournalState.Empty
                         )
                     }
                 }
