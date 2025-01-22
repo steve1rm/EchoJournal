@@ -11,7 +11,7 @@ interface JournalDao {
     suspend fun getAll(): List<Journal>
 
     @Insert
-    fun insertAll(vararg journal: Journal)
+    suspend fun insertAll(vararg journal: Journal)
 
     @Delete
     fun delete(journal: Journal)

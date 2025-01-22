@@ -6,31 +6,19 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import me.androidbox.echojournal.presentation.models.EmotionMoodsOutlined
-import me.androidbox.echojournal.presentation.models.SelectableEmotion
+import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 
 @Composable
 fun EmotionBottomSheet(
     modifier: Modifier = Modifier,
-    onDismiss: () -> Unit,
+    sheetState: SheetState,
     containerColor: Color,
     scrimColor: Color,
-    sheetState: SheetState,
+    onEmotionSelected: (EmotionMoodsFilled) -> Unit,
+    onDismiss: () -> Unit,
 ) {
-
-    val emotionList = remember {
-        mutableStateListOf<SelectableEmotion>(
-            SelectableEmotion(EmotionMoodsOutlined.STRESSED, false),
-            SelectableEmotion(EmotionMoodsOutlined.SAD, false),
-            SelectableEmotion(EmotionMoodsOutlined.NEUTRAL, false),
-            SelectableEmotion(EmotionMoodsOutlined.PEACEFUL, false),
-            SelectableEmotion(EmotionMoodsOutlined.EXCITED, false)
-        )
-    }
 
     ModalBottomSheet(
         modifier = modifier,
@@ -41,19 +29,11 @@ fun EmotionBottomSheet(
     ) {
 
         EmotionBottomSheetContent(
-            emotionList = emotionList,
-            onEmotionClicked = { updateEmotion, index ->
-                emotionList[index] = updateEmotion
-            },
-            onConfirmClicked = {
-                emotionList.filter {
-                    it.isSelected
-                }
+            onConfirmClicked = { emotion ->
+                onEmotionSelected.invoke(emotion)
             },
             onCancelClicked = {
-                emotionList.forEachIndexed { index, item ->
-                    emotionList[index] = item.copy(isSelected = false)
-                }
+                onDismiss.invoke()
             }
         )
     }

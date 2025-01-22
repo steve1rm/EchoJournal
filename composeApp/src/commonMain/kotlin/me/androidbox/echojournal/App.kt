@@ -3,6 +3,8 @@ package me.androidbox.echojournal
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -12,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dev.icerock.moko.permissions.compose.BindEffect
+import me.androidbox.echojournal.presentation.screens.CreateJournalState
 import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
 import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 import me.androidbox.echojournal.presentation.screens.NewEntryScreen
@@ -53,6 +56,9 @@ fun EchoJournalApp(
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = EchoJournalScreens.EchoJournalScreen.name) {
+            SideEffect {
+                echoJournalViewModel.fetchEchoJournalEntries()
+            }
             EchoJournalScreen(
                 navController = navController,
                 echoJournalState = echoJournalState,
@@ -87,20 +93,25 @@ fun EchoJournalApp(
         }
 
         composable(route = EchoJournalScreens.NewEntryScreen.name) {
+            LaunchedEffect(echoJournalState.createJournalState) {
+                if (echoJournalState.createJournalState == CreateJournalState.Success) {
+                    navController.navigateUp()
+                }
+            }
             NewEntryScreen(
-                navController = navController,
                 echoJournalState = echoJournalState,
-                onEmotionClicked = {},
-                onTextChanged = { text ->
+                onTopicTextChanged = { text ->
                     echoJournalViewModel.fetchFilteredTopics(text)
                 },
                 onTopicCreated = { text ->
                     echoJournalViewModel.createTopic(text)
                 },
-                onCancelClicked = {},
-                onSaveClicked = {},
-                onPlayBack = {
-                    echoJournalViewModel.startPlayBack(echoJournalState.duration, false)
+                onCancelOrBackClicked = {
+                    echoJournalViewModel.resetNewEntryState()
+                    navController.navigateUp()
+                },
+                onSaveClicked = { journal ->
+                    echoJournalViewModel.createJournal(journal)
                 }
             )
         }

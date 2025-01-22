@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -20,45 +21,68 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import me.androidbox.echojournal.presentation.models.SelectableEmotion
+import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
+import me.androidbox.echojournal.presentation.models.EmotionMoodsOutlined
+import me.androidbox.echojournal.presentation.models.getEmotionMoodsFilled
 import org.jetbrains.compose.resources.vectorResource
-import kotlin.Unit
 
 @Composable
 fun EmotionBottomSheetContent(
     modifier: Modifier = Modifier,
-    emotionList: List<SelectableEmotion>,
-    onEmotionClicked: (emotion: SelectableEmotion, index: Int) -> Unit,
-    onConfirmClicked: () -> Unit,
+    onConfirmClicked: (EmotionMoodsFilled) -> Unit,
     onCancelClicked: () -> Unit
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
 
+    val emotions = remember {
+        mutableStateListOf(
+            EmotionMoodsOutlined.STRESSED,
+            EmotionMoodsOutlined.SAD,
+            EmotionMoodsOutlined.NEUTRAL,
+            EmotionMoodsOutlined.PEACEFUL,
+            EmotionMoodsOutlined.EXCITED
+        )
+    }
+
+    var selectedIndex = remember { mutableIntStateOf(-1) }
+
+    Column(modifier = modifier.fillMaxWidth()) {
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
 
             itemsIndexed(
-                items = emotionList,
-                itemContent = { index, selectableEmotion ->
+                items = emotions,
+                itemContent = { index, emotion ->
                     EmotionItem(
                         icon = {
                             Icon(
-                                modifier = Modifier.clickable {
-                                    onEmotionClicked(selectableEmotion.copy(isSelected = !selectableEmotion.isSelected), index)
-                                },
-                                imageVector = vectorResource(resource = selectableEmotion.emotion.resource),
-                                contentDescription = selectableEmotion.emotion.description,
-                                tint = if(selectableEmotion.isSelected) selectableEmotion.emotion.color else Color(0xff9FABCD)
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .clickable {
+                                        selectedIndex.value = index
+                                    },
+                                imageVector = if (selectedIndex.value == index) vectorResource(
+                                    getEmotionMoodsFilled(emotion.name).resource
+                                )
+                                else vectorResource(emotion.resource),
+                                contentDescription = emotion.description,
+                                tint = if (selectedIndex.value == index) Color.Unspecified
+                                else Color(0xFF9FABCD)
                             )
                         },
-                        description = selectableEmotion.emotion.description,
-                        isSelected = selectableEmotion.isSelected)
+                        description = emotion.description,
+                        isSelected = selectedIndex.value == index
+                    )
                 }
             )
         }
@@ -79,7 +103,6 @@ fun EmotionBottomSheetContent(
                     onCancelClicked()
                 },
                 shape = CircleShape,
-                enabled = emotionList.any { it.isSelected }
             ) {
                 Text(text = "Cancel")
             }
@@ -87,9 +110,11 @@ fun EmotionBottomSheetContent(
             Button(
                 modifier = Modifier
                     .weight(1f),
-                onClick = onConfirmClicked,
+                onClick = {
+                    onConfirmClicked.invoke(getEmotionMoodsFilled(emotions[selectedIndex.value].name))
+                },
                 shape = CircleShape,
-                enabled = emotionList.any { it.isSelected }
+                enabled = (selectedIndex.value >= 0)
             ) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
@@ -115,13 +140,17 @@ fun EmotionItem(
 ) {
     Column(
         modifier = modifier
-            .wrapContentSize(align = Alignment.Center)
+            .wrapContentSize(align = Alignment.Center),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         icon()
-
+        Spacer(Modifier.height(8.dp))
         Text(
             text = description,
-            color = if(isSelected) Color.Black else Color(0xff6C7085)
+            style = TextStyle(
+                fontWeight = if (isSelected) FontWeight.W500 else FontWeight.W400,
+                color = if (isSelected) Color(0xFF191A20) else Color(0xFF6C7085)
+            )
         )
     }
 }

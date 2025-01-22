@@ -15,7 +15,7 @@ interface TopicDao {
     suspend fun getTopicWithPrefix(title: String): List<Topic>
 
     @Insert
-    fun insertAll(vararg topic: Topic)
+    suspend fun insertAll(vararg topic: Topic)
 
     @Delete
     fun delete(topic: Topic)

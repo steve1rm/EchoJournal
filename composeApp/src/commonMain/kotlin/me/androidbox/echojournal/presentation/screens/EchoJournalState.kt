@@ -16,6 +16,10 @@ data class EchoJournalState(
     val pausedDuration: Long = 0L,
     val audioFile: String = "",
     val duration: Long = 0L,
-    val playbackProgress: Float = 0.0f
+    val createJournalState: CreateJournalState = CreateJournalState.Empty
 )
 
+sealed class CreateJournalState {
+    data object Empty : CreateJournalState()
+    data object Success : CreateJournalState()
+}

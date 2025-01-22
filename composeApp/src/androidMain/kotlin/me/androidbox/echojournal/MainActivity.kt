@@ -196,7 +196,7 @@ fun EntryCardPreview() {
 @Preview
 @Composable
 fun PlayBackPreview() {
-    PlayBack(duration = 0L, backgroundColor = Color.Green.copy(alpha = 0.5f), audioFile = "", onPlayback = {})
+    PlayBack(duration = 0L, backgroundColor = Color.Green.copy(alpha = 0.5f), audioFile = "")
 }
 
 @Preview
@@ -246,9 +246,8 @@ fun EmotionBottomSheetPreview() {
 
     EmotionBottomSheet(
         sheetState = sheetState,
-        onDismiss = {
-
-        },
+        onDismiss = {},
+        onEmotionSelected = {},
         containerColor = Color.White,
         scrimColor = Color.Black
     )
@@ -257,28 +256,12 @@ fun EmotionBottomSheetPreview() {
 @Preview
 @Composable
 fun EmotionContentPreview() {
-    val emotionList = remember {
-        mutableStateListOf<SelectableEmotion>(
-            SelectableEmotion(EmotionMoodsOutlined.STRESSED, false),
-            SelectableEmotion(EmotionMoodsOutlined.SAD, false),
-            SelectableEmotion(EmotionMoodsOutlined.NEUTRAL, false),
-            SelectableEmotion(EmotionMoodsOutlined.PEACEFUL, false),
-            SelectableEmotion(EmotionMoodsOutlined.EXCITED, false)
-        )
-    }
-
     EmotionBottomSheetContent(
-        emotionList = emotionList,
-        onEmotionClicked = { newEmotionUpdate, index ->
-            emotionList[index] = newEmotionUpdate
-        },
         onConfirmClicked = {
             println("onConfirmClicked")
         },
         onCancelClicked = {
-            emotionList.replaceAll {
-                it.copy(isSelected = false)
-            }
+            println("onCancelClicked")
         }
     )
 }
