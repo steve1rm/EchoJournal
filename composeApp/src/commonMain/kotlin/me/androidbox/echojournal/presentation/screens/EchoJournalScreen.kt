@@ -20,10 +20,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Divider
@@ -39,7 +37,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -52,15 +49,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import app.lexilabs.basic.sound.Audio
 import app.lexilabs.basic.sound.ExperimentalBasicSound
 import dev.icerock.moko.permissions.PermissionState
-import dev.icerock.moko.permissions.compose.BindEffect
-import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
-import dev.theolm.record.Record
-import echojournal.composeapp.generated.resources.Res
-import echojournal.composeapp.generated.resources.excited
-import eu.iamkonstantin.kotlin.gadulka.GadulkaPlayer
 import me.androidbox.echojournal.EchoJournalScreens
 import kotlinx.coroutines.launch
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
@@ -69,7 +59,6 @@ import me.androidbox.echojournal.presentation.components.EntryCard
 import me.androidbox.echojournal.presentation.components.MoodSelectionChip
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
 import me.androidbox.echojournal.presentation.components.TopicSelectionChip
-import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import me.androidbox.echojournal.presentation.models.SelectableTopic
 import org.jetbrains.compose.resources.vectorResource
@@ -240,6 +229,7 @@ fun EchoJournalScreen(
                                         onShowMore = {},
                                         onAudioClicked = {},
                                         backgroundColor = journalItem.emotion.color,
+                                        topics = journalItem.topics,
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(vertical = 8.dp) // Padding for spacing between cards

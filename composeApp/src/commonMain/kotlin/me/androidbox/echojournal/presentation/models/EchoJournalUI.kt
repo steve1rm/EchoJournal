@@ -31,7 +31,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong Kong Planning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong Kong Planning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong Kong",
             date = Clock.System.now().toEpochMilliseconds(),
             audioFilePath = "Path used for content resolver",
-            topics = listOf(""),
+            topics = listOf("work", "flight", "busy", "jobs", "phone"),
             emotion = EmotionMoodsFilled.EXCITED
         ),
         EchoJournalUI(
@@ -39,7 +39,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong Kong",
             date = Clock.System.now().toEpochMilliseconds(),
             audioFilePath = "Path used for content resolver",
-            topics = listOf(""),
+            topics = listOf("work", "flight", "busy", "jobs", "phone"),
             emotion = EmotionMoodsFilled.PEACEFUL
         ),
         EchoJournalUI(
@@ -47,7 +47,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong Kong Planning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong Kong",
             date = Clock.System.now().toEpochMilliseconds(),
             audioFilePath = "Path used for content resolver",
-            topics = listOf(""),
+            topics = listOf("work", "flight", "busy", "jobs", "phone"),
             emotion = EmotionMoodsFilled.STRESSED
         ),
         EchoJournalUI(
@@ -55,7 +55,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong Kong",
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 1),
             audioFilePath = "Path used for content resolver",
-            topics = listOf(""),
+            topics = listOf("work", "flight", "busy", "jobs", "phone"),
             emotion = EmotionMoodsFilled.SAD
         ),
         EchoJournalUI(
@@ -63,7 +63,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong Kong",
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 1),
             audioFilePath = "Path used for content resolver",
-            topics = listOf(""),
+            topics = listOf("work", "flight", "busy", "jobs", "phone"),
             emotion = EmotionMoodsFilled.NEUTRAL
         ),
         EchoJournalUI(
@@ -71,7 +71,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong Kong",
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 2),
             audioFilePath = "Path used for content resolver",
-            topics = listOf(""),
+            topics = listOf("work", "flight", "busy", "jobs", "phone"),
             emotion = EmotionMoodsFilled.NEUTRAL
         ),
         EchoJournalUI(
@@ -79,7 +79,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Planning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong Kong",
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 3),
             audioFilePath = "Path used for content resolver",
-            topics = listOf(""),
+            topics = listOf("work", "flight", "busy", "jobs", "phone"),
             emotion = EmotionMoodsFilled.PEACEFUL
         ),
         EchoJournalUI(
@@ -87,7 +87,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Lets get this done today, and move all our stuff to another property. Lets Go...",
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 4),
             audioFilePath = "Path used for content resolver",
-            topics = listOf(""),
+            topics = listOf("work", "flight", "busy", "jobs", "phone"),
             emotion = EmotionMoodsFilled.PEACEFUL
         ),
         EchoJournalUI(
@@ -95,7 +95,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Lets get this party started. Start planning and less day dreaming",
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 4),
             audioFilePath = "Path used for content resolver",
-            topics = listOf(""),
+            topics = listOf("work", "flight", "busy", "jobs", "phone"),
             emotion = EmotionMoodsFilled.SAD
         ),
         EchoJournalUI(
@@ -103,7 +103,7 @@ fun populate(): Result<List<EchoJournalUI>> {
             description = "Getting ready with flight and package of suitcases and other things",
             date = subtractDay(Clock.System.now().toEpochMilliseconds(), 4),
             audioFilePath = "Path used for content resolver",
-            topics = listOf(""),
+            topics = listOf("work", "flight", "busy", "jobs", "phone"),
             emotion = EmotionMoodsFilled.STRESSED
         ))
 

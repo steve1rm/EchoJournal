@@ -7,6 +7,7 @@ import me.androidbox.echojournal.data.EchoJournalDataSource
 import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
 import me.androidbox.echojournal.presentation.models.EchoJournalUI
 import me.androidbox.echojournal.presentation.models.getEmotionMoodsFilled
+import me.androidbox.echojournal.presentation.models.populate
 
 class FetchEchoJournalsUseCaseImp(
     private val dataSource: EchoJournalDataSource
@@ -25,7 +26,8 @@ class FetchEchoJournalsUseCaseImp(
                         date = journal.createdAt,
                     )
                 }
-                Result.success(journals)
+
+                Result.success(populate().getOrNull() ?: emptyList())
             } catch (e: Exception) {
                 Result.failure(e)
             }

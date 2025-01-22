@@ -1,7 +1,11 @@
+@file:OptIn(ExperimentalLayoutApi::class)
+
 package me.androidbox.echojournal.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Card
@@ -28,6 +32,7 @@ fun EntryCard(
     end: String,
     description: String,
     backgroundColor: Color,
+    topics: List<String>,
     onAudioClicked: (audioControl: AudioControl) -> Unit,
     onShowMore: () -> Unit
 ) {
@@ -74,6 +79,20 @@ fun EntryCard(
                  )
 
                 ExpandableText(description = description)
+
+                /** Flow row of topics */
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    topics.forEach { topic ->
+                        TopicChip(
+                            topic = topic,
+                            showCloseButton = false
+                        )
+                    }
+                }
             }
         }
 }

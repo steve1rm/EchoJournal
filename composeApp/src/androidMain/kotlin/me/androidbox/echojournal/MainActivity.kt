@@ -2,7 +2,6 @@
 
 package me.androidbox.echojournal
 
-import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,7 +11,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,12 +23,10 @@ import me.androidbox.echojournal.presentation.components.MoodSelectionChip
 import me.androidbox.echojournal.presentation.components.PlayBack
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
 import me.androidbox.echojournal.presentation.components.TopicChip
-import me.androidbox.echojournal.presentation.components.TopicDropDown
 import me.androidbox.echojournal.presentation.components.TopicSelectionChip
 import me.androidbox.echojournal.presentation.models.EmotionMoodsOutlined
 import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
-import me.androidbox.echojournal.presentation.screens.EchoJournalScreen
 import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
 import androidx.compose.runtime.getValue
 import androidx.core.net.toUri
@@ -189,7 +185,8 @@ fun EntryCardPreview() {
         description = "This is a long description that might exceed the maximum number of lines and get truncated. In this case, we want to show an ellipsis and a 'Show more' button to expand the text. Long description that might exceed the maximum number of lines and get truncated",
         onAudioClicked = {},
         backgroundColor = Color.Green.copy(alpha = 0.5f),
-        onShowMore = {}
+        onShowMore = {},
+        topics = emptyList()
     )
 }
 

@@ -149,7 +149,6 @@ fun NewEntryScreen(
                     modifier = Modifier
                         .padding(horizontal = 16.dp),
                     duration = echoJournalState.duration,
-                    progress = echoJournalState.playbackProgress,
                     audioFile = echoJournalState.audioFile,
                     backgroundColor = Color.Green.copy(alpha = 0.5f),
                     onPlayback = {

@@ -18,12 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.androidbox.echojournal.data.Topic
 
 @Composable
 fun TopicChip(
     modifier: Modifier = Modifier,
     topic: String,
-    onCloseClicked: (topic: String) -> Unit
+    showCloseButton: Boolean = true,
+    onCloseClicked: (topic: String) -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -43,15 +45,17 @@ fun TopicChip(
             fontSize = 14.sp,
             color = Color.Black)
 
-        Icon(
-            modifier = Modifier
-                .size(16.dp)
-                .clickable {
-                    onCloseClicked(topic)
-                },
-            imageVector = Icons.Default.Close,
-            contentDescription = "Close topic",
-            tint = Color(0xff40434F).copy(alpha = 0.5f)
-        )
+        if(showCloseButton) {
+            Icon(
+                modifier = Modifier
+                    .size(16.dp)
+                    .clickable {
+                        onCloseClicked(topic)
+                    },
+                imageVector = Icons.Default.Close,
+                contentDescription = "Close topic",
+                tint = Color(0xff40434F).copy(alpha = 0.5f)
+            )
+        }
     }
 }
