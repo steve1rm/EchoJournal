@@ -37,6 +37,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -49,6 +50,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import app.lexilabs.basic.sound.Audio
 import app.lexilabs.basic.sound.ExperimentalBasicSound
 import dev.icerock.moko.permissions.PermissionState
 import me.androidbox.echojournal.EchoJournalScreens
@@ -169,6 +171,10 @@ fun EchoJournalScreen(
                     }
                 }
 
+                var currentPlayingIndex by remember {
+                    mutableIntStateOf(-1)
+                }
+
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -181,7 +187,7 @@ fun EchoJournalScreen(
 
                         itemsIndexed(
                             items = data,
-                            itemContent = { index, journalItem ->
+                            itemContent = { currentIndex, journalItem ->
                                 // Row with vertical line and card
                                 Row(
                                     modifier = Modifier
@@ -232,6 +238,11 @@ fun EchoJournalScreen(
                                         backgroundColor = journalItem.emotion.color,
                                         audioFile = journalItem.audioFilePath,
                                         topics = journalItem.topics,
+                                        index = currentPlayingIndex,
+                                        currentIndex = currentIndex,
+                                        updatePlayingIndex = { index ->
+                                            currentPlayingIndex = index
+                                        },
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(vertical = 8.dp) // Padding for spacing between cards

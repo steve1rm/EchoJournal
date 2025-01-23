@@ -188,7 +188,10 @@ fun EntryCardPreview() {
         onShowMore = {},
         audioFile = "",
         duration = 0L,
-        topics = emptyList()
+        topics = emptyList(),
+        updatePlayingIndex = {},
+        currentIndex = -1,
+        index = -1
     )
 }
 

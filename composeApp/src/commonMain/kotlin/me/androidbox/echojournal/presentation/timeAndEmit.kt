@@ -4,11 +4,12 @@ import androidx.compose.runtime.MutableLongState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
+import app.lexilabs.basic.sound.Audio
+import app.lexilabs.basic.sound.AudioState
+import app.lexilabs.basic.sound.ExperimentalBasicSound
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -32,6 +33,7 @@ fun timeAndEmit(emissionsPerSecond: Float): Flow<Long> {
     }
 }
 
+@OptIn(ExperimentalBasicSound::class)
 class TimeAndEmitPlay(
     private val scope: CoroutineScope
 ) {
@@ -41,23 +43,39 @@ class TimeAndEmitPlay(
         PAUSE
     }
 
+    var audio: Audio? = null
+
     var state: MutableState<PlayerState> = mutableStateOf(PlayerState.IDLE)
     val currentTime: MutableLongState = mutableLongStateOf(0L)
     private var playbackDuration: Long = 0L
 
-    fun setDuration(playbackDuration: Long) {
+
+
+    fun initAudioController(playbackDuration: Long, audioFile: String) {
         currentTime.value = 0L
         state.value = PlayerState.IDLE
         this.playbackDuration = playbackDuration
+
+        audio = Audio(resource = audioFile, false)
     }
 
-    fun start() {
-        state.value = PlayerState.PLAY
-        timeAndEmitPlayback(30f)
+    fun playAndPause() {
+        if(state.value == PlayerState.IDLE || state.value == PlayerState.PAUSE) {
+            state.value = PlayerState.PLAY
+            timeAndEmitPlayback(30f)
+            audio?.play()
+        }
+        else {
+            state.value = PlayerState.PAUSE
+            audio?.pause()
+        }
     }
 
     fun pause() {
-        state.value = PlayerState.PAUSE
+        if(state.value == PlayerState.PLAY) {
+            state.value = PlayerState.PAUSE
+            audio?.pause()
+        }
     }
 
     private fun timeAndEmitPlayback(emissionsPerSecond: Float) {
@@ -65,7 +83,6 @@ class TimeAndEmitPlay(
             while (state.value == PlayerState.PLAY) {
                 delay((1_000L / emissionsPerSecond).roundToLong())
                 currentTime.value += (1_000L / emissionsPerSecond).roundToLong()
-                println("TIME AND EMIT PLAYING ${currentTime.value}")
 
                 if (currentTime.value >= playbackDuration) {
                     state.value = PlayerState.IDLE

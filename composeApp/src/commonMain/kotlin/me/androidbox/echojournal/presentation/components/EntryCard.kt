@@ -36,8 +36,11 @@ fun EntryCard(
     description: String,
     backgroundColor: Color,
     topics: List<String>,
+    index: Int,
+    currentIndex: Int,
     onAudioClicked: (audioControl: AudioControl) -> Unit,
-    onShowMore: () -> Unit
+    onShowMore: () -> Unit,
+    updatePlayingIndex: (index: Int) -> Unit
 ) {
 
     var showMore by remember { mutableStateOf(false) }
@@ -77,7 +80,12 @@ fun EntryCard(
                  PlayBack(
                      duration = duration,
                      backgroundColor = backgroundColor,
-                     audioFile = audioFile
+                     playingIndex = index,
+                     currentIndex = currentIndex,
+                     audioFile = audioFile,
+                     updatePlayIndex = { index ->
+                         updatePlayingIndex(index)
+                     }
                  )
 
                 ExpandableText(description = description)

@@ -12,23 +12,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
-import app.lexilabs.basic.sound.Audio
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import app.lexilabs.basic.sound.ExperimentalBasicSound
 import echojournal.composeapp.generated.resources.Res
 import echojournal.composeapp.generated.resources.pause_icon
@@ -41,21 +37,57 @@ fun PlayBack(
     modifier: Modifier = Modifier,
     backgroundColor: Color,
     duration: Long,
+    playingIndex: Int = -1,
+    currentIndex: Int = -1,
     audioFile: String,
+    updatePlayIndex: (index: Int) -> Unit = {}
 ) {
-
-    var isPlaying by remember {
-        mutableStateOf(false)
-    }
 
     val coroutineScope = rememberCoroutineScope()
     val timeAndEmit = remember {
         TimeAndEmitPlay(coroutineScope)
     }
 
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+
+    LaunchedEffect(key1 = playingIndex) {
+        println("playingIndex [ $playingIndex ] currentIndex [ $currentIndex ]")
+        if(playingIndex != currentIndex) {
+            timeAndEmit.pause()
+        }
+    }
+
+    DisposableEffect(lifecycleOwner) {
+
+        val lifecycleObserver = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_PAUSE -> {
+                    println("ON_PAUSE")
+                    timeAndEmit.pause()
+                }
+                Lifecycle.Event.ON_STOP -> {
+                    // Ensure audio is stopped when app is completely in background
+                    println("ON_STOP")
+                    timeAndEmit.pause()
+                }
+                else -> {
+                    println("event ${event.name}")
+                }
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
+            println("onDisposed")
+            timeAndEmit.pause()
+        }
+    }
+
     LaunchedEffect(duration) {
         println("TIME AND EMIT SET")
-        timeAndEmit.setDuration(playbackDuration = duration)
+        timeAndEmit.initAudioController(playbackDuration = duration, audioFile = audioFile)
     }
 
     Row(
@@ -75,14 +107,8 @@ fun PlayBack(
             modifier = Modifier
                 .background(color = Color.White, RoundedCornerShape(100f)),
             onClick = {
-                val audio = Audio(audioFile, true)
-
-                if (!isPlaying) {
-                    timeAndEmit.start()
-                } else {
-                    audio.pause()
-                    timeAndEmit.pause()
-                }
+                updatePlayIndex(currentIndex)
+                timeAndEmit.playAndPause()
             }
         ) {
             Icon(

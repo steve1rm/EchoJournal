@@ -439,6 +439,7 @@ class EchoJournalViewModel(
 
     override fun onCleared() {
         timerJob?.cancel()
+        println("onCleared")
         super.onCleared()
     }
 }
