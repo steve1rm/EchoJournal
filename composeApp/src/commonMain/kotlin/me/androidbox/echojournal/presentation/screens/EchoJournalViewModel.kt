@@ -368,7 +368,8 @@ class EchoJournalViewModel(
                         topics = journal.topics,
                         description = journal.description,
                         emotion = journal.emotion.name,
-                        createdAt = journal.date
+                        createdAt = journal.date,
+                        audioDuration = journal.audioDuration
                     )
                 )
                 result.onSuccess {

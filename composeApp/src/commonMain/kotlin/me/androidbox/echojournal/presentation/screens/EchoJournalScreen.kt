@@ -226,9 +226,11 @@ fun EchoJournalScreen(
                                         start = "17:30",
                                         end = "12:20",
                                         time = "10:00",
+                                        duration = journalItem.audioDuration,
                                         onShowMore = {},
                                         onAudioClicked = {},
                                         backgroundColor = journalItem.emotion.color,
+                                        audioFile = journalItem.audioFilePath,
                                         topics = journalItem.topics,
                                         modifier = Modifier
                                             .fillMaxWidth()

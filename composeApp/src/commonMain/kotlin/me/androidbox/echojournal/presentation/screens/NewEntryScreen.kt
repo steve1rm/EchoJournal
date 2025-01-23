@@ -261,7 +261,8 @@ fun NewEntryScreen(
                                     topics = selectedTopics,
                                     audioFilePath = echoJournalState.audioFile,
                                     emotion = selectedEmotion ?: EmotionMoodsFilled.NEUTRAL,
-                                    date = Clock.System.now().toEpochMilliseconds()
+                                    date = Clock.System.now().toEpochMilliseconds(),
+                                    audioDuration = echoJournalState.duration
                                 )
                             )
                         },

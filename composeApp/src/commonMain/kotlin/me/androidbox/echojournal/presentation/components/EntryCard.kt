@@ -27,9 +27,11 @@ import me.androidbox.echojournal.presentation.models.AudioControl
 fun EntryCard(
     modifier: Modifier = Modifier,
     title: String,
+    duration: Long,
     time: String,
     start: String,
     end: String,
+    audioFile: String,
     description: String,
     backgroundColor: Color,
     topics: List<String>,
@@ -72,9 +74,9 @@ fun EntryCard(
 
                 /** Audio control */
                  PlayBack(
-                     duration = 0L,
+                     duration = duration,
                      backgroundColor = backgroundColor,
-                     audioFile = ""
+                     audioFile = audioFile
                  )
 
                 ExpandableText(description = description)

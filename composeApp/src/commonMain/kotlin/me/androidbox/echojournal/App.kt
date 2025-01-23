@@ -47,7 +47,6 @@ fun EchoJournalApp(
     val echoJournalViewModel = koinViewModel<EchoJournalViewModel>()
     val echoJournalState by echoJournalViewModel.echoJournalState.collectAsStateWithLifecycle()
 
-
     BindEffect(echoJournalViewModel.permissionsController)
 
     NavHost(

@@ -10,17 +10,21 @@ data class EchoJournalUI(
     val date: Long,
     val audioFilePath: String,
     val topics: List<String>,
-    val emotion: EmotionMoodsFilled
+    val emotion: EmotionMoodsFilled,
+    val audioDuration: Long
 )
 
-fun subtractDay(timestamp: Long, day: Int): Long {
+/*fun subtractDay(timestamp: Long, day: Int): Long {
     val instant = Instant.fromEpochMilliseconds(timestamp)
     val oneDayAgoInstant = instant.minus(day.days)
     return oneDayAgoInstant.toEpochMilliseconds()
-}
+}*/
 
+/*
 
-/** Testing data */
+*/
+/** Testing data *//*
+
 fun populate(): Result<List<EchoJournalUI>> {
 
     println("POPULATE")
@@ -109,3 +113,4 @@ fun populate(): Result<List<EchoJournalUI>> {
 
     return Result.success(listOfJournals)
 }
+*/

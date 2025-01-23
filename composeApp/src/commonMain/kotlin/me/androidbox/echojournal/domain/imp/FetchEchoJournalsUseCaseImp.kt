@@ -7,12 +7,12 @@ import me.androidbox.echojournal.data.EchoJournalDataSource
 import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
 import me.androidbox.echojournal.presentation.models.EchoJournalUI
 import me.androidbox.echojournal.presentation.models.getEmotionMoodsFilled
-import me.androidbox.echojournal.presentation.models.populate
 
 class FetchEchoJournalsUseCaseImp(
     private val dataSource: EchoJournalDataSource
 ) : FetchEchoJournalsUseCase {
     override suspend fun execute(): Result<List<EchoJournalUI>> {
+        /** TODO I don't think we need to have this here, as room will internally will switch depatchers */
         return withContext(Dispatchers.IO) {
             try {
                 val journals = dataSource.getAllJournal().map { journal ->
@@ -23,6 +23,7 @@ class FetchEchoJournalsUseCaseImp(
                         audioFilePath = journal.audioFilePath.orEmpty(),
                         topics = journal.topics ?: listOf(),
                         emotion = getEmotionMoodsFilled(journal.emotion.orEmpty()),
+                        audioDuration = journal.audioDuration,
                         date = journal.createdAt,
                     )
                 }

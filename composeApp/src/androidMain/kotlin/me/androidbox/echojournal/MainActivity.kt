@@ -186,6 +186,8 @@ fun EntryCardPreview() {
         onAudioClicked = {},
         backgroundColor = Color.Green.copy(alpha = 0.5f),
         onShowMore = {},
+        audioFile = "",
+        duration = 0L,
         topics = emptyList()
     )
 }

@@ -12,5 +12,6 @@ data class Journal(
     @ColumnInfo(name = "topics") val topics: List<String>?,
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "emotion") val emotion: String?,
-    @ColumnInfo(name = "createdAt") val createdAt: Long
+    @ColumnInfo(name = "createdAt") val createdAt: Long,
+    @ColumnInfo(name = "audioDuration") val audioDuration: Long
 )
