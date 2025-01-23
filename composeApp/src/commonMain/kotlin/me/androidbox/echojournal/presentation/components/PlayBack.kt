@@ -30,7 +30,11 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
 import app.lexilabs.basic.sound.Audio
 import app.lexilabs.basic.sound.ExperimentalBasicSound
+import echojournal.composeapp.generated.resources.Res
+import echojournal.composeapp.generated.resources.pause_icon
+import echojournal.composeapp.generated.resources.play_icon
 import me.androidbox.echojournal.presentation.TimeAndEmitPlay
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun PlayBack(
@@ -74,19 +78,17 @@ fun PlayBack(
                 val audio = Audio(audioFile, true)
 
                 if (!isPlaying) {
-//                    audio.play()
                     timeAndEmit.start()
                 } else {
                     audio.pause()
                     timeAndEmit.pause()
                 }
-                isPlaying = !isPlaying
             }
         ) {
             Icon(
                 modifier = Modifier
                     .size(32.dp),
-                imageVector = if (timeAndEmit.state.value == TimeAndEmitPlay.PlayerState.PLAY) Icons.Default.Close else Icons.Default.PlayArrow,
+                imageVector = if (timeAndEmit.state.value == TimeAndEmitPlay.PlayerState.PLAY) vectorResource(resource = Res.drawable.pause_icon ) else vectorResource(resource = Res.drawable.play_icon),
                 contentDescription = "Play back button",
                 tint = backgroundColor
             )

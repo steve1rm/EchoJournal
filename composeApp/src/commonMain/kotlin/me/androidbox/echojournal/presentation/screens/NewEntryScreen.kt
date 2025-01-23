@@ -176,7 +176,7 @@ fun NewEntryScreen(
                     modifier = Modifier,
                     duration = echoJournalState.duration,
                     audioFile = echoJournalState.audioFile,
-                    backgroundColor = Color.Green.copy(alpha = 0.5f),
+                    backgroundColor = selectedEmotion?.color ?: Color.Unspecified
                 )
 
                 TopicDropDown(
