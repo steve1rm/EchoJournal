@@ -82,6 +82,8 @@ fun EntryCard(
                                     hour(Padding.NONE)
                                     chars(":")
                                     minute(Padding.ZERO)
+                                    chars(" ")
+                                    amPmMarker("am", "pm")
                                 }
                             ),
                         fontWeight = FontWeight.Medium,
