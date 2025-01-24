@@ -229,9 +229,7 @@ fun EchoJournalScreen(
                                     EntryCard(
                                         title = journalItem.title,
                                         description = journalItem.description,
-                                        start = "17:30",
-                                        end = "12:20",
-                                        time = "10:00",
+                                        date = journalItem.date,
                                         duration = journalItem.audioDuration,
                                         onShowMore = {},
                                         onAudioClicked = {},

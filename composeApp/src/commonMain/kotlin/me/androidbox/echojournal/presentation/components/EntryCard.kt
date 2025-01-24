@@ -22,6 +22,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format
+import kotlinx.datetime.format.DateTimeFormat
+import kotlinx.datetime.format.Padding
+import kotlinx.datetime.toLocalDateTime
 import me.androidbox.echojournal.presentation.models.AudioControl
 
 @Composable
@@ -29,9 +37,7 @@ fun EntryCard(
     modifier: Modifier = Modifier,
     title: String,
     duration: Long,
-    time: String,
-    start: String,
-    end: String,
+    date: Long,
     audioFile: String,
     description: String,
     backgroundColor: Color,
@@ -69,7 +75,15 @@ fun EntryCard(
                     )
 
                     Text(
-                        text = time,
+                        text = Instant.fromEpochMilliseconds(date)
+                            .toLocalDateTime(TimeZone.currentSystemDefault()).time
+                            .format(
+                                LocalTime.Format {
+                                    hour(Padding.NONE)
+                                    chars(":")
+                                    minute(Padding.ZERO)
+                                }
+                            ),
                         fontWeight = FontWeight.Medium,
                         color = Color.Gray,
                         fontSize = 12.sp

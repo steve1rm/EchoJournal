@@ -179,9 +179,7 @@ fun TopicDropDownPreview() {
 fun EntryCardPreview() {
     EntryCard(
         title = "My Entry",
-        time = "12:34",
-        start = "Start",
-        end = "End",
+        date = 0L,
         description = "This is a long description that might exceed the maximum number of lines and get truncated. In this case, we want to show an ellipsis and a 'Show more' button to expand the text. Long description that might exceed the maximum number of lines and get truncated",
         onAudioClicked = {},
         backgroundColor = Color.Green.copy(alpha = 0.5f),
