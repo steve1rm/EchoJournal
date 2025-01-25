@@ -172,6 +172,7 @@ fun NewEntryScreen(
                     )
                 }
 
+                println("New Entry Screen [${echoJournalState.audioFile}]")
                 PlayBack(
                     modifier = Modifier,
                     duration = echoJournalState.duration,

@@ -93,6 +93,7 @@ fun EntryCard(
                 }
 
                 /** Audio control */
+                println("ENTRY CARD $audioFile")
                  PlayBack(
                      duration = duration,
                      backgroundColor = backgroundColor,

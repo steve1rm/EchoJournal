@@ -55,9 +55,9 @@ fun EchoJournalApp(
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = EchoJournalScreens.EchoJournalScreen.name) {
-            SideEffect {
+          /*  SideEffect {
                 echoJournalViewModel.fetchEchoJournalEntries()
-            }
+            }*/
             EchoJournalScreen(
                 navController = navController,
                 echoJournalState = echoJournalState,
@@ -92,11 +92,11 @@ fun EchoJournalApp(
         }
 
         composable(route = EchoJournalScreens.NewEntryScreen.name) {
-            LaunchedEffect(echoJournalState.createJournalState) {
+/*            LaunchedEffect(echoJournalState.createJournalState) {
                 if (echoJournalState.createJournalState == CreateJournalState.Success) {
                     navController.navigateUp()
                 }
-            }
+            }*/
             NewEntryScreen(
                 echoJournalState = echoJournalState,
                 onTopicTextChanged = { text ->
@@ -111,6 +111,7 @@ fun EchoJournalApp(
                 },
                 onSaveClicked = { journal ->
                     echoJournalViewModel.createJournal(journal)
+                    navController.navigate(EchoJournalScreens.EchoJournalScreen.name)
                 }
             )
         }

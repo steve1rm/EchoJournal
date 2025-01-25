@@ -393,12 +393,14 @@ class EchoJournalViewModel(
     fun fetchEchoJournalEntries() {
         viewModelScope.launch {
             try {
-                val result = fetchEchoJournalsUseCase.execute()
-                result.onSuccess { echoJournal ->
-                    val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+                fetchEchoJournalsUseCase.execute().collect { echoJournal ->
+                    println("FETCH JOURNAL ENTRIES")
+                    val today =
+                        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
                     val groupedJournals = echoJournal.groupBy { journal ->
-                        val journalDate = Instant.fromEpochMilliseconds(journal.date).toLocalDateTime(TimeZone.currentSystemDefault()).date
+                        val journalDate = Instant.fromEpochMilliseconds(journal.date)
+                            .toLocalDateTime(TimeZone.currentSystemDefault()).date
 
                         when (journalDate) {
                             today -> "Today"
@@ -423,15 +425,14 @@ class EchoJournalViewModel(
                             createJournalState = CreateJournalState.Empty
                         )
                     }
-                }.onFailure {
-                    _echoEchoJournalState.update { echoJournalState ->
-                        echoJournalState.copy(
-                            listOfJournals = persistentMapOf(),
-                            createJournalState = CreateJournalState.Empty
-                        )
-                    }
                 }
             } catch (exception: Exception) {
+                _echoEchoJournalState.update { echoJournalState ->
+                    echoJournalState.copy(
+                        listOfJournals = persistentMapOf(),
+                        createJournalState = CreateJournalState.Empty
+                    )
+                }
                 exception.printStackTrace()
             }
         }

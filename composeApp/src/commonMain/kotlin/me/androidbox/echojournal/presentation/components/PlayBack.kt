@@ -87,7 +87,9 @@ fun PlayBack(
 
     LaunchedEffect(duration) {
         println("TIME AND EMIT SET $audioFile")
-        timeAndEmit.initAudioController(playbackDuration = duration, audioFile = audioFile)
+        if(audioFile.isNotBlank()) {
+            timeAndEmit.initAudioController(playbackDuration = duration, audioFile = audioFile)
+        }
     }
 
     Row(
