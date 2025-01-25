@@ -86,7 +86,7 @@ fun PlayBack(
     }
 
     LaunchedEffect(duration) {
-        println("TIME AND EMIT SET")
+        println("TIME AND EMIT SET $audioFile")
         timeAndEmit.initAudioController(playbackDuration = duration, audioFile = audioFile)
     }
 

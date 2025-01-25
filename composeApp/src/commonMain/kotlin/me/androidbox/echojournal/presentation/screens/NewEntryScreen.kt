@@ -254,7 +254,7 @@ fun NewEntryScreen(
                     Button(
                         modifier = Modifier.weight(1f),
                         onClick = {
-                            onSaveClicked.invoke(
+                            onSaveClicked(
                                 EchoJournalUI(
                                     title = title,
                                     description = description,

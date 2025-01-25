@@ -49,8 +49,6 @@ class TimeAndEmitPlay(
     val currentTime: MutableLongState = mutableLongStateOf(0L)
     private var playbackDuration: Long = 0L
 
-
-
     fun initAudioController(playbackDuration: Long, audioFile: String) {
         currentTime.value = 0L
         state.value = PlayerState.IDLE
