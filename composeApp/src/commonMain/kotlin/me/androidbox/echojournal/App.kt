@@ -111,7 +111,7 @@ fun EchoJournalApp(
                 },
                 onSaveClicked = { journal ->
                     echoJournalViewModel.createJournal(journal)
-                    navController.navigate(EchoJournalScreens.EchoJournalScreen.name)
+                    navController.navigateUp()
                 }
             )
         }
