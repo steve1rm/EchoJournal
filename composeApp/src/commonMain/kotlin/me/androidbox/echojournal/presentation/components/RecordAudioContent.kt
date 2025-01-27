@@ -39,7 +39,8 @@ fun RecordAudioContent(
     isPaused: Boolean,
     startRecording: () -> Unit,
     pauseResumeRecording: () -> Unit,
-    cancelRecording: () -> Unit
+    cancelRecording: () -> Unit,
+    onRecordFinished: () -> Unit
 ) {
 
     Column(
@@ -83,7 +84,8 @@ fun RecordAudioContent(
                 onButtonClicked = {
                     startRecording()
                     if(isRecording && !isPaused) {
-                        println("start timer")
+                        println("Record button has finished recording")
+                        onRecordFinished()
                     }
                 },
                 isRecording = isRecording,
@@ -93,8 +95,9 @@ fun RecordAudioContent(
             IconButton(
                 onClick = {
                     pauseResumeRecording()
-                    if(isPaused) {
-                        println("Pause timer")
+                    if(isRecording && isPaused) {
+                        println("Puase bottom has finished recording")
+                        onRecordFinished()
                     }
                 }
             ) {

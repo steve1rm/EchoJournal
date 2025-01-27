@@ -21,7 +21,8 @@ fun RecordAudioBottomSheet(
     duration: Long,
     startRecording: () -> Unit,
     pauseResumeRecording: () -> Unit,
-    cancelRecording: () -> Unit
+    cancelRecording: () -> Unit,
+    onRecordFinished: () -> Unit
 ) {
 
     ModalBottomSheet(
@@ -38,7 +39,8 @@ fun RecordAudioBottomSheet(
             pauseResumeRecording = pauseResumeRecording,
             cancelRecording = cancelRecording,
             isRecording = isRecording,
-            isPaused = isPaused
+            isPaused = isPaused,
+            onRecordFinished = onRecordFinished
         )
     }
 }

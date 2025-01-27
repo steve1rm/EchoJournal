@@ -75,7 +75,8 @@ fun EchoJournalScreen(
     clearAllEmotions: () -> Unit,
     startRecording: () -> Unit,
     pauseResumeRecording: () -> Unit,
-    cancelRecording: () -> Unit
+    cancelRecording: () -> Unit,
+    onRecordFinished: () -> Unit
 ) {
 
     var shouldOpenMoodDropdown by remember {
@@ -95,12 +96,12 @@ fun EchoJournalScreen(
     val scope = rememberCoroutineScope()
 
 
-    LaunchedEffect(echoJournalState.audioFile) {
+   /* LaunchedEffect(echoJournalState.audioFile) {
         if (echoJournalState.audioFile.isNotBlank()) {
             // TODO CHANGE NAVIGATION BEHAVIOUR LATER
             navController.navigate(EchoJournalScreens.NewEntryScreen.name)
         }
-    }
+    }*/
 
     Scaffold(
         modifier = modifier,
@@ -299,7 +300,8 @@ fun EchoJournalScreen(
                                 },
                                 isRecording = echoJournalState.isRecording,
                                 isPaused = echoJournalState.isPaused,
-                                duration = echoJournalState.duration
+                                duration = echoJournalState.duration,
+                                onRecordFinished = onRecordFinished
                             )
                         }
 

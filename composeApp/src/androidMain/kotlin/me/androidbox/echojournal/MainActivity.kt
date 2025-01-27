@@ -194,7 +194,8 @@ fun RecordAudioBottomSheetPreview() {
         cancelRecording = TODO(),
         isRecording = true,
         isPaused = false,
-        duration = 0L
+        duration = 0L,
+        onRecordFinished = {}
     )
 }
 

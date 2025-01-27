@@ -85,6 +85,9 @@ fun EchoJournalApp(
                 cancelRecording = {
                     echoJournalViewModel.cancelRecording()
                 },
+                onRecordFinished = {
+                    navController.navigate(EchoJournalScreens.NewEntryScreen.name)
+                }
             )
         }
 
