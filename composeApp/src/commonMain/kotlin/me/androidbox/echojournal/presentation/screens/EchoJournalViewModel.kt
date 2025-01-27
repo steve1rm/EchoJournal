@@ -398,7 +398,9 @@ class EchoJournalViewModel(
                     val today =
                         Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
-                    val groupedJournals = echoJournal.groupBy { journal ->
+                    val sortByDates = echoJournal.sortedByDescending { it.date }
+
+                    val groupedJournals = sortByDates.groupBy { journal ->
                         val journalDate = Instant.fromEpochMilliseconds(journal.date)
                             .toLocalDateTime(TimeZone.currentSystemDefault()).date
 
