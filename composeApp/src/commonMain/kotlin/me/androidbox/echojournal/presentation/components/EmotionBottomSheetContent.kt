@@ -68,7 +68,7 @@ fun EmotionBottomSheetContent(
                             Icon(
                                 modifier = Modifier
                                     .size(40.dp)
-                                    .clickable {
+                                    .clickable(enabled = false) {
                                         selectedIndex.value = index
                                     },
                                 imageVector = if (selectedIndex.value == index) vectorResource(
@@ -111,7 +111,7 @@ fun EmotionBottomSheetContent(
                 modifier = Modifier
                     .weight(1f),
                 onClick = {
-                    onConfirmClicked.invoke(getEmotionMoodsFilled(emotions[selectedIndex.value].name))
+                    onConfirmClicked(getEmotionMoodsFilled(emotions[selectedIndex.value].name))
                 },
                 shape = CircleShape,
                 enabled = (selectedIndex.value >= 0)
