@@ -2,7 +2,6 @@
 
 package me.androidbox.echojournal
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,8 +12,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import app.lexilabs.basic.sound.ExperimentalBasicSound
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
+import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheet
 import me.androidbox.echojournal.presentation.components.EmotionBottomSheetContent
 import me.androidbox.echojournal.presentation.components.EntryCard
@@ -24,105 +25,17 @@ import me.androidbox.echojournal.presentation.components.PlayBack
 import me.androidbox.echojournal.presentation.components.RecordAudioBottomSheet
 import me.androidbox.echojournal.presentation.components.TopicChip
 import me.androidbox.echojournal.presentation.components.TopicSelectionChip
-import me.androidbox.echojournal.presentation.models.EmotionMoodsOutlined
 import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
-import me.androidbox.echojournal.presentation.screens.EchoJournalViewModel
-import androidx.compose.runtime.getValue
-import androidx.core.net.toUri
-import app.lexilabs.basic.sound.ExperimentalBasicSound
-import dev.icerock.moko.permissions.compose.BindEffect
-import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.models.SelectableTopic
-import org.koin.compose.viewmodel.koinViewModel
-import java.io.File
 
 class MainActivity : ComponentActivity() {
 
-    fun extractFileFromCache(fileName: String): Uri {
-        // Get the cache directory
-        val cacheDir = this@MainActivity.cacheDir
-
-        // Create a File object for the file
-        val file = File(cacheDir, fileName)
-
-        // Check if the file exists. If it doesn't, this means the file doesn't exist, or it has been deleted by Android.
-        if (!file.exists()) {
-            println("File doesn't exist in cache!")
-            return Uri.EMPTY
-        }
-
-        return file.toUri()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        installSplashScreen()
         setContent {
              App()
-          /*  NewEntryScreen(
-                onSaveClicked = {},
-                onCancelClicked = {},
-                onEmotionClicked = {}
-            )
-*/
-
-
-        //    val audio = Audio(extractFileFromCache("1737106878440.mp4").toString(), false)
-          //  val audio = Audio("/data/user/0/me.androidbox.echojournal/cache/1737115297858.mp4", true)
-         //   val audio = Audio("https://dare.wisc.edu/wp-content/uploads/sites/1051/2008/11/MS072.mp3", false)
-
-
-
-         /*   val resource = "https://dare.wisc.edu/wp-content/uploads/sites/1051/2008/11/MS072.mp3"
-            val audio = Audio(resource, true) // AutoPlay is marked "true"*/
-
-          /*  MediaPlayer.create(this@MainActivity, extractFileFromCache("1737115297858.mp4")).also {
-               // it.setDataSource("/data/user/0/me.androidbox.echojournal/cache/1737115297858.mp4")
-                it.start()
-            }*/
-
-          /*  val player = GadulkaPlayer(this@MainActivity)
-            player.play("/data/user/0/me.androidbox.echojournal/cache/1737115297858.mp4")
-            player.stop()*/
-
-
-            val echoJournalViewModel = koinViewModel<EchoJournalViewModel>()
-            val echoJournalState by echoJournalViewModel.echoJournalState.collectAsStateWithLifecycle()
-
-
-            BindEffect(echoJournalViewModel.permissionsController)
-
-//            EchoJournalScreen(
-//                echoJournalState = echoJournalState,
-//                updateTopicSelection = { selectableTopic, index ->
-//                    echoJournalViewModel.updateTopicSelection(selectableTopic, index)
-//                },
-//                clearAllTopics = {
-//                    echoJournalViewModel.clearAllTopics()
-//                },
-//                updateEmotionSelection = { selectableEmotion, index ->
-//                    echoJournalViewModel.updateEmotionSelection(selectableEmotion, index)
-//                },
-//                clearAllEmotions = {
-//                    echoJournalViewModel.clearAllEmotions()
-//                },
-//                onShowAppSettings = {
-//                    echoJournalViewModel.openAppSettings()
-//                },
-//                onShowPermissionDialog = {
-//                    echoJournalViewModel.provideOrRequestRecordAudioPermission()
-//                },
-//                startRecording = {
-//                    echoJournalViewModel.startRecording()
-//                },
-//                pauseResumeRecording = {
-//                    echoJournalViewModel.pauseResumeRecording()
-//                },
-//                cancelRecording = {
-//                    echoJournalViewModel.cancelRecording()
-//                },
-//            )
         }
     }
 }

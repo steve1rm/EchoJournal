@@ -36,6 +36,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.core.splashscreen)
 
             // koin
             implementation(libs.koin.android)
