@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -68,7 +69,7 @@ fun EmotionBottomSheetContent(
                             Icon(
                                 modifier = Modifier
                                     .size(40.dp)
-                                    .clickable(enabled = false) {
+                                    .clickable {
                                         selectedIndex.value = index
                                     },
                                 imageVector = if (selectedIndex.value == index) vectorResource(
@@ -108,10 +109,9 @@ fun EmotionBottomSheetContent(
             }
 
             Button(
-                modifier = Modifier
-                    .weight(1f),
+                modifier = Modifier.weight(1f),
                 onClick = {
-                    onConfirmClicked(getEmotionMoodsFilled(emotions[selectedIndex.value].name))
+                    onConfirmClicked.invoke(getEmotionMoodsFilled(emotions[selectedIndex.value].name))
                 },
                 shape = CircleShape,
                 enabled = (selectedIndex.value >= 0)

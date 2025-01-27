@@ -27,6 +27,7 @@ import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun DropDownEmotionMenu(
+    modifier: Modifier = Modifier,
     dropDownMenuItems: List<SelectableEmotion>,
     onMenuItemClicked: (item: SelectableEmotion, index: Int) -> Unit,
     onDismissed: () -> Unit
@@ -36,7 +37,7 @@ fun DropDownEmotionMenu(
     }
 
     DropdownMenu(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         expanded = !isExpanded,
         onDismissRequest = {
             isExpanded = false

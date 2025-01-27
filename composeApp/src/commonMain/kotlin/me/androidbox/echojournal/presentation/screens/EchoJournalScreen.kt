@@ -1,5 +1,5 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class,
-    ExperimentalBasicSound::class
+@file:OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class
 )
 
 package me.androidbox.echojournal.presentation.screens
@@ -24,7 +24,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -45,16 +44,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import app.lexilabs.basic.sound.Audio
-import app.lexilabs.basic.sound.ExperimentalBasicSound
 import dev.icerock.moko.permissions.PermissionState
-import me.androidbox.echojournal.EchoJournalScreens
 import kotlinx.coroutines.launch
+import me.androidbox.echojournal.EchoJournalScreens
 import me.androidbox.echojournal.presentation.components.DropDownEmotionMenu
 import me.androidbox.echojournal.presentation.components.DropDownTopicMenu
 import me.androidbox.echojournal.presentation.components.EntryCard
@@ -99,14 +96,14 @@ fun EchoJournalScreen(
 
 
     LaunchedEffect(echoJournalState.audioFile) {
-        if(echoJournalState.audioFile.isNotBlank()) {
+        if (echoJournalState.audioFile.isNotBlank()) {
             // TODO CHANGE NAVIGATION BEHAVIOUR LATER
             navController.navigate(EchoJournalScreens.NewEntryScreen.name)
         }
     }
 
     Scaffold(
-        modifier = modifier.padding(horizontal = 16.dp),
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = {
@@ -116,17 +113,15 @@ fun EchoJournalScreen(
         },
         content = { paddingValues ->
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().padding(paddingValues)
+                    .padding(horizontal = 16.dp)
             ) {
                 Box(modifier = Modifier.wrapContentSize()) {
                     FlowRow(
-                        modifier = Modifier
-                            .padding(paddingValues)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.Start),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-
                         MoodSelectionChip(
                             listOfMoods = echoJournalState.emotionList.filter { it.isSelected },
                             onClearClicked = {
@@ -137,7 +132,8 @@ fun EchoJournalScreen(
                             })
 
                         TopicSelectionChip(
-                            listOfTopics = echoJournalState.listOfTopic.filter { it.isSelected }.map { it.topic },
+                            listOfTopics = echoJournalState.listOfTopic.filter { it.isSelected }
+                                .map { it.topic },
                             onClearClicked = {
                                 clearAllTopics()
                             },
@@ -145,12 +141,14 @@ fun EchoJournalScreen(
                                 shouldOpenTopicDropdown = true
                             })
                     }
-
                     if (shouldOpenTopicDropdown) {
                         DropDownTopicMenu(
                             dropDownMenuItems = echoJournalState.listOfTopic,
                             onMenuItemClicked = { selectableTopic, index ->
-                                updateTopicSelection(selectableTopic.copy(isSelected = !selectableTopic.isSelected), index)
+                                updateTopicSelection(
+                                    selectableTopic.copy(isSelected = !selectableTopic.isSelected),
+                                    index
+                                )
                             },
                             onDismissed = {
                                 shouldOpenTopicDropdown = false
@@ -162,7 +160,10 @@ fun EchoJournalScreen(
                         DropDownEmotionMenu(
                             dropDownMenuItems = echoJournalState.emotionList,
                             onMenuItemClicked = { emotion, index ->
-                                updateEmotionSelection(emotion.copy(isSelected = !emotion.isSelected), index)
+                                updateEmotionSelection(
+                                    emotion.copy(isSelected = !emotion.isSelected),
+                                    index
+                                )
                             },
                             onDismissed = {
                                 shouldOpenMoodDropdown = false
@@ -176,13 +177,21 @@ fun EchoJournalScreen(
                 }
 
                 LazyColumn(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().padding(top = 20.dp)
                 ) {
 
                     echoJournalState.listOfJournals.forEach { (header, data) ->
 
                         item {
-                            Text(text = header, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+                            Text(
+                                text = header.uppercase(),
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 12.sp,
+                                    color = Color(0xFF40434F)
+                                )
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
                         }
 
                         itemsIndexed(
@@ -196,30 +205,40 @@ fun EchoJournalScreen(
                                 ) {
                                     // Icon with Divider
                                     Box(
-                                        modifier = Modifier
-                                            .width(24.dp) // Space for Icon and Divider
-                                            .fillMaxHeight(), // Ensures the height matches the Row content
+                                        modifier = Modifier.fillMaxHeight(), // Ensures the height matches the Row content
                                         contentAlignment = Alignment.TopCenter
                                     ) {
-                                        Column(
-                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                            modifier = Modifier.fillMaxHeight()
+                                        Box(
+                                            modifier = Modifier
                                         ) {
-                                            Icon(
-                                                imageVector = vectorResource(journalItem.emotion.resource),
-                                                contentDescription = null,
-                                                tint = Color.Unspecified,
-                                                modifier = Modifier.size(24.dp)
-                                            )
-
-                                            // Vertical Line
-                                       //     println("Header $header ${data.count()}")
-
+                                            if (currentIndex > 0) {
                                                 VerticalDivider(
-                                                    thickness = 1.dp,
+                                                    modifier = Modifier
+                                                        .height(24.dp)
+                                                        .padding(start = 16.dp),
+                                                    thickness = 0.5.dp,
                                                     color = Color.DarkGray
                                                 )
-
+                                            }
+                                            if (currentIndex < (data.size - 1)) {
+                                                VerticalDivider(
+                                                    modifier = Modifier
+                                                        .padding(top = 24.dp, start = 16.dp),
+                                                    thickness = 0.5.dp,
+                                                    color = Color.DarkGray
+                                                )
+                                            }
+                                            Box(
+                                                modifier = Modifier.padding(vertical = 8.dp),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Icon(
+                                                    imageVector = vectorResource(journalItem.emotion.resource),
+                                                    contentDescription = null,
+                                                    tint = Color.Unspecified,
+                                                    modifier = Modifier.size(32.dp)
+                                                )
+                                            }
                                         }
                                     }
 
@@ -243,39 +262,31 @@ fun EchoJournalScreen(
                                         },
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(vertical = 8.dp) // Padding for spacing between cards
+                                            .padding(
+                                                top = if (currentIndex > 0) 8.dp else 0.dp,
+                                                bottom = if (currentIndex < (data.size - 1)) 8.dp else 0.dp
+                                            ) // Padding for spacing between cards
                                     )
                                 }
                             }
                         )
+
+                        item {
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
                     }
                 }
 
-                if(shouldOpenAudioRecordingBottomSheet) {
-                    when(echoJournalState.permissionState) {
+                if (shouldOpenAudioRecordingBottomSheet) {
+                    when (echoJournalState.permissionState) {
                         PermissionState.Granted -> {
                             RecordAudioBottomSheet(
                                 onDismiss = {
                                     shouldOpenAudioRecordingBottomSheet = false
                                 },
-                               /* onPauseClicked = {
-
-                                    val path = Record.stopRecording()
-                                    println("RECORD STOPPED $path")
-                                    val audio = Audio(
-                                        "/data/user/0/me.androidbox.echojournal/cache/1737115297858.mp4",
-                                        true
-                                    )
-
-                                    audio.pause()
-                                },
-                                onRecordClicked = {
-                                    println("RECORD STARTED")
-                                    Record.startRecording()
-                                },*/
                                 containerColor = Color.White,
                                 scrimColor = Color.Black.copy(alpha = 0.32f),
-                                sheetState = sheetState ,
+                                sheetState = sheetState,
                                 startRecording = startRecording,
                                 pauseResumeRecording = pauseResumeRecording,
                                 cancelRecording = {
@@ -291,9 +302,11 @@ fun EchoJournalScreen(
                                 duration = echoJournalState.duration
                             )
                         }
+
                         PermissionState.DeniedAlways -> {
                             onShowAppSettings()
                         }
+
                         else -> {
                             /** show permission dialog again */
                             onShowPermissionDialog()
@@ -320,96 +333,5 @@ fun EchoJournalScreen(
             )
         },
         floatingActionButtonPosition = FabPosition.End
-    )
-}
-
-
-
-/*  BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
-      val boxHeight = this.maxHeight
-
-      Row(modifier = Modifier.fillMaxWidth()) {
-          Column(
-              modifier = Modifier
-                  .wrapContentWidth()
-                  .fillMaxHeight(),
-              horizontalAlignment = Alignment.CenterHorizontally
-          ) {
-              Icon(
-                  imageVector = vectorResource(Res.drawable.excited),
-                  contentDescription = null,
-                  tint = Color.Unspecified
-              )
-
-              Spacer(modifier = Modifier.height(8.dp))
-
-              Box(
-                  modifier = Modifier
-                      .fillMaxHeight() // Stretch the divider to the parent height
-                      .width(4.dp)
-                      .background(Color.DarkGray)
-              )
-              *//*VerticalDivider(
-                                                modifier = Modifier.height(boxHeight),
-                                                thickness = 4.dp,
-                                                color = Color.DarkGray
-                                            )*//*
-                                        }
-                                        Spacer(modifier = Modifier.width(16.dp))
-
-                                        EntryCard(
-                                            title = it.title,
-                                            description = it.description,
-                                            start = "17:30",
-                                            end = "12:20",
-                                            time = "10:00",
-                                            onShowMore = {},
-                                            onAudioClicked = {}
-                                        )
-
-
-                                    }
-                                }
-                                Spacer(modifier = Modifier.height(8.dp))
-                            }*/
-
-/*item {
-    Row(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.wrapContentWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                modifier = Modifier.padding(bottom = 8.dp),
-                imageVector = vectorResource(Res.drawable.excited),
-                contentDescription = null,
-                tint = Color.Unspecified
-            )
-            if(data.size > 1){
-                VerticalDivider(
-                    modifier = Modifier.height((data.size * 90).dp),
-                    thickness = 4.dp,
-                    color = Color.DarkGray
-                )
-            }
-
-
-        }
-        Spacer(modifier = Modifier.width(8.dp))
-    }
-
-}*/
-
-@Composable
-fun VerticalDivider(
-    modifier: Modifier = Modifier,
-    thickness: Dp = 1.dp,
-    color: Color = Color.Black
-) {
-    Divider(
-        modifier = modifier
-            .fillMaxHeight()
-            .width(thickness),
-        color = color
     )
 }

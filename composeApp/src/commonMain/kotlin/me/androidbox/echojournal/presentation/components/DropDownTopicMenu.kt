@@ -28,6 +28,7 @@ import me.androidbox.echojournal.presentation.models.SelectableTopic
 /** TODO Pass in the content rather than using the same code for the DropDownEmotionMenu */
 @Composable
 fun DropDownTopicMenu(
+    modifier: Modifier = Modifier,
     dropDownMenuItems: List<SelectableTopic>,
     onMenuItemClicked: (item: SelectableTopic, index: Int) -> Unit,
     onDismissed: () -> Unit
@@ -37,7 +38,7 @@ fun DropDownTopicMenu(
     }
 
     DropdownMenu(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         expanded = !isExpanded,
         onDismissRequest = {
             isExpanded = false
