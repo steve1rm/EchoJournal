@@ -180,7 +180,6 @@ fun EchoJournalScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth().padding(top = 20.dp)
                 ) {
-
                     echoJournalState.listOfJournals.forEach { (header, data) ->
 
                         item {
@@ -322,11 +321,15 @@ fun EchoJournalScreen(
                 containerColor = Color(0xff578CFF),
                 onClick = {
                     shouldOpenAudioRecordingBottomSheet = true
+
+                    println(echoJournalState.permissionState)
+                    if (echoJournalState.permissionState == PermissionState.Granted) {
+                        startRecording()
+                    }
                 },
                 shape = CircleShape,
                 content = {
                     Icon(
-
                         imageVector = Icons.Default.Add,
                         contentDescription = "Add entry",
                         tint = Color.White

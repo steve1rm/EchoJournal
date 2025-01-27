@@ -40,6 +40,7 @@ import me.androidbox.echojournal.domain.FetchEchoJournalsUseCase
 import me.androidbox.echojournal.domain.FetchTopicsUseCase
 import me.androidbox.echojournal.domain.FetchTopicsWithPrefixUseCase
 import me.androidbox.echojournal.presentation.models.EchoJournalUI
+import me.androidbox.echojournal.presentation.models.EmotionMoodsFilled
 import me.androidbox.echojournal.presentation.models.SelectableEmotion
 import me.androidbox.echojournal.presentation.models.SelectableTopic
 import me.androidbox.echojournal.presentation.models.emotionList
@@ -263,6 +264,8 @@ class EchoJournalViewModel(
                 emotionList = updatedEmotion
             )
         }
+
+        fetchEchoJournalEntries()
     }
 
     fun clearAllTopics() {
@@ -291,6 +294,8 @@ class EchoJournalViewModel(
                 emotionList = listOfUpdatedEmotions
             )
         }
+
+        fetchEchoJournalEntries()
     }
 
     /** TODO Should be fetched from the local cache */
@@ -398,7 +403,10 @@ class EchoJournalViewModel(
                     val today =
                         Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
-                    val sortByDates = echoJournal.sortedByDescending { it.date }
+                    val sortByDates = echoJournal.sortedByDescending { it.date }.filter { item ->
+                        if (echoJournalState.value.emotionList.find { it.isSelected } == null) true
+                        else echoJournalState.value.emotionList.find { (it.emotion as EmotionMoodsFilled) == item.emotion }?.isSelected == true
+                    }
 
                     val groupedJournals = sortByDates.groupBy { journal ->
                         val journalDate = Instant.fromEpochMilliseconds(journal.date)
