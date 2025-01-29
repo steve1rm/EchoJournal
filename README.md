@@ -19,8 +19,6 @@ EchoJournal is a colorful audio journaling app. Itʼs aim is to help users to qu
       
 # Screenshots
 
-![Screenshot From 2025-01-17 20-31-36](https://github.com/user-attachments/assets/74aa8055-3c67-479c-ae5f-577694a8ccc3)
-
 ![Screenshot From 2025-01-29 13-17-16](https://github.com/user-attachments/assets/4d7829c9-822a-41a0-a79d-1269ebaa8185)
 
 ![Screenshot From 2025-01-29 13-17-57](https://github.com/user-attachments/assets/e9657e74-0a42-4d85-bd6a-b1ff7f175a5b)
