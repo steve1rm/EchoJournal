@@ -1,6 +1,7 @@
 package me.androidbox.echojournal.presentation.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -69,7 +70,12 @@ fun EmotionBottomSheetContent(
                             Icon(
                                 modifier = Modifier
                                     .size(40.dp)
-                                    .clickable {
+                                    .clickable(
+                                        indication = null,
+                                        interactionSource = remember {
+                                            MutableInteractionSource()
+                                        }
+                                    ) {
                                         selectedIndex.value = index
                                     },
                                 imageVector = if (selectedIndex.value == index) vectorResource(
