@@ -143,7 +143,9 @@ fun EchoJournalScreen(
                             })
                     }
                     if (shouldOpenTopicDropdown) {
-                        /** Add text here and show the selected currency with a trailing arrow up/down */
+                        /** Add text here and show the selected currency with a trailing arrow up/down
+                         * https://proandroiddev.com/improving-the-compose-dropdownmenu-88469b1ef34
+                         * */
 
                         DropDownTopicMenu(
                             dropDownMenuItems = echoJournalState.listOfTopic,
