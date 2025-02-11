@@ -143,6 +143,8 @@ fun EchoJournalScreen(
                             })
                     }
                     if (shouldOpenTopicDropdown) {
+                        /** Add text here and show the selected currency with a trailing arrow up/down */
+
                         DropDownTopicMenu(
                             dropDownMenuItems = echoJournalState.listOfTopic,
                             onMenuItemClicked = { selectableTopic, index ->
